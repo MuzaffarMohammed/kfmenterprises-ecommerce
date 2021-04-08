@@ -3,6 +3,7 @@ import {GlobalState} from '../../GlobalState'
 import Menu from './icon/menu.svg'
 import Close from './icon/close.svg'
 import Cart from './icon/cart.svg'
+import KFM_Logo from './icon/KFM_Logo.svg'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
@@ -49,20 +50,21 @@ function Header() {
             <div className="menu" onClick={() => setMenu(!menu)}>
                 <img src={Menu} alt="" width="30" />
             </div>
-
             <div className="logo">
                 <h1>
-                    <Link to="/">{isAdmin ? 'Admin' : 'DevAT Shop'}</Link>
+                    <Link to="/">
+                        <img src={KFM_Logo} alt="KFM Enterprises" />
+                        {isAdmin ? ' ADMIN': ''}
+                    </Link>
                 </h1>
             </div>
-
             <ul style={styleMenu}>
                 <li><Link to="/">{isAdmin ? 'Products' : 'Shop'}</Link></li>
 
                 {isAdmin && adminRouter()}
 
                 {
-                    isLogged ? loggedRouter() : <li><Link to="/login">Login ✥ Register</Link></li>
+                    isLogged ? loggedRouter() : <li><Link to="/login">Login</Link></li>
                 }
 
                 <li onClick={() => setMenu(!menu)}>

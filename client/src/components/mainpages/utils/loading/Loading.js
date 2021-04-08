@@ -1,25 +1,12 @@
 import React from 'react'
-import './loading.css'
+import './loading.css';
+import loading from './loading.gif'
 
 function Loading() {
     return (
         <div className="load-page">
             <div className="loader">
-                <div>
-                    <div>
-                        <div>
-                            <div>
-                                <div>
-                                    <div>
-                                        <div>
-                                            <div></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <img src={loading}></img>
             </div>
         </div>
     )
