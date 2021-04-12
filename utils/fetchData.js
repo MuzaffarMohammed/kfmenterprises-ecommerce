@@ -1,5 +1,5 @@
 const baseUrl = process.env.BASE_URL
-
+console.log('Fetch baseUrl : '+baseUrl)
 export const getData = async (url, token) => {
     const res = await fetch(`${baseUrl}/api/${url}`, {
         method: 'GET',
