@@ -1,36 +1,28 @@
-# MERN Stack - Ecommerce
-> Ecommerce website built with the MERN stack with React Context API for state management, pure CSS for style
+# NEXTJS - Ecommerce
+> Build a E-commerce Full Stack with Nextjs + Mongodb + React Hook + Bootstrap 4
+> Instructions on how to use nextjs in conjunction with mongodb to build a basic e-commerce website.
 
-## Demo: https://devat-ecommerce.herokuapp.com/
+## Demo: https://nextjs-ecommerce-six.vercel.app/
 
 ## Author: Dev AT
-## Youtube tutorials: https://youtu.be/AjItjNc0bHA
 
-## Install dependencies for server 
+## Youtube tutorials: https://www.youtube.com/watch?v=UsEN7LGefhA&list=PLs4co9a6NhMzf-5tIWfpzDCgdMyg-CceX
+
+## Install dependencies 
 ### `npm install`
 
-## Install dependencies for client
-### cd client ---> `npm install`
+## Connect to your mongodb and add info in next.config.js
 
-## Connect to your mongodb and add info in .env
-
-## Add your paypal client id in client/src/components/mainpages/cart/PaypalButton.js
-
-## Run the client & server with concurrently
+## Run the project http://localhost:3000
 ### `npm run dev`
 
-## Run the Express server only
-### `npm run server`
-
-## Run the React client only
-### `npm run client`
-
-### Server runs on http://localhost:5000 and client on http://localhost:3000
 
 ### User interface 
 
-![alt](https://res.cloudinary.com/devatchannel/image/upload/v1599568147/test/1_pe9ism.png)
+![alt](https://res.cloudinary.com/devat-channel/image/upload/v1610956436/nextjs_media/2_dgx2op.png)
+
+![alt](https://res.cloudinary.com/devat-channel/image/upload/v1610956526/nextjs_media/3_dkmrq1.png)
 
 ### Admin interface 
 
-![alt](https://res.cloudinary.com/devatchannel/image/upload/v1599568148/test/2_obw2r7.png)
+![alt](https://res.cloudinary.com/devat-channel/image/upload/v1610956354/nextjs_media/Untitled_axeubb.png)

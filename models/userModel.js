@@ -1,10 +1,9 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     email: {
         type: String,
@@ -16,15 +15,20 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: Number,
-        default: 0
+        type: String,
+        default: 'user'
     },
-    cart: {
-        type: Array,
-        default: []
+    root: {
+        type: Boolean,
+        default: false
+    },
+    avatar: {
+        type: String,
+        default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png'
     }
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model('Users', userSchema)
+let Dataset = mongoose.models.user || mongoose.model('user', userSchema)
+export default Dataset

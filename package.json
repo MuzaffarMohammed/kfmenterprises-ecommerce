@@ -1,37 +1,19 @@
 {
-  "name": "ecommerce",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "engines":{
-    "node": "12.18.3"
-  },
+  "name": "nextjs-ecommerce",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "cd client && npm run start",
-    "server-install": "npm install",
-    "client-install": "cd client && npm install",
-    "install-all": "concurrently \"npm run server-install\" \"npm run client-install\"",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "cloudinary": "^1.23.0",
-    "concurrently": "^5.3.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-fileupload": "^1.2.0",
+    "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
+    "mongoose": "^5.10.14",
+    "next": "10.0.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   }
 }
