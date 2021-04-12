@@ -99,7 +99,7 @@ const Profile = () => {
                     </h3>
 
                     <div className="avatar">
-                        <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} 
+                    <img src={  (avatar ? URL.createObjectURL(avatar) : '/assets/images/profile/'+auth.user.avatar)} 
                         alt="avatar" />
                         <span>
                             <i className="fas fa-camera"></i>
