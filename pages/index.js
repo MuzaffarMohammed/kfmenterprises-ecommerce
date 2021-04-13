@@ -69,7 +69,7 @@ const Home = (props) => {
       <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width="100%;" height="250px;"/>
       </div>
 
-      <div class="container">
+      <div className="container">
       <Filter state={state} />
 
       {
