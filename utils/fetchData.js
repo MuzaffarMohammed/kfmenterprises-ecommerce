@@ -1,6 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-console.log('baseUrl:'+baseUrl)
-console.log('NEXT_PUBLIC_ACCESS_TOKEN_SECRET'+process.env.NEXT_PUBLIC_ACCESS_TOKEN_SECRET)
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getData = async (url, token) => {
     const res = await fetch(`${baseUrl}/api/${url}`, {

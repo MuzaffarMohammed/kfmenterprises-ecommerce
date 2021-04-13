@@ -69,7 +69,7 @@ const Home = (props) => {
       <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width="100%;" height="250px;"/>
       </div>
 
-      <div class="container-fluid">
+      <div class="container">
       <Filter state={state} />
 
       {
@@ -87,7 +87,7 @@ const Home = (props) => {
       }
       </div>
 
-      <div className="products  container-fluid">
+      <div className="products  container">
         {
           products.length === 0 
           ? <h2>No Products</h2>

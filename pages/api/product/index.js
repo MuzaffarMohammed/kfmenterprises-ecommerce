@@ -86,7 +86,6 @@ const createProduct = async (req, res) => {
         const newProduct = new Products({
             title: title.toLowerCase(), price, inStock, description, content, category, images
         })
-
         await newProduct.save()
 
         res.json({msg: 'Success! Created a new product'})

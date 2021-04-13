@@ -1,18 +1,21 @@
-export const imageUpload = async (images) => {
+export const imageUpload = async (images, token, isAvatar=false) => {
+
     let imgArr = []
     for(const item of images){
         const formData = new FormData()
-        formData.append("file", item)
-        formData.append("upload_preset", process.env.CLOUD_UPDATE_PRESET)
-        formData.append("cloud_name", process.env.CLOUD_NAME)
-
-        const res = await fetch(process.env.CLOUD_API, {
+        formData.append("file", item);       
+        const res = await fetch('/api/uploads', {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: { 
+                        'Authorization': token 
+                    },
+            onUploadProgress: (event) => {
+                console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+              }
         })
-
-        const data = await res.json()
-        imgArr.push({public_id: data.public_id, url: data.secure_url})
+        const data = await res.json();
+        imgArr.push({url: '/assets/images/'+item.name})
     }
     return imgArr;
 }

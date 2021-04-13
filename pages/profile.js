@@ -54,13 +54,13 @@ const Profile = () => {
     const changeAvatar = (e) => {
         const file = e.target.files[0]
         if(!file)
-            return dispatch({type: 'NOTIFY', payload: {error: 'File does not exist.'}})
+            return dispatch({type: 'NOTIFY', payload: {error: 'File does not exist!'}})
 
         if(file.size > 1024 * 1024) //1mb
-            return dispatch({type: 'NOTIFY', payload: {error: 'The largest image size is 1mb.'}})
+            return dispatch({type: 'NOTIFY', payload: {error: 'Image size should be less than 1MB!'}})
 
         if(file.type !== "image/jpeg" && file.type !== "image/png") //1mb
-            return dispatch({type: 'NOTIFY', payload: {error: 'Image format is incorrect.'}})
+            return dispatch({type: 'NOTIFY', payload: {error: 'Incorrect Image format! Please upload "jpeg/jpg/png" formats.'}})
         
         setData({...data, avatar: file})
     }
@@ -69,7 +69,7 @@ const Profile = () => {
         let media;
         dispatch({type: 'NOTIFY', payload: {loading: true}})
 
-        if(avatar) media = await imageUpload([avatar])
+        if(avatar) media = await imageUpload([avatar],auth.token)
 
         patchData('user', {
             name, avatar: avatar ? media[0].url : auth.user.avatar
@@ -99,7 +99,7 @@ const Profile = () => {
                     </h3>
 
                     <div className="avatar">
-                    <img src={  (avatar ? URL.createObjectURL(avatar) : '/assets/images/profile/'+auth.user.avatar)} 
+                    <img src={  (avatar ? URL.createObjectURL(avatar) : auth.user.avatar)} 
                         alt="avatar" />
                         <span>
                             <i className="fas fa-camera"></i>
