@@ -92,7 +92,7 @@ const Profile = () => {
                 <title>Profile</title>
             </Head>
 
-            <section className="container-fluid row text-secondary my-3">
+            <section className="container-fluid row text-secondary my-3 mx-1">
                 <div className="col-md-4">
                     <h3 className="text-center text-uppercase">
                         {auth.user.role === 'user' ? 'User Profile' : 'Admin Profile'}

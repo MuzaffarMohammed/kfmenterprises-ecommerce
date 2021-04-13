@@ -47,7 +47,7 @@ const Register = () => {
           <title>Register Page</title>
         </Head>
 
-        <form className="mx-auto my-4" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
+        <form className="container-fluid mx-auto my-4" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input type="text" className="form-control" id="name"

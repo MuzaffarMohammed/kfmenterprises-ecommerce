@@ -53,7 +53,7 @@ const Signin = () => {
           <title>Sign in Page</title>
         </Head>
 
-        <form className="mx-auto my-4" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
+        <form className="container-fluid mx-auto my-4" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Email address</label>
             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
