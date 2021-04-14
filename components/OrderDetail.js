@@ -43,7 +43,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                         <div className={`alert ${order.delivered ? 'alert-success' : 'alert-danger'}
                         d-flex justify-content-between align-items-center`} role="alert">
                             {
-                                order.delivered ? `Deliverd on ${order.updatedAt}` : 'Not Delivered'
+                                order.delivered ? `Delivered on ${order.updatedAt}` : 'Not Delivered'
                             }
                             {
                                 auth.user.role === 'admin' && !order.delivered &&
