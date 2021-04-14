@@ -6,6 +6,7 @@ import { addToCart } from '../../store/Actions'
 const ProductItem = ({product, handleCheck}) => {
     const { state, dispatch } = useContext(DataContext)
     const { cart, auth } = state
+    const isAdmin =  auth && auth.user && auth.user.role === 'admin'
 
     const userLink = () => {
         return(
@@ -63,10 +64,10 @@ const ProductItem = ({product, handleCheck}) => {
                 </h5>
 
                 <div className="row justify-content-between mx-0">
-                    <h6 className="text-danger">${product.price}</h6>
+                    <h6 className="text-danger">₹{product.price}</h6>
                     {
                         product.inStock > 0
-                        ? <h6 className="text-danger">In Stock: {product.inStock}</h6>
+                        ? <h6 className="text-success">In Stock {isAdmin ? ":" + product.inStock: ""}</h6>
                         : <h6 className="text-danger">Out Stock</h6>
                     }
                 </div>

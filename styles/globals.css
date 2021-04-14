@@ -20,6 +20,10 @@ img{
   object-position: 0 30%;
 }
 
+.home_page{
+  background-color: #f1f7f8;
+}
+
 /* ----------- Loading ------------- */
 @import url("./loading.css");
 

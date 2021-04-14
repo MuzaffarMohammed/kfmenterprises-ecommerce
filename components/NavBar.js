@@ -69,15 +69,22 @@ function NavBar() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light">
-            <Link  href="/">
-            <img src="/assets/images/icon/KFM_Logo.svg" alt="KFM Enterprises" />
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+            <Link href="/">
+                <img src="/assets/images/icon/KFM_Logo.svg" style={{cursor:'pointer'}} alt="KFM Enterprises" />
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 <ul className="navbar-nav p-1">
+                    <li className="nav-item">
+                        <Link href="/">
+                            <a className={"nav-link" + isActive('/')}>
+                                <i className="fas fa-home" aria-hidden="true"></i> Home
+                            </a>
+                        </Link>
+                    </li>
                     <li className="nav-item">
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>

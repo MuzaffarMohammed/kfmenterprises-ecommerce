@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { decrease, increase } from '../store/Actions'
 
-const CartItem = ({item, dispatch, cart}) => {
+const CartItem = ({item, dispatch, cart, isAdmin}) => {
     return (
         <tr>
             <td style={{width: '100px', overflow: 'hidden'}}>
@@ -17,10 +17,10 @@ const CartItem = ({item, dispatch, cart}) => {
                     </Link>
                 </h5>
 
-                <h6 className="text-danger">${item.quantity * item.price}</h6>
+                <h6 className="text-danger">₹{item.quantity * item.price}</h6>
                 {
                     item.inStock > 0
-                    ? <p className="mb-1 text-danger">In Stock: {item.inStock}</p>
+                    ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock: ""}</p>
                     : <p className="mb-1 text-danger">Out Stock</p>
                 }
             </td>

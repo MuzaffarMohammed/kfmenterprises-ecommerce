@@ -108,7 +108,7 @@ const Cart = () => {
             <tbody>
               {
                 cart.map(item => (
-                  <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} />
+                  <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} isAdmin={auth && auth.user && auth.user.role === 'admin'}/>
                 ))
               }
             </tbody>
@@ -130,7 +130,7 @@ const Cart = () => {
               onChange={e => setMobile(e.target.value)} />
             </form>
 
-            <h3>Total: <span className="text-danger">${total}</span></h3>
+            <h3>Total: <span className="text-danger">₹{total}</span></h3>
 
             
             <Link href={auth.user ? '#!' : '/signin'}>

@@ -168,7 +168,7 @@ const Profile = () => {
                                             <td className="p-2">
                                                 {new Date(order.createdAt).toLocaleDateString()}
                                             </td>
-                                            <td className="p-2">${order.total}</td>
+                                            <td className="p-2">₹{order.total}</td>
                                             <td className="p-2">
                                                 {
                                                     order.delivered

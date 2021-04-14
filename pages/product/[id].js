@@ -9,7 +9,8 @@ const DetailProduct = (props) => {
     const [tab, setTab] = useState(0)
 
     const { state, dispatch } = useContext(DataContext)
-    const { cart } = state
+    const { cart, auth } = state
+    const isAdmin = auth && auth.user && auth.user.role === 'admin'
 
     const isActive = (index) => {
         if(tab === index) return " active";
@@ -41,16 +42,16 @@ const DetailProduct = (props) => {
 
             <div className="col-md-6 mt-4 mx-3">
                 <h2 className="text-uppercase">{product.title}</h2>
-                <h5 className="text-danger">${product.price}</h5>
+                <h5 className="text-danger">₹{product.price}</h5>
 
                 <div className="row mx-0 d-flex justify-content-between">
                     {
                         product.inStock > 0
-                        ? <h6 className="text-danger">In Stock: {product.inStock}</h6>
+                        ? <h6 className="text-success">In Stock {isAdmin ? ":" +product.inStock: ""}</h6>
                         : <h6 className="text-danger">Out Stock</h6>
                     }
 
-                    <h6 className="text-danger">Sold: {product.sold}</h6>
+                    {/* <h6 className="text-danger">Sold: {product.sold}</h6> */}
                 </div>
 
                 <div className="my-2">{product.description}</div>
