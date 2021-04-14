@@ -96,7 +96,7 @@ const Cart = () => {
     return <img className="img-responsive w-100" src="/empty_cart.jpg" alt="not empty"/>
 
     return(
-      <div className="row mx-auto">
+      <div className="container row mx-auto">
         <Head>
           <title>Cart Page</title>
         </Head>

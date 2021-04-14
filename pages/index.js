@@ -87,7 +87,7 @@ const Home = (props) => {
       }
       </div>
 
-      <div className="products  container">
+      <div className="products">
         {
           products.length === 0 
           ? <h2>No Products</h2>
