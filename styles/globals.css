@@ -38,3 +38,6 @@ img{
 
 /* ----------- Nav Bar ------------- */
 @import url("./navbar.css");
+
+/* ----------- Cart ------------- */
+@import url("./cart.css");

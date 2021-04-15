@@ -101,8 +101,8 @@ const Cart = () => {
           <title>Cart Page</title>
         </Head>
 
-        <div className="col-md-8 text-secondary table-responsive my-3">
-          <h2 className="text-uppercase">Shopping Cart</h2>
+        <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
+          <h2 className="container text-uppercase">Shopping Cart</h2>
 
           <table className="table my-3">
             <tbody>
@@ -115,7 +115,7 @@ const Cart = () => {
           </table>
         </div>
 
-        <div className="col-md-4 my-3 text-right text-uppercase text-secondary">
+        <div className="col-md-5 my-3 text-left text-uppercase text-secondary border">
             <form>
               <h2>Shipping</h2>
 
@@ -134,7 +134,7 @@ const Cart = () => {
 
             
             <Link href={auth.user ? '#!' : '/signin'}>
-              <a className="btn btn-dark my-2" onClick={handlePayment}>Proceed with payment</a>
+              <a className="btn btn-dark my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
             </Link>
             
         </div>

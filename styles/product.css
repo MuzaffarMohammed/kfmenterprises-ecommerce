@@ -34,3 +34,18 @@
     border-color: orangered;
     padding: 2px;
 }
+
+.detail_page .prodDetailImg{
+height:450px;
+}
+
+.detail_page .prodDetialmultiImgs{
+    height:95px;
+     
+}
+
+@media (max-width: 768px) {
+    .detail_page .prodDetailImg{
+        height:300px;
+        }
+  }
