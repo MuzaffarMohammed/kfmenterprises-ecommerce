@@ -7,6 +7,9 @@ function Layout({children}) {
     return (
         <div className="">
             <NavBar />
+            <br></br>
+            <br></br>
+            <br></br>
             <Notify />
             <Modal />
             {children}
