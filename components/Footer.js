@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 const Footer = () => {
   return (
+    <footer className='footer'>
     <div  className='text-center text-lg-left' style={{color:"white", backgroundColor: "#232F3E"}}>
     <div className='p-4'>
       <div className="container row" >
@@ -82,6 +83,7 @@ const Footer = () => {
       </a>
     </div>
   </div>
+  </footer>
   );
 }
 export default Footer;

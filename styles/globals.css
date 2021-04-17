@@ -1,9 +1,26 @@
+html{
+  position: relative;
+  min-height: 100%;
+}
+body{
+  margin: 0px 0 315px;/*--- Hardcoded footer length as margin-bottom to stick to bottom ---*/
+}
 html,
 body {
   padding: 0;
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.footer{
+  color:"white";
+  background-color: #232F3E;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 310px;
+  width: 100%;
+  overflow: hidden;
 }
 
 a {
