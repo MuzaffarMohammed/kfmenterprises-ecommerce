@@ -65,7 +65,7 @@ const Signin = () => {
             <input type="password" className="form-control" id="exampleInputPassword1"
             name="password" value={password} onChange={handleChangeInput} />
           </div>
-          <button type="submit" className="btn btn-dark w-100">Login</button>
+          <button type="submit" className="btn btn-dark signBtn w-100">Login</button>
           <small id="emailHelp" className="form-text text-muted">Note: We'll never share your credentials with anyone else.</small>
 
           <p className="my-2">
