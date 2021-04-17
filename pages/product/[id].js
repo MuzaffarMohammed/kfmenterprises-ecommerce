@@ -27,7 +27,7 @@ const DetailProduct = (props) => {
                 <img src={ product.images[tab].url } alt={ product.images[tab].url }
                 className="d-block img-thumbnail rounded mt-4 w-100 prodDetailImg" />
 
-                <div className="prodDetialmultiImgs row mx-0" style={{cursor: 'pointer'}} >
+                <div className="prodDetialmultiImgs row mx-0 mt-1" style={{cursor: 'pointer'}} >
 
                     {product.images.map((img, index) => (
                         <img key={index} src={img.url} alt={img.url}

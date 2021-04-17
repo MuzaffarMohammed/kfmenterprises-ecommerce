@@ -87,12 +87,12 @@ const Profile = () => {
 
     if(!auth.user) return null;
     return( 
-        <div className="profile_page">
+        <div className="container-fluid profile_page">
             <Head>
                 <title>Profile</title>
             </Head>
 
-            <section className="container-fluid row text-secondary my-3 mx-1">
+            <section className=" row text-secondary my-3 mx-1">
                 <div className="col-md-4">
                     <h3 className="text-center text-uppercase">
                         {auth.user.role === 'user' ? 'User Profile' : 'Admin Profile'}
@@ -142,7 +142,7 @@ const Profile = () => {
                 <div className="col-md-8">
                     <h3 className="text-uppercase">Orders</h3>
 
-                    <div className="my-3 table-responsive">
+                    <div className="my-3 table-responsive profilePageListColHeight">
                         <table className="table-bordered table-hover w-100 text-uppercase"
                         style={{minWidth: '600px', cursor: 'pointer'}}>
                             <thead className="bg-light font-weight-bold">

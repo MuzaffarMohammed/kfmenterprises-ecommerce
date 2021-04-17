@@ -115,7 +115,7 @@ const Cart = () => {
           </table>
         </div>
 
-        <div className="col-md-5 my-3 text-left text-uppercase text-secondary border">
+        <div className="col-md-5 my-3 text-left text-uppercase text-secondary cartitem-border">
             <form>
               <h2>Shipping</h2>
 

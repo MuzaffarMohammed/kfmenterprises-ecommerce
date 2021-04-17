@@ -49,7 +49,7 @@ const ProductItem = ({product, handleCheck}) => {
     }
 
     return(
-        <div className="card" style={{ width: '18rem' }}>
+        <div className="card">
             {
                 auth.user && auth.user.role === 'admin' &&
                 <input type="checkbox" checked={product.checked}

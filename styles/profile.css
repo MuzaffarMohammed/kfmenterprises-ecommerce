@@ -51,3 +51,6 @@
     cursor: pointer;
 }
 
+.profile_page .profilePageListColHeight {
+    height:540px;
+}
