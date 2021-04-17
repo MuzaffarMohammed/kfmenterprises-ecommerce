@@ -93,7 +93,7 @@ const Profile = () => {
             </Head>
 
             <section className=" row text-secondary my-3 mx-1">
-                <div className="col-md-4">
+                <div className="col-md-4 userProfileCol">
                     <h3 className="text-center text-uppercase">
                         {auth.user.role === 'user' ? 'User Profile' : 'Admin Profile'}
                     </h3>
@@ -133,13 +133,13 @@ const Profile = () => {
                         placeholder="Confirm new password" onChange={handleChange} />
                     </div>
 
-                    <button className="btn btn-info" disabled={notify.loading}
+                    <button className="btn btn-info w-100 signBtn" disabled={notify.loading}
                     onClick={handleUpdateProfile}>
                         Update
                     </button>
                 </div>
 
-                <div className="col-md-8">
+                <div className="col-md-8 mgtop">
                     <h3 className="text-uppercase">Orders</h3>
 
                     <div className="my-3 table-responsive profilePageListColHeight">
