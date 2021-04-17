@@ -5,7 +5,7 @@ import Link from 'next/link'
 const Footer = () => {
   return (
     <footer className='footer'>
-    <div  className='text-center text-lg-left' style={{color:"white", backgroundColor: "#232F3E"}}>
+    <div  className='text-center text-lg-left'>
     <div className='p-4'>
       <div className="container row" >
         <div  className='mb-4 mb-md-0 col-md-6'>
