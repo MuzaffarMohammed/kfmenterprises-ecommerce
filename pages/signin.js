@@ -48,7 +48,7 @@ const Signin = () => {
   }, [auth])
 
     return(
-      <div>
+      <div className="container-fluid">
         <Head>
           <title>Sign in Page</title>
         </Head>

@@ -42,7 +42,7 @@ const Register = () => {
   }, [auth])
 
     return(
-      <div>
+      <div className="container-fluid">
         <Head>
           <title>Register Page</title>
         </Head>
