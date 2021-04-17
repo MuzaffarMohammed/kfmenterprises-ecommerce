@@ -21,7 +21,7 @@ const DetailOrder = () => {
             
     if(!auth.user) return null;
     return(
-        <div className="my-3">
+        <div className="container-fluid my-3">
             <Head>
                 <title>Detail Orders</title>
             </Head>
