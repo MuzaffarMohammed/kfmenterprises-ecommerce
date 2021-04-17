@@ -7,7 +7,7 @@ const oneMegabyteInBytes = 1000000;
 const upload = multer({
   limits: { fileSize: oneMegabyteInBytes * 2 },
   storage: multer.diskStorage({
-    destination: '/assets/images',
+    destination: './public/assets/images',
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
   fileFilter: function(req, file, cb){
