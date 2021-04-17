@@ -1,16 +1,15 @@
 * {
   box-sizing: border-box;
  }
- *:before,
- *:after {
+*:before,
+*:after {
   box-sizing: border-box;
- }
- html,
- body {
+}
+html,
+body {
   height: 100%;
   position: relative;
- }
- 
+}
 html,
 body {
   padding: 0;
@@ -65,7 +64,7 @@ img{
 }
 @media (max-width: 768px) {
   .main{
-    padding-bottom: 450px;
+    padding-bottom: 768px;
   }
 }
 /* ----------- Loading ------------- */
