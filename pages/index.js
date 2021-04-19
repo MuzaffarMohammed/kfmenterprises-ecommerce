@@ -65,8 +65,8 @@ const Home = (props) => {
       <Head>
         <title>Home Page</title>
       </Head>
-      <div className="carousel image">
-      <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width="100%;" height="250px;"/>
+      <div className="carousel image img-fluid">
+      <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width='100%' className="img-fluid"/>
       </div>
 
       <div className="container-fluid ">
