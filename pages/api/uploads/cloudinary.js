@@ -9,8 +9,6 @@ cloudinary.config({
 export const cloud_uploads = (file, folder) => {
     return new Promise(resolve => {
         cloudinary.v2.uploader.upload(file,{ use_filename: true, unique_filename: false }, (error, result) => {
-            console.log(result)
-            console.log(error)
             resolve({
                 url: result.secure_url,
                 id: result.public_id

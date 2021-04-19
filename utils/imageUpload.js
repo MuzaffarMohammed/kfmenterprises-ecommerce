@@ -15,7 +15,7 @@ export const imageUpload = async (images, token, isAvatar=false) => {
               }
         })
         const data = await res.json();
-        imgArr.push({url: '/assets/images/'+item.name})
+        imgArr.push({url: data.data[0].url.url})
     }
     return imgArr;
 }
