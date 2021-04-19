@@ -21,7 +21,7 @@ const CartItem = ({item, dispatch, cart, isAdmin}) => {
                 {
                     item.inStock > 0
                     ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock: ""}</p>
-                    : <p className="mb-1 text-danger">Out Stock</p>
+                    : <p className="mb-1 text-danger">Out Of Stock</p>
                 }
             </td>
 

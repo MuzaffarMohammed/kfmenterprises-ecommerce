@@ -22,7 +22,7 @@ body {
   overflow: hidden;
   display: block;
   position: relative;
-  padding-bottom: 310px; /* height of your footer */
+  padding-bottom: 350px; /* height of your footer */
 }
 .footer{
   color:white;

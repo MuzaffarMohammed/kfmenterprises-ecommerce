@@ -1,6 +1,7 @@
 import nextConnect from 'next-connect';
 import path from 'path';
 import multer from 'multer';
+import {cloud_uploads} from './cloudinary';
 
 const oneMegabyteInBytes = 1000000;
 
@@ -40,9 +41,32 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(upload.array('file'));
+apiRoute.use(upload.array('file'), async (req, res) => {
+
+   const uploader = async (path) => await cloud_uploads(path, 'Images');
+   if (req.method === 'POST') {
+     const files = req.files;
+     var urls = [];
+     for (const file of files) {
+            const { path } = file;
+            const newPath = await uploader(path)
+            urls.push({url:newPath})
+          }
+
+      res.status(200).json({
+              message: 'images uploaded successfully',
+              data: urls
+            })
+
+  } else {
+        res.status(405).json({
+          err: `${req.method} method not allowed`
+        })
+      }
+});
 
 apiRoute.post((req, res) => {
+
   res.status(200).json({ data: 'success' });
 });
 

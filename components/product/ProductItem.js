@@ -68,7 +68,7 @@ const ProductItem = ({product, handleCheck}) => {
                     {
                         product.inStock > 0
                         ? <h6 className="text-success">In Stock {isAdmin ? ":" + product.inStock: ""}</h6>
-                        : <h6 className="text-danger">Out Stock</h6>
+                        : <h6 className="text-danger">Out Of Stock</h6>
                     }
                 </div>
 

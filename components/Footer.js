@@ -12,11 +12,13 @@ const Footer = () => {
         <Link href="/">
                 <img src="/assets/images/icon/KFM_FooterLogo.svg" style={{cursor:'pointer'}} alt="KFM Enterprises" width="30%" />
             </Link>
-
+          <br></br>
+          <br></br>
           <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis molestias. Fugiat
-            pariatur maxime quis culpa corporis vitae repudiandae aliquam voluptatem veniam, est atque
-            cumque eum delectus sint!
+            Contact No -
+          </p>
+          <p>
+             Nawab Sahab Kunta, Jahanuma, Mir Alam Talab, <br></br> Hyderabad, Telangana, India, 500053
           </p>
         </div>
 
@@ -26,22 +28,22 @@ const Footer = () => {
           <ul className='list-unstyled mb-0'>
             <li>
               <a href='#!' className='text-light'>
-              About Us
+              Home
               </a>
             </li>
             <li>
               <a href='#!' className='text-light'>
-                Link 2
+               About Us
               </a>
             </li>
             <li>
               <a href='#!' className='text-light'>
-                Link 3
+                Cart
               </a>
             </li>
             <li>
               <a href='#!' className='text-light'>
-                Link 4
+               Sign In
               </a>
             </li>
           </ul>
@@ -79,7 +81,10 @@ const Footer = () => {
     <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
       &copy; {new Date().getFullYear()}{' '}
       <a className='text-light' href='https://mdbootstrap.com/'>
-        KFM Enterpreises Pvt Ltd.
+        KFM Enterprises Private Limited.
+      </a>
+      <a className='text-light p-5' href='https://appseonit.com'>
+         Designed By Appseonit Technologies Private Limited.
       </a>
     </div>
   </div>
