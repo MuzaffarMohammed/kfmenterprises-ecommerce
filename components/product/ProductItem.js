@@ -64,7 +64,7 @@ const ProductItem = ({product, handleCheck}) => {
                 </h5>
 
                 <div className="row justify-content-between mx-0">
-                    <h6 className="text-danger">₹{product.price}</h6>
+                    <h6 className="text-danger">₹{product.totalPrice}</h6>
                     {
                         product.inStock > 0
                         ? <h6 className="text-success">In Stock {isAdmin ? ":" + product.inStock: ""}</h6>

@@ -22,7 +22,7 @@ const Cart = () => {
   useEffect(() => {
     const getTotal = () => {
       const res = cart.reduce((prev, item) => {
-        return prev + (item.price * item.quantity)
+        return prev + (item.totalPrice * item.quantity)
       },0)
 
       setTotal(res)
@@ -38,10 +38,10 @@ const Cart = () => {
       const updateCart = async () => {
         for (const item of cartLocal){
           const res = await getData(`product/${item._id}`)
-          const { _id, title, images, price, inStock, sold } = res.product
+          const { _id, title, images, totalPrice, inStock, sold } = res.product
           if(inStock > 0){
             newArr.push({ 
-              _id, title, images, price, inStock, sold,
+              _id, title, images, totalPrice, inStock, sold,
               quantity: item.quantity > inStock ? 1 : item.quantity
             })
           }

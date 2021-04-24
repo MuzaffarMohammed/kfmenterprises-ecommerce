@@ -11,6 +11,16 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    tax: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true,
+        trim: true
+    },
     description: {
         type: String,
         required: true

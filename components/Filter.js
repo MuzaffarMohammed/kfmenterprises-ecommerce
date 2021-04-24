@@ -55,8 +55,8 @@ const Filter = ({state}) => {
                      <option value="-createdAt">Newest</option>
                      <option value="oldest">Oldest</option>
                      <option value="-sold">Best sales</option>
-                     <option value="-price">Price: High-Low</option>
-                     <option value="price">Price: Low-High</option>
+                     <option value="-totalPrice">Price: High-Low</option>
+                     <option value="totalPrice">Price: Low-High</option>
 
                 </select>
             </div>
