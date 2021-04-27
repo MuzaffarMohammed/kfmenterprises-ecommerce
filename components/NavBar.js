@@ -56,18 +56,19 @@ function NavBar() {
 
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <Link href="/profile">
-                        <a className="dropdown-item">Profile</a>
+                        <a className="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">Profile</a>
                     </Link>
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
                     <div className="dropdown-divider"></div>
-                    <button className="dropdown-item" onClick={handleLogout}>Logout</button>
+                    <button className="dropdown-item" onClick={handleLogout} data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">Logout</button>
                 </div>
             </li>
         )
     }
 
+  
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <Link href="/">
@@ -78,14 +79,14 @@ function NavBar() {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 <ul className="navbar-nav p-1">
-                    <li className="nav-item">
+                    <li className="nav-item" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <Link href="/">
                             <a className={"nav-link" + isActive('/')}>
-                                <i className="fas fa-home" aria-hidden="true"></i> Home
+                                <i className="fas fa-home" aria-hidden="true" ></i> Home
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item"  data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>
                                 <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
@@ -107,7 +108,7 @@ function NavBar() {
                     </li>
                     {
                         Object.keys(auth).length === 0 
-                        ? <li className="nav-item">
+                        ? <li className="nav-item"  data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                             <Link href="/signin">
                                 <a className={"nav-link" + isActive('/signin')}>
                                     <i className="fas fa-user" aria-hidden="true"></i> Sign in

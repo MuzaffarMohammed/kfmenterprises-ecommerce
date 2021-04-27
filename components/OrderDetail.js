@@ -34,12 +34,13 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                     <h2 className="text-break">Order {order._id}</h2>
 
                     <div className="mt-4 text-secondary">
+                        <div className="border_login" style={{marginLeft:'0px', marginBottom:'10px'}}>
                         <h3>Shipping</h3>
                         <p>Name: {order.user.name}</p>
                         <p>Email: {order.user.email}</p>
                         <p>Address: {order.address}</p>
                         <p>Mobile: {order.mobile}</p>
-
+                        </div>
                         <div className={`alert ${order.delivered ? 'alert-success' : 'alert-danger'}
                         d-flex justify-content-between align-items-center`} role="alert">
                             {
