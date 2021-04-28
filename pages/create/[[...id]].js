@@ -216,7 +216,7 @@ const ProductsManager = () => {
                     </div>
                 </div>
 
-                <div className="row col-md-5 mx-md-4 mx-xs-3 mt-5 mt-md-0 justify-content-md-center">
+                <div className="col-md-5 mx-md-4 mx-xs-3 mt-5 mt-md-0 justify-content-md-center">
                     Click to browse and upload your images
                     <div className="input-group mt-2 mb-3">
                         <div className="input-group-prepend">
