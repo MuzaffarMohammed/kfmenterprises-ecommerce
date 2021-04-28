@@ -17,6 +17,12 @@ const DetailProduct = (props) => {
         return ""
     }
 
+    const dispatchAddToCart = () =>{
+        const res = addToCart(product, cart);
+        dispatch(res)
+        if(res.type === "ADD_CART") dispatch({ type: 'NOTIFY', payload: {success: 'Product is added to cart.'} })
+    }
+
     return(
         <div className="container-fluid row detail_page">
             <Head>
@@ -59,7 +65,7 @@ const DetailProduct = (props) => {
                 </div>
 
                 <button type="button" className="btn btn-dark d-block my-3 px-5"
-                onClick={() => dispatch(addToCart(product, cart))} >
+                onClick={()=>{dispatchAddToCart()}} >
                     Buy
                 </button>
 

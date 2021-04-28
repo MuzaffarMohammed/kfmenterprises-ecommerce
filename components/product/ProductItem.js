@@ -8,6 +8,12 @@ const ProductItem = ({product, handleCheck}) => {
     const { cart, auth } = state
     const isAdmin =  auth && auth.user && auth.user.role === 'admin'
 
+    const dispatchAddToCart = () =>{
+        const res = addToCart(product, cart);
+        dispatch(res)
+        if(res.type === "ADD_CART") dispatch({ type: 'NOTIFY', payload: {success: 'Product is added to cart.'} })
+    }
+
     const userLink = () => {
         return(
             <>
@@ -18,7 +24,7 @@ const ProductItem = ({product, handleCheck}) => {
                 <button className="btn btn-success"
                 style={{marginLeft: '5px', flex: 1}}
                 disabled={product.inStock === 0 ? true : false} 
-                onClick={() => dispatch(addToCart(product, cart))} >
+                onClick={()=>{dispatchAddToCart()}} >
                     Buy
                 </button>
             </>
