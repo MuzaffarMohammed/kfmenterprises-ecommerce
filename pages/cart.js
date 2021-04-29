@@ -100,10 +100,9 @@ const Cart = () => {
         <Head>
           <title>Cart Page</title>
         </Head>
-
+        <h2 className="container text-uppercase mt-3" >Shopping Cart</h2>
         <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
-          <h2 className="container text-uppercase">Shopping Cart</h2>
-
+      
           <table className="table my-3">
             <tbody>
               {

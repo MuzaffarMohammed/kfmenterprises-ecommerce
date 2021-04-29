@@ -16,7 +16,7 @@
     height: 414px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
     .border{
         margin-left: 0px;
     }
