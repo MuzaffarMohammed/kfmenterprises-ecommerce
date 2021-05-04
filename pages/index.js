@@ -7,6 +7,7 @@ import ProductItem from '../components/product/ProductItem'
 import filterSearch from '../utils/filterSearch'
 import {useRouter} from 'next/router'
 import Filter from '../components/Filter'
+import ControlledCarousel from '../components/Carousel'
 
 const Home = (props) => {
   const [products, setProducts] = useState(props.products)
@@ -66,7 +67,8 @@ const Home = (props) => {
         <title>Home Page</title>
       </Head>
       <div className="carousel image img-fluid">
-      <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width='100%' className="img-fluid"/>
+      {/* <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width='100%' className="img-fluid"/> */}
+      <ControlledCarousel />
       </div>
 
       <div className="container-fluid ">
