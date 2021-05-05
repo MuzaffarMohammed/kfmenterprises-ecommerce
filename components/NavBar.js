@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {DataContext} from '../store/GlobalState'
+import {postData} from '../utils/fetchData'
 import Cookie from 'js-cookie'
 
 
@@ -9,7 +10,7 @@ function NavBar() {
     const router = useRouter()
     const {state, dispatch} = useContext(DataContext)
     const { auth, cart } = state
-
+    const [accountActivated, setAccountActivated] = useState(true)
 
     const isActive = (r) => {
         if(r === router.pathname){
@@ -24,6 +25,7 @@ function NavBar() {
         localStorage.removeItem('firstLogin')
         dispatch({ type: 'AUTH', payload: {} })
         dispatch({ type: 'NOTIFY', payload: {success: 'Logged out!'} })
+        setAccountActivated(null)
         return router.push('/')
     }
 
@@ -68,6 +70,19 @@ function NavBar() {
         )
     }
 
+    useEffect(() => {
+        console.log(auth)
+        if(auth && auth.user && !auth.user.activated){
+            setAccountActivated(false)
+        }
+    },[auth])
+
+    const triggerAccountActivationMail = () =>{
+        if(auth && auth.user && auth.user.email){
+            postData('mail', {userName: auth.user.name, email: auth.user.email, id: auth.user.id}, auth.token)
+            dispatch({ type: 'NOTIFY', payload: {success: "An activation link has been sent to your registered mail address, please activate your account for full access."} })
+        }   
+    }
   
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
@@ -78,6 +93,9 @@ function NavBar() {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            { accountActivated === false && 
+                <button onClick={()=>{triggerAccountActivationMail()}} className="btn btn-warning activateBtn">ACTIVATE YOUR ACCOUNT</button>
+            } 
                 <ul className="navbar-nav p-1">
                     <li className="nav-item">
                         <Link href="/">

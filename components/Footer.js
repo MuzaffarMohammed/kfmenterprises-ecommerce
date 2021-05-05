@@ -80,7 +80,7 @@ const Footer = () => {
 
     <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
       &copy; {new Date().getFullYear()}{' '}
-      <a className='text-light' href='https://mdbootstrap.com/'>
+      <a className='text-light' href='https://kfmcart.com/'>
         KFM Enterprises Private Limited.
       </a>
       <a className='text-light p-5' href='https://appseonit.com'>

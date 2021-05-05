@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import valid from '../../../utils/valid'
+import {postData} from '../../../utils/fetchData'
 import bcrypt from 'bcrypt'
 
 
@@ -27,11 +28,12 @@ const register = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 12)
 
         const newUser = new Users({ 
-            name, email, password: passwordHash, cf_password 
+            name, email, password: passwordHash, cf_password, activated: false
         })
-
-        await newUser.save()
-        res.json({msg: "Register Success!"})
+        const addedUser = await newUser.save()
+        const {_id: id, name:userName} = addedUser;
+        postData('mail', {id, userName, email})
+        res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping."})
 
     }catch(err){
         return res.status(500).json({err: err.message})

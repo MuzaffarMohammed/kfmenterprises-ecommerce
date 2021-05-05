@@ -20,11 +20,13 @@ export default async (req, res) => {
         res.json({
             access_token,
             user: {
+                id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
                 avatar: user.avatar,
-                root: user.root
+                root: user.root,
+                activated: user.activated
             }
         })
     }catch(err){
