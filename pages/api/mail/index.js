@@ -2,6 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
 import nodemailer from 'nodemailer'
+import {orderMail} from '../../orderMail'
 
 connectDB()
 
@@ -29,6 +30,7 @@ const sendMail = async (req, res) => {
             }
         });
 
+        const orderOutput = orderMail(req);
         
         const output = `
             <h3> Hello ${req.body.userName} </h3>
@@ -47,7 +49,7 @@ const sendMail = async (req, res) => {
             to: req.body.email, // list of receivers
             subject: 'KFM Cart: Account Activation Request', // Subject line
             // text: 'Hello world?', // plain text body
-            html: output // html body
+            html: orderOutput // html body
         };
 
         // send mail with defined transport object
