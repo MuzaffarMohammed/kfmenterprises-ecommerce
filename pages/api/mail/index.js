@@ -1,8 +1,10 @@
 import connectDB from '../../../utils/connectDB'
+import {ORDER_MAIL, ACC_ACT_MAIL} from '../../../utils/constants'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
 import nodemailer from 'nodemailer'
-import {orderMail} from '../../orderMail'
+import {orderMail} from '../../../utils/orderMail'
+import {accountActivationMail} from '../../../utils/accountActivationMail'
 
 connectDB()
 
@@ -29,19 +31,14 @@ const sendMail = async (req, res) => {
                 rejectUnauthorized:false
             }
         });
-
-        const orderOutput = orderMail(req);
-        
-        const output = `
-            <h3> Hello ${req.body.userName} </h3>
-            <p>Thank you for registering into our Application. Much Appreciated! Just one last step is laying ahead of you...</p>
-            <p>To activate your account please follow this link: <a target="_" href="${process.env.NEXT_PUBLIC_BASE_URL}/api/user/accountActivation/${req.body.id}">${process.env.NEXT_PUBLIC_BASE_URL}/api/user/accountActivation</a></p>
-            </br>
-            <h3>Happy Shopping</h3>
-            </br>
-            <p>Cheers</p>
-            <p>KFM Cart Team</p>
-        `;
+        let output = '';
+        const mailType = req.body.mailType;
+        console.log(ACC_ACT_MAIL)
+        if(mailType === ORDER_MAIL){
+            output = orderMail(req);
+        }else if(mailType === ACC_ACT_MAIL){
+            output = accountActivationMail(req);
+        }
 
         // setup email data with unicode symbols
         let mailOptions = {
@@ -49,7 +46,7 @@ const sendMail = async (req, res) => {
             to: req.body.email, // list of receivers
             subject: 'KFM Cart: Account Activation Request', // Subject line
             // text: 'Hello world?', // plain text body
-            html: orderOutput // html body
+            html: output // html body
         };
 
         // send mail with defined transport object

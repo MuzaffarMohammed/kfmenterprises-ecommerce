@@ -1,4 +1,5 @@
 import connectDB from '../../../utils/connectDB'
+import {ACC_ACT_MAIL} from '../../../utils/constants'
 import Users from '../../../models/userModel'
 import valid from '../../../utils/valid'
 import {postData} from '../../../utils/fetchData'
@@ -32,7 +33,7 @@ const register = async (req, res) => {
         })
         const addedUser = await newUser.save()
         const {_id: id, name:userName} = addedUser;
-        postData('mail', {id, userName, email})
+        postData('mail', {id, userName, email, mailType: ACC_ACT_MAIL})
         res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping."})
 
     }catch(err){
