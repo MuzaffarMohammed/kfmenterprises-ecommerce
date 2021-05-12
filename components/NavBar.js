@@ -83,21 +83,24 @@ function NavBar() {
             dispatch({ type: 'NOTIFY', payload: {success: "An activation link has been sent to your registered mail address, please activate your account for full access."} })
         }   
     }
+
+   
   
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <Link href="/">
                 <img src="/assets/images/icon/KFM_Logo.svg" style={{cursor:'pointer'}} alt="KFM Enterprises" />
             </Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" type="button"   data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
             { accountActivated === false && 
                 <button onClick={()=>{triggerAccountActivationMail()}} className="btn btn-warning activateBtn">ACTIVATE YOUR ACCOUNT</button>
             } 
+           
                 <ul className="navbar-nav p-1">
-                    <li className="nav-item">
+                    <li className="nav-item" >
                         <Link href="/">
                             <a className={"nav-link" + isActive('/')}>
                                 <i className="fas fa-home" aria-hidden="true" ></i> Home
@@ -136,6 +139,7 @@ function NavBar() {
                         : loggedRouter()
                     }
                 </ul>
+               
             </div>
         </nav>
     )

@@ -1,0 +1,35 @@
+h2{
+    text-align: center;
+}
+
+ .prdcaroImg{
+    /* height: 250px;
+    width:400px; */
+    border: 2px solid black;
+    display: block;
+    margin : auto;
+}
+
+.slick-arrow{
+    color: #000 !important;
+}
+
+.slick-prev{
+    z-index: 100;
+    left: 20px !important;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-size: 40px !important;
+}
+
+.slick-next{
+    z-index: 100;
+    right:20px !important;
+}
+
+@media (max-width: 768px) {
+    .slick-prev:before, .slick-next:before {
+        font-size: 20px !important;
+    }
+  }

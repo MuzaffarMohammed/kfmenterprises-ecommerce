@@ -36,6 +36,36 @@
     }
   }
 
+  /* --------- Product Carousel ----------- */
+
+  .productsCarousel{ width: 71%;}
+
+  .productsCarousel .card-img-top{
+    height: 186px;
+    width: 100%;
+}
+
+.productsCarousel .card-body{
+    display: none;
+}
+
+.productsCarousel .card{
+    height: 192px;
+    width:70%;
+    border: 2px solid black;
+    display: block;
+    margin : auto;
+}
+
+@media (max-width: 767px) {
+    .productsCarousel .card-img-top{ height: 75px;}
+    .productsCarousel .card{
+        height: 79px;
+        width: 85%;
+    }
+  }
+
+
 /* --------- Detail Product ----------- */
 .detail_page .img-thumbnail.active{
     border-color: orangered;

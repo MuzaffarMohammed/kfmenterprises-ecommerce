@@ -79,13 +79,17 @@ const Footer = () => {
     </div>
 
     <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+     <div>
       &copy; {new Date().getFullYear()}{' '}
       <a className='text-light' href='https://kfmcart.com/'>
         KFM Enterprises Private Limited.
       </a>
+      </div>
+      <div>
       <a className='text-light p-5' href='https://appseonit.com'>
          Designed By Appseonit Technologies Private Limited.
       </a>
+      </div>
     </div>
   </div>
   </footer>

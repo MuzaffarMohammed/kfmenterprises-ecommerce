@@ -41,8 +41,12 @@ a {
   box-sizing: border-box;
 }
 
+.p-4{
+  padding: 0.5rem!important;
+}
+
 img{
-  object-fit: cover;
+  /* object-fit: cover; */
   object-position: 0 30%;
 }
 
@@ -71,6 +75,9 @@ img{
   .carousel-indicators {
   display: none;
   }
+  .p-4{
+    padding: 1.5rem!important;
+  }
 }
 /* ----------- Loading ------------- */
 @import url("./loading.css");
@@ -89,3 +96,6 @@ img{
 
 /* ----------- Cart ------------- */
 @import url("./cart.css");
+
+/* ----------- ProductsCarousel ------------- */
+@import url("./products_carousel.css");

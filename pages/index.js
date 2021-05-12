@@ -8,10 +8,12 @@ import filterSearch from '../utils/filterSearch'
 import {useRouter} from 'next/router'
 import Filter from '../components/Filter'
 import ControlledCarousel from '../components/Carousel'
-
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick"; 
 const Home = (props) => {
   const [products, setProducts] = useState(props.products)
-
+  const [bsProducts, setBsProducts] = useState(props.bestSellingProds)
   const [isCheck, setIsCheck] = useState(false)
   const [page, setPage] = useState(1)
   const router = useRouter()
@@ -21,7 +23,8 @@ const Home = (props) => {
 
   useEffect(() => {
     setProducts(props.products)
-  },[props.products])
+    setBsProducts(props.bestSellingProds)
+  },[props.products, props.bestSellingProds])
 
   useEffect(() => {
     if(Object.keys(router.query).length === 0) setPage(1)
@@ -61,6 +64,17 @@ const Home = (props) => {
     filterSearch({router, page: page + 1})
   }
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 4000,
+    autoplaySpeed: 2000,
+    cssEase: "linear"
+  };
+
   return(
     <div className="home_page">
       <Head>
@@ -69,6 +83,20 @@ const Home = (props) => {
       <div className="carousel image img-fluid">
       {/* <img src="/assets/images/carouselImage/honey.jpg" alt="KFM Enterprises" width='100%' className="img-fluid"/> */}
       <ControlledCarousel />
+      <div>
+      <div>
+          <h2 style={{marginTop:'10px', fontFamily:'serif', fontSize:'21px', fontWeight:'600'}}>Best Selling Products</h2>
+          <Slider {...settings}>
+            {
+              bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
+                <div className="productsCarousel">
+                <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
+               </div>
+               )):<h2>No Products</h2>
+           } 
+          </Slider>
+        </div>
+      </div>
       </div>
 
       <div className="container-fluid ">
@@ -122,11 +150,17 @@ export async function getServerSideProps({query}) {
   const res = await getData(
     `product?limit=${page * 6}&category=${category}&sort=${sort}&title=${search}`
   )
+
+  const bestSellingProds = await getData(
+    `product?limit=5&category=all&sort=-sold&title=`
+  ) 
+
   // server side rendering
   return {
     props: {
       products: res.products,
-      result: res.result
+      result: res.result,
+      bestSellingProds : bestSellingProds.products
     }, // will be passed to the page component as props
   }
 }
