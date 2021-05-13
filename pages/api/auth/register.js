@@ -33,7 +33,7 @@ const register = async (req, res) => {
         })
         const addedUser = await newUser.save()
         const {_id: id, name:userName} = addedUser;
-        postData('mail', {id, userName, email, mailType: ACC_ACT_MAIL})
+        postData('mail', {id, userName, email, mailType: ACC_ACT_MAIL, subject: 'Account Activation Request'})
         res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping."})
 
     }catch(err){

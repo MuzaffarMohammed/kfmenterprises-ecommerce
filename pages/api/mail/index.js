@@ -44,7 +44,7 @@ const sendMail = async (req, res) => {
         let mailOptions = {
             from: '<No Reply> kfmcart@gmail.com', // sender address
             to: req.body.email, // list of receivers
-            subject: 'KFM Cart: Account Activation Request', // Subject line
+            subject: `KFM Cart - ${req.body.subject}`, // Subject line
             // text: 'Hello world?', // plain text body
             html: output // html body
         };
@@ -53,8 +53,6 @@ const sendMail = async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) return console.log(error)
             console.log('Message sent: %s', info.messageId);   
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
             res.status(200).json({info: 'Mail Sent!'});
         });
 
