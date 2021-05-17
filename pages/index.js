@@ -82,9 +82,8 @@ const Home = (props) => {
       </Head>
       <div className="carousel image img-fluid">
         <ControlledCarousel />
-        <div>
-          <div>
-            <h2 style={{ marginTop: '10px', fontFamily: 'serif', fontSize: '21px', fontWeight: '600' }}>Best Selling Products</h2>
+
+            <h2 style={{ margin: '15px', fontFamily: 'serif', fontSize: '21px', fontWeight: '600' }}>Best Selling Products</h2>
             <Slider {...settings}>
               {
                 bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
@@ -94,8 +93,7 @@ const Home = (props) => {
                 )) : <h2>No Products</h2>
               }
             </Slider>
-          </div>
-        </div>
+
       </div>
       <div className="container-fluid ">
         <Filter state={state} />

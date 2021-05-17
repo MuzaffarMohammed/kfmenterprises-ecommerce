@@ -1,10 +1,11 @@
 import connectDB from '../../../utils/connectDB'
-import {ORDER_MAIL, ACC_ACT_MAIL} from '../../../utils/constants'
+import {ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL} from '../../../utils/constants'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
 import nodemailer from 'nodemailer'
 import {orderMail} from '../../../utils/orderMail'
 import {accountActivationMail} from '../../../utils/accountActivationMail'
+import {contactMail} from '../../../utils/contactMail'
 
 connectDB()
 
@@ -33,11 +34,13 @@ const sendMail = async (req, res) => {
         });
         let output = '';
         const mailType = req.body.mailType;
-        console.log(ACC_ACT_MAIL)
+        console.log(mailType)
         if(mailType === ORDER_MAIL){
             output = orderMail(req);
         }else if(mailType === ACC_ACT_MAIL){
             output = accountActivationMail(req);
+        }else if(mailType === CONTACT_MAIL){
+            output = contactMail(req);
         }
 
         // setup email data with unicode symbols

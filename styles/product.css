@@ -37,7 +37,6 @@
   }
 
   /* --------- Product Carousel ----------- */
-
   .productsCarousel{ width: 71%;}
 
   .productsCarousel .card-img-top{
@@ -51,10 +50,10 @@
 
 .productsCarousel .card{
     height: 192px;
-    width:70%;
-    border: 2px solid black;
+    width:65%;
     display: block;
     margin : auto;
+    box-shadow: 5px 1px 10px 1px rgb(197 197 197);
 }
 
 @media (max-width: 767px) {

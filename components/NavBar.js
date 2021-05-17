@@ -9,7 +9,7 @@ import Cookie from 'js-cookie'
 function NavBar() {
     const router = useRouter()
     const {state, dispatch} = useContext(DataContext)
-    const { auth, cart } = state
+    const { auth, cart, contactus } = state
     const [accountActivated, setAccountActivated] = useState(true)
 
     const isActive = (r) => {
@@ -124,6 +124,13 @@ function NavBar() {
                                         {cart.length}
                                     </span>
                                 </i> Cart
+                            </a>
+                        </Link>
+                    </li>
+                    <li className="nav-item" >
+                        <Link href="/contactus">
+                            <a className={"nav-link" + isActive('/contactus')}>
+                                <i className="fas fa fa-phone" aria-hidden="true" ></i> Contact Us
                             </a>
                         </Link>
                     </li>

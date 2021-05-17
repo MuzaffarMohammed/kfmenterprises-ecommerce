@@ -1,0 +1,23 @@
+.footer a {font-size: 12px; text-decoration: none;}
+.footer p {font-size: 14px;}
+.footer .bottomStrip {background-color: rgba(0, 0, 0, 0.2);}
+.footer .footermenu {margin-top: 2%;}
+
+/* .footer .social-links i {
+    font-size:18px;
+    background: purple;
+    display: inline-block;
+    color: #fff;
+    line-height: 1;
+    padding: 8px 0;
+    margin-right: 4px;
+    border-radius: 50%;
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    transition: .3s;
+}
+ .social-links a :hover {
+    background-color: #fff;
+    color: #000;
+  } */

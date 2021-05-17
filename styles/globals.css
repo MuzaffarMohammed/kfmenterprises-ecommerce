@@ -94,8 +94,14 @@ img{
 /* ----------- Nav Bar ------------- */
 @import url("./navbar.css");
 
+/* ----------- Footer ------------- */
+@import url("./footer.css");
+
 /* ----------- Cart ------------- */
 @import url("./cart.css");
 
 /* ----------- ProductsCarousel ------------- */
 @import url("./products_carousel.css");
+
+/* ----------- ContactUs ------------- */
+@import url("./contactus.css");
