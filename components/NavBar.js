@@ -71,7 +71,6 @@ function NavBar() {
     }
 
     useEffect(() => {
-        console.log(auth)
         if(auth && auth.user && !auth.user.activated){
             setAccountActivated(false)
         }
@@ -85,7 +84,6 @@ function NavBar() {
     }
 
    
-  
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <Link href="/">

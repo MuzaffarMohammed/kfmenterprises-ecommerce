@@ -25,16 +25,12 @@ const ContactUs = () => {
 
    
   const handleSubmit = async e => {
-    e.preventDefault()
-   
-    dispatch({ type: 'NOTIFY', payload: {loading: true} })
-    const { contName: userName , contEmail : email, phoneNumber, message } = userData
-
-    const res = await postData('mail', {userName, email, phoneNumber, message, mailType: CONTACT_MAIL, subject: 'A contact Mail has been sent'})
-    
-    if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: "Sorry, something went wrong! Please try again."} })
-
-    return dispatch({ type: 'NOTIFY', payload: {success: "Mail sent! Thank you for contacting us, we will get back to you shortly."} })
+      e.preventDefault()
+      dispatch({ type: 'NOTIFY', payload: {loading: true} })
+      const { contName: userName , contEmail : email, phoneNumber, message } = userData
+      const res = await postData('mail', {userName, email, phoneNumber, message, mailType: CONTACT_MAIL, subject: 'Contact form request'})
+      if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: "Sorry, something went wrong! Please try again."} })
+      return dispatch({ type: 'NOTIFY', payload: {success: "Mail sent! Thank you for contacting us, we will get back to you shortly."} })
   }
 
   useEffect(() => {
