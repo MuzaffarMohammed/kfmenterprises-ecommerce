@@ -38,17 +38,17 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='/cart' className='text-light'>
-                Cart
+              <a href='/contactus' className='text-light'>
+               Contact Us
               </a>
             </li>
             <li>
-              <a href='/signin' className='text-light'>
-               Sign In
+              <a href='/' className='text-light'>
+              Privacy Policy
               </a>
             </li>
             <li>
-              <a href='/conditionsofuse' className='text-light'>
+              <a href='/' className='text-light'>
                Conditions of Use
               </a>
             </li>

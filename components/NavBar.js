@@ -125,13 +125,6 @@ function NavBar() {
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item" >
-                        <Link href="/contactus">
-                            <a className={"nav-link" + isActive('/contactus')}>
-                                <i className="fas fa fa-phone" aria-hidden="true" ></i> Contact Us
-                            </a>
-                        </Link>
-                    </li>
                     {
                         Object.keys(auth).length === 0 
                         ? <li className="nav-item">
@@ -144,7 +137,6 @@ function NavBar() {
                         : loggedRouter()
                     }
                 </ul>
-               
             </div>
         </nav>
     )
