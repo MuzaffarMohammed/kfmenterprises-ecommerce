@@ -15,12 +15,6 @@ const Footer = () => {
           <br></br>
           <br></br>
           <p>Hyderabad, Telangana 500028, India <br></br><strong>Phone:</strong> +91 8247732147<br></br><strong>Email:</strong> kfmcart@gmail.com</p>
-          {/* <div class="social-links mt-3">
-          <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
-          </div> */} 
         </div>
 
         <div className='col-md-3 footermenu'>
@@ -33,7 +27,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='/contactUs' className='text-light'>
+              <a href='/#!' className='text-light'>
                Careers
               </a>
             </li>
@@ -53,7 +47,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='/conditionsofuse' className='text-light'>
+              <a href='/conditionsofUse' className='text-light'>
                Conditions of Use
               </a>
             </li>
