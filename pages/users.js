@@ -11,7 +11,7 @@ const Users = () => {
     return(
         <div className="table-responsive">
             <Head>
-                <title>Users</title>
+                <title>KFM Cart - Users</title>
             </Head>
 
             <table className="table w-100">

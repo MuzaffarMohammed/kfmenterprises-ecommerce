@@ -78,7 +78,7 @@ const Home = (props) => {
   return (
     <div className="home_page">
       <Head>
-        <title>Home Page</title>
+        <title>KFM Cart - Home</title>
       </Head>
       <div className="carousel image img-fluid">
         <ControlledCarousel />

@@ -44,7 +44,7 @@ const Register = () => {
     return(
       <div className="container-fluid">
         <Head>
-          <title>Register Page</title>
+          <title>KFM Cart - Register</title>
         </Head>
 
         <form className="container-fluid mx-auto my-4 border_login" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>

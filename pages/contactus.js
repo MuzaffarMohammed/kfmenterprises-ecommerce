@@ -40,7 +40,7 @@ const ContactUs = () => {
     return(
       <div className="container-fluid">
         <Head>
-          <title>Contact Us</title>
+          <title>KFM Cart - Contact Us</title>
         </Head>
 
         <form className="container mx-auto my-4 border_login contform" onSubmit={handleSubmit}>

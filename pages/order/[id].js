@@ -23,7 +23,7 @@ const DetailOrder = () => {
     return(
         <div className="container-fluid my-3">
             <Head>
-                <title>Detail Orders</title>
+                <title>KFM Cart - Detail Orders</title>
             </Head>
 
             <div>

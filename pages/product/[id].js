@@ -26,7 +26,7 @@ const DetailProduct = (props) => {
     return(
         <div className="container-fluid row detail_page">
             <Head>
-                <title>Detail Product</title>
+                <title>KFM Cart - Detail Product</title>
             </Head>
 
             <div className="col-md-6">

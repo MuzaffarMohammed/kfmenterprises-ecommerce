@@ -44,7 +44,7 @@ const Categories = () => {
     return(
         <div className="container-fluid mx-auto my-3">
             <Head>
-                <title>Categories</title>
+                <title>KFM Cart - Categories</title>
             </Head>
 
             <div className="input-group mb-3">

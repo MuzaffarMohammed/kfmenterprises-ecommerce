@@ -50,7 +50,7 @@ const Signin = () => {
     return(
       <div className="container-fluid">
         <Head>
-          <title>Sign in Page</title>
+          <title>KFM Cart - Sign in</title>
         </Head>
 
         <form className="container-fluid mx-auto my-4 border_login" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>

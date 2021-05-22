@@ -53,7 +53,7 @@ const EditUser = () => {
     return (
         <div className="edit_user my-3">
             <Head>
-                <title>Edit User</title>
+                <title>KFM Cart - Edit User</title>
             </Head>
 
             <div>

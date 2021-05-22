@@ -143,7 +143,7 @@ const ProductsManager = () => {
     return(
         <div className="container-fluid products_manager">
             <Head>
-                <title>Products Manager</title>
+                <title>KFM Cart - Products Manager</title>
             </Head>
             <form className="row my-3" onSubmit={handleSubmit}>
                 <div className="col-md-6">

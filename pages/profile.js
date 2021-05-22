@@ -89,7 +89,7 @@ const Profile = () => {
     return( 
         <div className="container-fluid profile_page">
             <Head>
-                <title>Profile</title>
+                <title>KFM Cart - Profile</title>
             </Head>
 
             <section className=" row text-secondary my-3 mx-1">
