@@ -20,10 +20,6 @@ const Cart = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if(Object.keys(auth).length !== 0) router.push("/")
-  }, [auth])
-  
-  useEffect(() => {
     const getTotal = () => {
       const res = cart.reduce((prev, item) => {
         return prev + (item.totalPrice * item.quantity)

@@ -25,22 +25,27 @@ const Signin = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     dispatch({ type: 'NOTIFY', payload: {loading: true} })
+
     const res = await postData('auth/login', userData)
-    
-    if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
-    dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
+    try{
+      if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
+      dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
 
-    dispatch({ type: 'AUTH', payload: {
-      token: res.access_token,
-      user: res.user
-    }})
+      dispatch({ type: 'AUTH', payload: {
+        token: res.access_token,
+        user: res.user
+      }})
 
-    Cookie.set('refreshtoken', res.refresh_token, {
-      path: 'api/auth/accessToken',
-      expires: 7
-    })
+      Cookie.set('refreshtoken', res.refresh_token, {
+        path: 'api/auth/accessToken',
+        expires: 7
+      })
 
-    localStorage.setItem('firstLogin', true)
+      localStorage.setItem('firstLogin', true)
+    }catch(err){
+      dispatch({ type: 'NOTIFY', payload: {loading: false} })
+      if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
+    }
   }
 
   useEffect(() => {

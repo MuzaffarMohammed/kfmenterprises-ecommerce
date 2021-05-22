@@ -18,8 +18,8 @@ function ControlledCarousel() {
       alt="First slide"
     />
     <Carousel.Caption>
-      <h3>First slide label</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+      <h3>large varities of grocery items</h3>
+      <p>Purity is our priority.</p>
     </Carousel.Caption>
      </Carousel.Item>
      <Carousel.Item interval={2500}>

@@ -4,7 +4,7 @@ nav{
 }
 
 .navbar-light .navbar-toggler{border-color: #3f3;}
-.navbar-light .navbar-nav .nav-link {color:#fff;}
+.navbar-light .navbar-nav .nav-link {color:#fff;font-weight: 600;font-size: 14px;}
 
 .navbar-toggler{
     background-color:#fff;

@@ -87,7 +87,10 @@ function NavBar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
             <Link href="/">
-                <img src="/assets/images/icon/KFM_Logo.svg" style={{cursor:'pointer'}} alt="KFM Enterprises" />
+                <div className="d-flex align-items-end mb-0" style={{cursor:'pointer'}}>
+                    <img src="/assets/images/icon/KFM_Logo_Small_Black.svg" alt="KFM Enterprises" />
+                    <h4 style={{marginBottom: '0px', marginLeft: '2px', color: 'white'}}>CART</h4>
+                </div>
             </Link>
             <button className="navbar-toggler" type="button"   data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
