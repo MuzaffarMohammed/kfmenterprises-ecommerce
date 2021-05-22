@@ -7,9 +7,9 @@ import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
 
 const Signin = () => {
-  const initialState = { email: '', password: '' }
+  const initialState = { userName: '', password: '' }
   const [userData, setUserData] = useState(initialState)
-  const { email, password } = userData
+  const { userName, password } = userData
 
   const {state, dispatch} = useContext(DataContext)
   const { auth } = state
@@ -25,16 +25,16 @@ const Signin = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     dispatch({ type: 'NOTIFY', payload: {loading: true} })
-
-    const res = await postData('auth/login', userData)
     try{
+
+      if(!userData) return dispatch({ type: 'NOTIFY', payload: {error: 'Something went wrong! Please try again.'} })
+      if(!userData.userName) return dispatch({ type: 'NOTIFY', payload: {error: "Please enter a 'User Name'."} })
+      if(!userData.password) return dispatch({ type: 'NOTIFY', payload: {error: "Please enter a 'Password'."} })
+
+      const res = await postData('auth/login', userData)
       if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
       dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
-
-      dispatch({ type: 'AUTH', payload: {
-        token: res.access_token,
-        user: res.user
-      }})
+      dispatch({ type: 'AUTH', payload: {token: res.access_token,user: res.user}})
 
       Cookie.set('refreshtoken', res.refresh_token, {
         path: 'api/auth/accessToken',
@@ -59,22 +59,25 @@ const Signin = () => {
         </Head>
 
         <form className="container-fluid mx-auto my-4 border_login" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
-        <h1>Sign-In</h1>
+        <h1>Sign in</h1>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">User Name</label>
-            <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            name="email" value={email} onChange={handleChangeInput} />
+            <label htmlFor="userName">User Name</label>
+            <input type="text" className="form-control" id="userName" aria-describedby="userNameHelp"
+            name="userName" value={userName} onChange={handleChangeInput} />
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Password</label>
             <input type="password" className="form-control" id="exampleInputPassword1"
             name="password" value={password} onChange={handleChangeInput} />
           </div>
-          <button type="submit" className="btn btn-dark signBtn w-100">Login</button>
-          <small id="emailHelp" className="form-text text-muted">Note: We'll never share your credentials with anyone else.</small>
+          <button type="submit" className="btn btn-dark signBtn w-100">Sign in</button>
+          <small id="userNameHelp" className="form-text text-muted pt-1">Note: We'll never share your credentials with anyone else.</small>
 
           <p className="my-2">
             You don't have an account? <Link href="/register"><a style={{color: '#2196f3'}}>Register Now</a></Link>
+          </p>
+          <p className="my-2">
+            <Link href="/forgotpassword"><a style={{color: '#2196f3'}}>Forgot Password?</a></Link>
           </p>
         </form>
       </div>

@@ -16,9 +16,9 @@ export default async (req, res) => {
 
 const login = async (req, res) => {
     try{
-        const { email, password } = req.body
+        const { userName: email, password } = req.body
         let user = await Users.findOne({ email })
-        if(!user) user = await Users.findOne({ name:email })
+        if(!user) user = await Users.findOne({ name: email })
         if(!user) return res.status(400).json({err: 'This user does not exist.'})
 
         const isMatch = await bcrypt.compare(password, user.password)

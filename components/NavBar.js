@@ -4,6 +4,8 @@ import {useRouter} from 'next/router'
 import {DataContext} from '../store/GlobalState'
 import {postData} from '../utils/fetchData'
 import Cookie from 'js-cookie'
+import { ACC_ACT_MAIL } from '../utils/constants.js'
+
 
 
 function NavBar() {
@@ -79,7 +81,7 @@ function NavBar() {
     const triggerAccountActivationMail = () =>{
         console.log('Auth : ',auth)
         if(auth && auth.user && auth.user.email){
-            postData('mail', {userName: auth.user.name, email: auth.user.email, id: auth.user.id, subject:'Account Activation Request'}, auth.token)
+            postData('mail', {userName: auth.user.name, email: auth.user.email, id: auth.user.id, mailType: ACC_ACT_MAIL, subject:'Account Activation Request'}, auth.token)
             dispatch({ type: 'NOTIFY', payload: {success: "An activation link has been sent to your registered mail address, please activate your account for full access."} })
         }   
     }

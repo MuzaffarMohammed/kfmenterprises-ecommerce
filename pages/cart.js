@@ -55,8 +55,8 @@ const Cart = () => {
   },[callback])
 
   const handlePayment = async () => {
-    if(!address || !mobile)
-    return dispatch({ type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
+    if(!address || !mobile)return dispatch({ type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
+    if(!mobile.length >= 10) return dispatch({ type: 'NOTIFY', payload: {error: 'Please enter a valid mobile number.'}})
 
     let newCart = [];
     for(const item of cart){

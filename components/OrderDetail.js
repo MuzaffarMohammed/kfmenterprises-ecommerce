@@ -15,7 +15,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
 
     const handlePayment = (e) =>{
         e.preventDefault();
-        console.log('clicked', payType)
+        if(auth && auth.user && !auth.user.activated) return dispatch({type: 'NOTIFY', payload: {error: 'Please activate your account to proceed further.'}})
         if(payType === 'online'){
             dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
         }
