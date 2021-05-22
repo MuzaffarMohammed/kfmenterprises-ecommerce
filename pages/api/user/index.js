@@ -43,7 +43,8 @@ const uploadInfor = async (req, res) => {
                 name,
                 avatar,
                 email: newUser.email,
-                role: newUser.role
+                role: newUser.role,
+                activated: newUser.activated
             }
         })
     } catch (err) {

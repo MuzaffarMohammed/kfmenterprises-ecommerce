@@ -10,7 +10,7 @@ function NavBar() {
     const router = useRouter()
     const {state, dispatch} = useContext(DataContext)
     const { auth, cart, contactus } = state
-    const [accountActivated, setAccountActivated] = useState(true)
+    const [accountActivated, setAccountActivated] = useState(auth && auth.user && auth.user.activated)
 
     const isActive = (r) => {
         if(r === router.pathname){
@@ -77,12 +77,12 @@ function NavBar() {
     },[auth])
 
     const triggerAccountActivationMail = () =>{
+        console.log('Auth : ',auth)
         if(auth && auth.user && auth.user.email){
-            postData('mail', {userName: auth.user.name, email: auth.user.email, id: auth.user.id}, auth.token)
+            postData('mail', {userName: auth.user.name, email: auth.user.email, id: auth.user.id, subject:'Account Activation Request'}, auth.token)
             dispatch({ type: 'NOTIFY', payload: {success: "An activation link has been sent to your registered mail address, please activate your account for full access."} })
         }   
     }
-
    
     return (
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">

@@ -68,20 +68,24 @@ const Profile = () => {
     const updateInfor = async () => {
         let media;
         dispatch({type: 'NOTIFY', payload: {loading: true}})
-
-        if(avatar) media = await imageUpload([avatar],auth.token)
-
-        patchData('user', {
-            name, avatar: avatar ? media[0].url : auth.user.avatar
-        }, auth.token).then(res => {
-            if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
-
-            dispatch({type: 'AUTH', payload: {
-                token: auth.token,
-                user: res.user
-            }})
-            return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
-        })
+        try {
+            if(avatar) media = await imageUpload([avatar],auth.token)
+            if(media && (media.length <=0 || media[0].url === undefined)) return dispatch({type: 'NOTIFY', payload: {error: 'Image upload failed! Please try again.'}})
+                patchData('user', {
+                    name, avatar: avatar ? media[0].url : auth.user.avatar
+                }, auth.token).then(res => {
+                    if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
+        
+                    dispatch({type: 'AUTH', payload: {
+                        token: auth.token,
+                        user: res.user
+                    }})
+                    return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
+                })
+        } catch (err) {
+            dispatch({type: 'NOTIFY', payload: {loading: false}})
+            dispatch({type: 'NOTIFY', payload: {error: err.message}})
+        } 
     }
 
 
