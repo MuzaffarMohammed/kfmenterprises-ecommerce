@@ -11,6 +11,7 @@ import ControlledCarousel from '../components/Carousel'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import HomePageCards from '../components/HomePageCards'
 const Home = (props) => {
   const [products, setProducts] = useState(props.products)
   const [bsProducts, setBsProducts] = useState(props.bestSellingProds)
@@ -80,10 +81,12 @@ const Home = (props) => {
       <Head>
         <title>KFM Cart - Home</title>
       </Head>
+      
       <div className="carousel image img-fluid">
         <ControlledCarousel />
+        <HomePageCards />
 
-            <h2 style={{ margin: '15px', fontFamily: 'serif', fontSize: '21px', fontWeight: '600' }}>Best Selling Products</h2>
+            <h2>BEST SELLING PRODUCTS</h2>
             <Slider {...settings}>
               {
                 bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
@@ -93,8 +96,8 @@ const Home = (props) => {
                 )) : <h2>No Products</h2>
               }
             </Slider>
-
-      </div>
+          </div>
+          
       <div className="container-fluid ">
         <Filter state={state} />
 
