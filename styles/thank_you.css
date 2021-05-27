@@ -1,0 +1,26 @@
+.thank-you{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.tick-circle {
+    font-size:60px;
+    color:green;
+}
+.shop-more{
+    font-size: 16px;
+    font-weight: 800;
+}
+@media screen and (max-width: 767px) {
+    .thank-you{
+        top: 18%;
+        font-size: 11px;
+    }
+    .tick-circle {
+        font-size: 36px;
+    }
+    .shop-more{
+        font-size: 12px;
+    }
+}

@@ -123,3 +123,6 @@ img{
 
 /* ----------- HomePageCards ------------- */
 @import url("./HomePageCards.css");
+
+/* ----------- THank You Page ------------- */
+@import url("./thank_you.css");

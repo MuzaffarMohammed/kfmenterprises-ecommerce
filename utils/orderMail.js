@@ -7,7 +7,7 @@ export const orderMail = (req) =>{
     </tr>
     <tr style="height: 94px;">
     <td style="width: 100%; height: 94px;" align="left">
-    <p><strong>Dear ${req.body.name},</strong></p>
+    <p><strong>Dear ${req.body.userName},</strong></p>
     <p style="font-size: 12px;">Thank you for shopping with us. We would like to let you know that we have received your order:</p>
     </td>
     </tr>
@@ -28,11 +28,11 @@ export const orderMail = (req) =>{
     <tr style="height: 45px;">
     <td style="width: 30%; height: 45px; border: 1px solid #cccccc;">
     <blockquote>
-    <p class="text-break" style="text-align: center; color: #009358; font-size: 13px;">6097872B02C5515D8464B43B</p>
+    <p class="text-break" style="text-align: center; color: #009358; font-size: 13px;">${req.body.orderId}</p>
     </blockquote>
     </td>
-    <td style="width: 10%; text-align: center; height: 45px; font-size: 11px; border: 1px solid #cccccc;">2021-05-09T06:55:30.791Z</td>
-    <td style="width: 50.2012%; height: 45px; font-size: 12px; text-align: center; border: 1px solid #cccccc;">Mr. Muzaffar Mohammed<br />19-1-1097/1/2/A/3, Osman Bagh,<br />Kamatipura, Bahadurpura<br />Hyderabad, Telangana, 500064<br />India</td>
+    <td style="width: 10%; text-align: center; height: 45px; font-size: 11px; border: 1px solid #cccccc;">${req.body.orderDate}</td>
+    <td style="width: 50.2012%; height: 45px; font-size: 12px; text-align: center; border: 1px solid #cccccc;">${req.body.userName}<br />${req.body.address}</td>
     </tr>
     </tbody>
     </table>
@@ -41,19 +41,19 @@ export const orderMail = (req) =>{
     <tbody>
     <tr style="height: 17px;">
     <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Name</td>
-    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;Muzaffar Mohammed</td>
+    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.userName}</td>
     </tr>
     <tr style="height: 17px;">
     <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Email</td>
-    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;muzaffarmohammed43@gmail.com</td>
+    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.email}</td>
     </tr>
     <tr style="height: 17px;">
     <td style="width: 15%; font-size: 11px; border: 1px solid #cccccc; height: 17px;">Address</td>
-    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;19-1-1097/1/2/A/3, Osman Bagh,<br />&nbsp;Kamatipura, Bahadurpura<br />&nbsp;Hyderabad, Telangana, 500064<br />&nbsp;India</td>
+    <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.address}</td>
     </tr>
     <tr style="height: 17px;">
     <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Mobile</td>
-    <td style="width: 84%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;+91 9951204368</td>
+    <td style="width: 84%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.mobile}</td>
     </tr>
     </tbody>
     </table>

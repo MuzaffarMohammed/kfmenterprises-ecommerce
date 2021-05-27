@@ -16,8 +16,8 @@ export default async (req, res) => {
 }
 
 const sendMail = async (req, res) => {
-    let fromMailId = 'kfmcart@gmail.com';
-    let toMailId = 'kfmcart@gmail.com';
+    let fromMailId = process.env.NEXT_PUBLIC_ADMIN_ID;
+    let toMailId = process.env.NEXT_PUBLIC_ADMIN_ID;
     try {
        // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({

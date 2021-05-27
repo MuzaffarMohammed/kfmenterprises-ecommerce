@@ -20,6 +20,13 @@ const Cart = () => {
   const router = useRouter()
 
   useEffect(() => {
+
+    console.log('Init : ', state)
+    console.log('mobile : ', mobile)
+    console.log('address : ', address)
+
+  },[])
+  useEffect(() => {
     const getTotal = () => {
       const res = cart.reduce((prev, item) => {
         return prev + (item.totalPrice * item.quantity)
@@ -46,7 +53,6 @@ const Cart = () => {
             })
           }
         }
-
         dispatch({ type: 'ADD_CART', payload: newArr })
       }
 
@@ -55,8 +61,10 @@ const Cart = () => {
   },[callback])
 
   const handlePayment = async () => {
-    if(!address || !mobile)return dispatch({ type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
-    if(!mobile.length >= 10) return dispatch({ type: 'NOTIFY', payload: {error: 'Please enter a valid mobile number.'}})
+    const numRegex = /^[0-9]+$/;
+    if(!address || !mobile) return dispatch({ type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
+    if(!(address.length >= 20)) return dispatch({ type: 'NOTIFY', payload: {error: 'Please add complete address (Flat No./H No./Door No. , Street, Locality, Area, City, State, Country, followed by pincode. ).'}})
+    if(!(numRegex.test(mobile)) || !(mobile.length >= 10)) return dispatch({ type: 'NOTIFY', payload: {error: 'Please enter a valid mobile number.'}})
 
     let newCart = [];
     for(const item of cart){
@@ -74,26 +82,29 @@ const Cart = () => {
     }
 
     dispatch({ type: 'NOTIFY', payload: {loading: true} })
-
     postData('order', {address, mobile, cart, total}, auth.token)
     .then(res => {
       if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
-
-      dispatch({ type: 'ADD_CART', payload: [] })
-      
       const newOrder = {
         ...res.newOrder,
         user: auth.user
       }
       dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] })
-      dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
       return router.push(`/order/${res.newOrder._id}`)
     })
 
   }
   
-  if( cart.length === 0 ) 
-    return <img className="img-responsive w-100" src="/empty_cart.jpg" alt="not empty"/>
+  if(cart.length === 0){
+    return (
+            <div className='text-alingn-center'>
+              <div style={{ position:'absolute', top: '35%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+               Sorry, your <i className="fas fa-shopping-cart position-relative" aria-hidden="true"></i>cart is empty. Please add an item to place an order : <a href='/' style={{fontSize:'16px', fontWeight:'800'}}>
+               Continue Shopping <i className="fas fa-home" aria-hidden="true" ></i></a>.
+              </div>
+            </div>
+          )
+  }
 
     return(
       <div className="container row mx-auto">

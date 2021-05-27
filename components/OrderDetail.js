@@ -1,23 +1,55 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import PaypalBtn from './paypalBtn'
-import {patchData} from '../utils/fetchData'
+import {patchData, postData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
+import { useRouter } from 'next/router'
+import { ORDER_MAIL } from '../utils/constants.js'
+
 
 const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
     const [payType, setPayType] = useState('');
     const [payBtnText, setPayBtnText] = useState('Click to finish');
+    const router = useRouter()
 
     useEffect(() => {
+        dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
     },[])
 
-    const handlePayment = (e) =>{
+    const handlePayment = (e, order) =>{
         e.preventDefault();
         if(auth && auth.user && !auth.user.activated) return dispatch({type: 'NOTIFY', payload: {error: 'Please activate your account to proceed further.'}})
-        if(payType === 'online'){
-            dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
+        if(payType === 'online') return dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
+        if(payType === 'cod'){
+            dispatch({ type: 'ADD_CART', payload: [] })
+            dispatch({ type: 'NOTIFY', payload: {success: 'Order placed! You will be notified once order is accepted.'} })
+            notifyUserAndAdminAboutOrder(order);
+            return router.push('/thankyou')
+        }
+    }
+
+    const notifyUserAndAdminAboutOrder = (order) =>{
+        if(auth && auth.user && auth.user.email){
+           console.log('order : ',order)
+           const userData = {
+                                userName: auth.user.name, 
+                                email: auth.user.email,
+                                address: order.address,
+                                mobile: order.mobile, 
+                                orderId: order._id,
+                                orderDate: order.createdAt, 
+                                id: auth.user.id, 
+                                mailType: ORDER_MAIL, 
+                                subject:'Order placed!',
+                                
+                            }
+           
+            postData('mail', userData, auth.token)
+            
+
+            
+            postData('mail', {userName: auth.user.name, email: process.env.NEXT_PUBLIC_ADMIN_ID, id: auth.user.id, mailType: ORDER_MAIL, subject:'New Order Request - Mode Of Payment: ['+payType+']'}, auth.token)
         }
     }
 
@@ -139,7 +171,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                         <h5 className="my-4 text-uppercase">Total: ₹{order.total}.00</h5>
                         
                         <button className="btn btn-primary text-uppercase"
-                                onClick={handlePayment}>
+                                onClick={(e) =>{handlePayment(e, order)}}>
                                 {payBtnText}
                         </button>
 
