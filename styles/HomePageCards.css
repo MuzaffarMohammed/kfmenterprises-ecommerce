@@ -62,7 +62,7 @@
 
  /* Responsive text of cards */
   @media (max-width:900px) and (min-width:768px) {
-  .column .card {height:100px; margin: 25px 0px 0px; padding: 12px;}
+  .column .card {height:100px; margin: 25px -5px 0px; padding: 12px;}
   .column i {font-size: 25px;}
   .column span {font-size: 14px;}
   .parallax {  min-height: 150px;}

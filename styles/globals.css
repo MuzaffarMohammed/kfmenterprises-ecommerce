@@ -52,6 +52,11 @@ img{
 
 .home_page{
   background-color: #f1f7f8;
+  margin-top: -4px;
+}
+
+@media (max-width: 768px) {
+  .home_page{ margin-top: -4px;}
 }
 
 .home_page h2 {margin: 15px; font-size: 18px; font-weight: 700; text-align: left;}
@@ -126,3 +131,6 @@ img{
 
 /* ----------- THank You Page ------------- */
 @import url("./thank_you.css");
+
+/* ----------- carousel ------------- */
+@import url("./carousel.css");
