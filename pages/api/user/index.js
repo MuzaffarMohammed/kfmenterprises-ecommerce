@@ -25,6 +25,7 @@ const getUsers = async (req, res) => {
         res.json({users})
 
     } catch (err) {
+        console.log('Error occurred while getUsers: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -48,6 +49,7 @@ const uploadInfor = async (req, res) => {
             }
         })
     } catch (err) {
+        console.log('Error occurred while uploadInfor: '+err);
         return res.status(500).json({err: err.message})
     }
 }

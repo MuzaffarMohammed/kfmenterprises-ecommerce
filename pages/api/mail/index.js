@@ -71,6 +71,7 @@ const sendMail = async (req, res) => {
             res.status(200).json({info: 'Mail Sent!'});
         });
     } catch (err) {
+        console.log('Error occurred while sendMail: '+err);
         return res.status(500).json({err: err.message})
     }
 }

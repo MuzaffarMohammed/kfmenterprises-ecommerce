@@ -32,7 +32,7 @@ export const orderMail = (req) =>{
     </blockquote>
     </td>
     <td style="width: 10%; text-align: center; height: 45px; font-size: 11px; border: 1px solid #cccccc;">${req.body.orderDate}</td>
-    <td style="width: 50.2012%; height: 45px; font-size: 12px; text-align: center; border: 1px solid #cccccc;">${req.body.userName}<br />${req.body.address}</td>
+    <td style="width: 50.2012%; height: 45px; font-size: 12px; text-align: center; border: 1px solid #cccccc;">${req.body.userName},<br />${req.body.address}</td>
     </tr>
     </tbody>
     </table>

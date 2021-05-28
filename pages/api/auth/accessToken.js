@@ -30,6 +30,7 @@ export default async (req, res) => {
             }
         })
     }catch(err){
+        console.log('Error occurred while accessToken: '+err);
         return res.status(500).json({err: err.message})
     }
 }

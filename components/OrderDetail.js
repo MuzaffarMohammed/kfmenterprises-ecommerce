@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import {patchData, postData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
-import { ORDER_MAIL } from '../utils/constants.js'
+import { ORDER_MAIL,CONTACT_ADMIN_ERR_MSG } from '../utils/constants.js'
 
 
 const OrderDetail = ({orderDetail, state, dispatch}) => {
@@ -15,18 +15,33 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     useEffect(() => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
+        console.log('orderDetail : ',orderDetail)
     },[])
 
     const handlePayment = (e, order) =>{
-        e.preventDefault();
-        if(auth && auth.user && !auth.user.activated) return dispatch({type: 'NOTIFY', payload: {error: 'Please activate your account to proceed further.'}})
-        if(payType === 'online') return dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
-        if(payType === 'cod'){
-            dispatch({ type: 'ADD_CART', payload: [] })
-            dispatch({ type: 'NOTIFY', payload: {success: 'Order placed! You will be notified once order is accepted.'} })
-            notifyUserAndAdminAboutOrder(order);
-            return router.push('/thankyou')
+        try{
+            e.preventDefault();
+            if(auth && auth.user && !auth.user.activated) return dispatch({type: 'NOTIFY', payload: {error: 'Please activate your account to proceed further.'}})
+            if(payType === 'online') return dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
+            if(payType === 'cod'){
+                patchData('order', {method:'Receive Cash', id: order._id}, auth.token) .then(res => {
+                
+                    if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG}})
+
+                    const { placed, dateOfPlaced, method} = res.result
+                    dispatch(updateItem(orders, order._id, {
+                        ...order, placed, dateOfPlaced, method
+                    }, 'ADD_ORDERS'))
+                })
+                dispatch({ type: 'ADD_CART', payload: [] })
+                dispatch({ type: 'NOTIFY', payload: {success: 'Order placed! You will be notified once order is accepted.'} })
+                notifyUserAndAdminAboutOrder(order);
+                return router.push('/thankyou')
+            }
+        }catch(err){
+            dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG} })
         }
+       
     }
 
     const notifyUserAndAdminAboutOrder = (order) =>{
@@ -46,9 +61,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             }
            
             postData('mail', userData, auth.token)
-            
-
-            
             postData('mail', {userName: auth.user.name, email: process.env.NEXT_PUBLIC_ADMIN_ID, id: auth.user.id, mailType: ORDER_MAIL, subject:'New Order Request - Mode Of Payment: ['+payType+']'}, auth.token)
         }
     }
@@ -156,7 +168,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                     </div>
                 </div>  
                 {
-                    !order.paid && auth.user.role !== 'admin' &&
+                    !order.placed && !order.paid && auth.user.role !== 'admin' &&
                     <div>
                         <h3>Select a payment method</h3>
                         <select name="payType" id="payType" value={payType} placeholder='Select a payment method'

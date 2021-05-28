@@ -33,6 +33,7 @@ const createCategory = async (req, res) => {
         })
 
     } catch (err) {
+        console.log('Error occurred while createCategory: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -44,6 +45,7 @@ const getCategories = async (req, res) => {
         res.json({categories})
 
     } catch (err) {
+        console.log('Error occurred while getCategories: '+err);
         return res.status(500).json({err: err.message})
     }
 }

@@ -34,6 +34,7 @@ const updateCategory = async (req, res) => {
             }
         })
     } catch (err) {
+        console.log('Error occurred while updateCategory: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -55,6 +56,7 @@ const deleteCategory = async (req, res) => {
         
         res.json({msg: "Success! Deleted a category"})
     } catch (err) {
+        console.log('Error occurred while deleteCategory: '+err);
         return res.status(500).json({err: err.message})
     }
 }

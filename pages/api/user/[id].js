@@ -28,6 +28,7 @@ const updateRole = async (req, res) => {
        res.json({msg: 'Update Success!'})
 
     } catch (err) {
+        console.log('Error occurred while updateRole: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -44,6 +45,7 @@ const deleteUser = async (req, res) => {
        res.json({msg: 'Deleted Success!'})
 
     } catch (err) {
+        console.log('Error occurred while deleteUser: '+err);
         return res.status(500).json({err: err.message})
     }
 }

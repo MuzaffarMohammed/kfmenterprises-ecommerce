@@ -68,6 +68,7 @@ const getProducts = async (req, res) => {
             products
         })
     } catch (err) {
+        console.log('Error occurred while getProducts: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -91,6 +92,7 @@ const createProduct = async (req, res) => {
         res.json({msg: 'Success! Created a new product'})
 
     } catch (err) {
+        console.log('Error occurred while createProduct: '+err);
         return res.status(500).json({err: err.message})
     }
 }

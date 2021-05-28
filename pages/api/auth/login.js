@@ -43,6 +43,7 @@ const login = async (req, res) => {
         })
 
     }catch(err){
+        console.log('Error occurred while login: '+err);
         return res.status(500).json({err: err.message})
     }
 }

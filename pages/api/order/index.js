@@ -13,6 +13,9 @@ export default async (req, res) => {
         case "GET":
             await getOrders(req, res)
             break;
+        case "PATCH":
+            await updateOrderPlaced(req, res)
+            break;
     }
 }
 
@@ -29,6 +32,7 @@ const getOrders = async (req, res) => {
 
         res.json({orders})
     } catch (err) {
+        console.log('Error occurred while getOrders: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -54,6 +58,7 @@ const createOrder = async (req, res) => {
         })
 
     } catch (err) {
+        console.log('Error occurred while createOrder: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -63,4 +68,27 @@ const sold = async (id, quantity, oldInStock, oldSold) => {
         inStock: oldInStock - quantity,
         sold: quantity + oldSold
     })
+}
+
+const updateOrderPlaced = async (req, res) => {
+    try {
+        const result = await auth(req, res)
+        if(result.role === 'user'){
+            const {id, method} = req.body
+            console.log('id :', id)
+            const data = {placed: true, dateOfPlaced: new Date().toISOString(), method : method}
+            await Orders.findOneAndUpdate({_id: id}, data)
+    
+            res.json({msg: 'Order placed successfully!',
+                    result: {
+                        placed : true,
+                        dateOfPlaced: new Date().toISOString(),
+                        method : method
+                    }
+            })
+        }
+    }catch(err){
+        console.log('Error occurred while updateOrderPlaced: '+err);
+        return res.status(500).json({err: err.message})
+    }
 }

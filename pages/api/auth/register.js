@@ -37,6 +37,7 @@ const register = async (req, res) => {
         res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping."})
 
     }catch(err){
+        console.log('Error occurred while register: '+err);
         return res.status(500).json({err: err.message})
     }
 }

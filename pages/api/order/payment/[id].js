@@ -29,6 +29,7 @@ const paymentOrder = async(req, res) => {
         }
         
     } catch (err) {
+        console.log('Error occurred while paymentOrder: '+err);
         return res.status(500).json({err: err.message})
     }
 }

@@ -19,7 +19,12 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    dateOfPayment: Date
+    placed:{
+        type: Boolean,
+        default: false
+    },
+    dateOfPayment: Date,
+    dateOfPlaced: Date,
 }, {
     timestamps: true
 })

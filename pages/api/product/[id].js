@@ -28,6 +28,7 @@ const getProduct = async (req, res) => {
         res.json({ product })
 
     } catch (err) {
+        console.log('Error occurred while getProduct: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -50,6 +51,7 @@ const updateProduct = async (req, res) => {
 
         res.json({msg: 'Success! Updated a product'})
     } catch (err) {
+        console.log('Error occurred while updateProduct: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -67,6 +69,7 @@ const deleteProduct = async(req, res) => {
         res.json({msg: 'Deleted a product.'})
 
     } catch (err) {
+        console.log('Error occurred while deleteProduct: '+err);
         return res.status(500).json({err: err.message})
     }
 }

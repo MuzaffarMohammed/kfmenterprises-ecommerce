@@ -34,6 +34,7 @@ function checkFileType(file, cb){
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
+    console.log('Error occurred while image upload: '+err);
     res.status(501).json({ error: `Image upload Error: ${error}`});
   },
   onNoMatch(req, res) {

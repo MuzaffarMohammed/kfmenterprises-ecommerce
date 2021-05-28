@@ -15,8 +15,8 @@ const Footer = () => {
                 <h4 style={{marginBottom: '0px', marginLeft: '2px', color: 'white'}}>CART</h4>
             </div>         
           </Link>
-          <p className='pt-2'>KFM Cart, Purity is our priority, an ecommerce service, a part of KFM Enterprises Private Limited. We believe in Hygienic, Efficient and Smooth Delivery of all the items listed on our website. You are only a click away to place your order with KFM CART.</p>
-          <p style={{fontSize:'12px'}}>Hyderabad, Telangana 500028, India <br></br><strong>Phone:</strong> +91 8247732147<br></br><strong>Email:</strong> kfmcart@gmail.com</p>
+          <p className='pt-2'>KFM Cart, Purity is our priority, an ecommerce service, a part of KFM Enterprises Private Limited. We believe in hygienic, efficient and smooth delivery of all the items listed on our website. You are only a click away to place your order with KFM CART.</p>
+          <p style={{fontSize:'12px'}}><strong>Address:</strong> Hyderabad, Telangana-500028, India <br></br><strong>Phone:</strong> +91 8247732147<br></br><strong>Email:</strong> kfmcart@gmail.com</p>
         </div>
 
         <div className='col-md-3 footermenu pl-lg-3'>

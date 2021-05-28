@@ -25,6 +25,7 @@ const resetPassword = async (req, res) => {
         res.json({ msg: "Update Success!"})
         
     } catch (err) {
+        console.log('Error occurred while resetPassword: '+err);
         return res.status(500).json({err: err.message})
     }   
 }
