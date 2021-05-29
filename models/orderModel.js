@@ -23,8 +23,13 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    accepted:{
+        type: Boolean,
+        default: false
+    },
     dateOfPayment: Date,
     dateOfPlaced: Date,
+    dateOfAccept: Date,
 }, {
     timestamps: true
 })

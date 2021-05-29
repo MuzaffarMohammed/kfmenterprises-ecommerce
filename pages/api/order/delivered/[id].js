@@ -1,6 +1,7 @@
 import connectDB from '../../../../utils/connectDB'
 import Orders from '../../../../models/orderModel'
 import auth from '../../../../middleware/auth'
+import {COD} from '../../../../utils/constants'
 
 connectDB()
 
@@ -36,7 +37,7 @@ const deliveredOrder = async(req, res) => {
         }else{
             await Orders.findOneAndUpdate({_id: id}, {
                 paid: true, dateOfPayment: new Date().toISOString(), 
-                method: 'Receive Cash', delivered: true
+                method: COD, delivered: true
             })
     
             res.json({
@@ -44,7 +45,7 @@ const deliveredOrder = async(req, res) => {
                 result: {
                     paid: true, 
                     dateOfPayment: new Date().toISOString(), 
-                    method: 'Receive Cash', 
+                    method: COD, 
                     delivered: true
                 }
             })

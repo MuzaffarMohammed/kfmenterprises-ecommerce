@@ -55,8 +55,14 @@ img{
   margin-top: -4px;
 }
 
+.payment-section{margin-top: 58px;}
+
 @media (max-width: 768px) {
   .home_page{ margin-top: -4px;}
+}
+
+@media (max-width: 1024px) {
+  .payment-section{margin-top: 5px;}
 }
 
 .home_page h2 {margin: 15px; font-size: 18px; font-weight: 700; text-align: left;}

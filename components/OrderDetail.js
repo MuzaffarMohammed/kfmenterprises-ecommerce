@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import {patchData, postData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
-import { ORDER_MAIL,CONTACT_ADMIN_ERR_MSG } from '../utils/constants.js'
+import { ORDER_MAIL,CONTACT_ADMIN_ERR_MSG , COD} from '../utils/constants.js'
 
 
 const OrderDetail = ({orderDetail, state, dispatch}) => {
@@ -15,7 +15,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     useEffect(() => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
-        console.log('orderDetail : ',orderDetail)
+        console.log('Orderdetail : ', orderDetail)
     },[])
 
     const handlePayment = (e, order) =>{
@@ -23,25 +23,36 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
             e.preventDefault();
             if(auth && auth.user && !auth.user.activated) return dispatch({type: 'NOTIFY', payload: {error: 'Please activate your account to proceed further.'}})
             if(payType === 'online') return dispatch({type: 'NOTIFY', payload: {error: 'Online payment is not available at this moment! Please try after sometime.'}})
-            if(payType === 'cod'){
-                patchData('order', {method:'Receive Cash', id: order._id}, auth.token) .then(res => {
-                
-                    if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG}})
-
-                    const { placed, dateOfPlaced, method} = res.result
-                    dispatch(updateItem(orders, order._id, {
-                        ...order, placed, dateOfPlaced, method
-                    }, 'ADD_ORDERS'))
-                })
-                dispatch({ type: 'ADD_CART', payload: [] })
-                dispatch({ type: 'NOTIFY', payload: {success: 'Order placed! You will be notified once order is accepted.'} })
-                notifyUserAndAdminAboutOrder(order);
-                return router.push('/thankyou')
-            }
+            if(payType === 'cod') return codPay(order)
         }catch(err){
             dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG} })
         }
-       
+    }
+
+    const codPay = (order) =>{
+        try {
+            // DB call to update orderPlaced = true
+            patchData('order', {method: COD, id: order._id}, auth.token) .then(res => {
+                // On success response
+                if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG}})
+
+                const { placed, dateOfPlaced, method} = res.result
+                // Updating state
+                dispatch(updateItem(orders, order._id, {
+                    ...order, placed, dateOfPlaced, method
+                }, 'ADD_ORDERS'))
+            })
+            // Emptying the cart after order placed.
+            dispatch({ type: 'ADD_CART', payload: [] })
+            dispatch({ type: 'NOTIFY', payload: {success: 'Order placed! You will be notified once order is accepted.'}})
+            // Sending order mail to customer and admin.
+            notifyUserAndAdminAboutOrder(order);
+            // Redirecting to Thank you for shopping page.
+            return router.push('/thankyou')
+        } catch (err) {
+            console.log(err)
+            dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG} })
+        }
     }
 
     const notifyUserAndAdminAboutOrder = (order) =>{
@@ -62,6 +73,22 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
            
             postData('mail', userData, auth.token)
             postData('mail', {userName: auth.user.name, email: process.env.NEXT_PUBLIC_ADMIN_ID, id: auth.user.id, mailType: ORDER_MAIL, subject:'New Order Request - Mode Of Payment: ['+payType+']'}, auth.token)
+        }
+    }
+
+    const handleAccept = (order) =>{
+        //Upating the db with accept response from th admin.
+        try {
+            dispatch({type: 'NOTIFY', payload: {loading: true}})
+            patchData(`order/accept/${order._id}`, null, auth.token)
+            .then(res => {
+                if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
+                const {accepted, dateOfAccept} = res.result
+                dispatch(updateItem(orders, order._id, { ...order, accepted, dateOfAccept}, 'ADD_ORDERS'))
+                return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
+            })
+        } catch (err) {
+            dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG} })
         }
     }
 
@@ -99,78 +126,105 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
             orderDetail.map(order => (
                 
             <div key={order._id} style={{margin: '20px auto'}} className="border_login row justify-content-around">
-                <div className="row col-12 justify-content-center">
-                    <h4 className='primary p-3'>SHIPPING & PAYMENT</h4>
+                <div className="row col-12 justify-content-center" style={{background:'black', color:'white'}}>
+                    <h4 className='primary my-3'>SHIPPING & PAYMENT</h4>
                 </div>
                 <div className="my-3" style={{maxWidth: '600px'}}>
                     <h6>Order ID - {order._id}</h6>
-                    <div className="mt-4 text-secondary">
-                        <div>
-                            <h5>Order Items</h5>
-                            {
-                                order.cart.map(item => (
-                                    <div className="row border-bottom mx-0 p-4 justify-content-betwenn
-                                    align-items-center" key={item._id} style={{maxWidth: '550px'}}>
-                                        <img src={item.images[0].url} alt={item.images[0].url}
-                                        style={{width: '50px', height: '45px', objectFit: 'cover'}} />
-                                        <h5 className="flex-fill text-secondary px-3 m-0">
-                                            <Link href={`/product/${item._id}`}>
-                                                <a>{item.title}</a>
-                                            </Link>
-                                        </h5>
-                                        <span className="text-info m-0">
-                                            {item.quantity} x ₹{item.totalPrice} = ₹{item.totalPrice * item.quantity}
-                                        </span>
+                    <div className="mt-4">
+                            <div className='border_login' style={{marginTop:'20px' ,marginLeft:'0px'}}>
+                                <h5>Order Items</h5>
+                                {
+                                    order.cart.map(item => (
+                                        <div className="row border-bottom mx-0 p-4 justify-content-betwenn
+                                        align-items-center" key={item._id} style={{maxWidth: '550px'}}>
+                                            <img src={item.images[0].url} alt={item.images[0].url}
+                                            style={{width: '50px', height: '45px', objectFit: 'cover'}} />
+                                            <div className="flex-fill font-weight-normal px-3 m-0">
+                                                <Link href={`/product/${item._id}`}>
+                                                    <a>{item.title}</a>
+                                                </Link>
+                                            </div>
+                                            <br></br>
+                                            <span className="text-info mt-2">
+                                                {item.quantity} x ₹{item.totalPrice} = ₹{item.totalPrice * item.quantity}
+                                            </span>
 
-                                    </div>
-                                ))
-                            }
-                        </div>
+                                        </div>
+                                    ))
+                                }
+                             </div>
                         <div className="border_login" style={{marginTop:'20px' ,marginLeft:'0px'}}>
-                            <h6>Shipping Details</h6>
+                            <h5>Shipping Details</h5>
                             <p style={{marginTop:'25px'}}>Name: {order.user.name}</p>
                             <p>Email: {order.user.email}</p>
                             <p>Address: {order.address}</p>
                             <p>Mobile: {order.mobile}</p>
                         </div>
-                        <h5 style={{marginTop:'20px'}}>Delivery Status</h5>
-                        <div className={`alert ${order.delivered ? 'alert-success' : 'alert-danger'}
-                        d-flex justify-content-between align-items-center`} role="alert">
-                            {
-                                order.delivered ? `Delivered on ${order.updatedAt}` : 'Not Delivered'
-                            }
-                            {
-                                auth.user.role === 'admin' && !order.delivered &&
-                                <button className="btn btn-dark text-uppercase"
-                                onClick={() => handleDelivered(order)}>
-                                    Mark as delivered
-                                </button>
-                            }
-                            
-                        </div>
+                        { order.placed &&
+                         <div>   
+                            <h5 style={{marginTop:'20px'}}>Order Status</h5>
+                            <div className={`alert ${order.accepted ? 'alert-success' : 'alert-warning'}
+                                d-flex justify-content-between align-items-center`} role="alert">
+                                {
+                                    order.accepted ? 
+                                    `Order accepted on ${order.dateOfAccept}` 
+                                    : 
+                                    (auth.user.role === 'admin' ? 
+                                    'Order Placed'
+                                    :
+                                    'Awaiting confirmation from the seller, we will notify you once order is accepted.')
+                                }
+                                {
+                                    auth.user.role === 'admin' && !order.accepted &&
+                                    <button className="btn btn-dark text-uppercase"
+                                    onClick={() => handleAccept(order)}>
+                                        Accept Order
+                                    </button>
+                                }
+                                
+                            </div>
+                            <h5 style={{marginTop:'20px'}}>Delivery Status</h5>
+                            <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
+                            d-flex justify-content-between align-items-center`} role="alert">
+                                {
+                                    order.delivered ? `Delivered on ${order.updatedAt}` : 'Not Delivered'
+                                }
+                                {
+                                    auth.user.role === 'admin' && !order.delivered &&
+                                    <button className="btn btn-dark text-uppercase"
+                                    style={{marginLeft:'10px'}}
+                                    onClick={() => handleDelivered(order)}>
+                                        Mark as delivered
+                                    </button>
+                                }
+                                
+                            </div>
 
-                        <h5>Payment</h5>
-                        {
-                            order.method && <h6>Method: <em>{order.method}</em></h6>
-                        }
-                        
-                        {
-                            order.paymentId && <p>PaymentId: <em>{order.paymentId}</em></p>
-                        }
-                        
-                        <div className={`alert ${order.paid ? 'alert-success' : 'alert-danger'}
-                        d-flex justify-content-between align-items-center`} role="alert">
+                            <h5>Payment</h5>
                             {
-                                order.paid ? `Paid on ${order.dateOfPayment}` : 'Not Paid'
+                                order.method && <h6>Method: <em>{order.method}</em></h6>
                             }
                             
+                            {
+                                order.paymentId && <p>PaymentId: <em>{order.paymentId}</em></p>
+                            }
+                            
+                            <div className={`alert ${order.paid ? 'alert-success' : 'alert-danger'}
+                            d-flex justify-content-between align-items-center`} role="alert">
+                                {
+                                    order.paid ? `Paid on ${order.dateOfPayment}` : 'Not Paid'
+                                }
+                                
+                            </div>
                         </div>
+                     }
                     </div>
                 </div>  
                 {
                     !order.placed && !order.paid && auth.user.role !== 'admin' &&
-                    <div>
-                        <h3>Select a payment method</h3>
+                    <div className='border_login payment-section' style={{marginLeft:'0px', maxWidth: '600px'}}> 
+                        <h5> Select a payment method</h5>
                         <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
                                 onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
                                     <option value="cod">Cash on delivery</option>
@@ -181,12 +235,11 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <span style={{marginLeft:'5px',color:'green'}}>  ₹0.00 Free </span>
                         </h6>
                         <h5 className="my-4 text-uppercase">Total: ₹{order.total}.00</h5>
-                        
                         <button className="btn btn-primary text-uppercase"
+                                style={{width:'100%'}}
                                 onClick={(e) =>{handlePayment(e, order)}}>
                                 {payBtnText}
                         </button>
-
                     </div>
                 }
                

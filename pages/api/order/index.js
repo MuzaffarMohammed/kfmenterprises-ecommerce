@@ -75,7 +75,6 @@ const updateOrderPlaced = async (req, res) => {
         const result = await auth(req, res)
         if(result.role === 'user'){
             const {id, method} = req.body
-            console.log('id :', id)
             const data = {placed: true, dateOfPlaced: new Date().toISOString(), method : method}
             await Orders.findOneAndUpdate({_id: id}, data)
     
