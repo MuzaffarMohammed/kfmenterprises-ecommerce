@@ -1,9 +1,12 @@
 import connectDB from '../../../utils/connectDB'
-import {ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL} from '../../../utils/constants'
+import {ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL} from '../../../utils/constants'
 import nodemailer from 'nodemailer'
 import {orderMail} from '../../../utils/orderMail'
 import {accountActivationMail} from '../../../utils/accountActivationMail'
 import {contactMail} from '../../../utils/contactMail'
+import {orderAdminMail} from '../../../utils/orderAdminMail'
+import {orderConfirmationMail} from '../../../utils/orderConfirmationMail'
+
 
 connectDB()
 
@@ -48,8 +51,15 @@ const sendMail = async (req, res) => {
                 output = contactMail(req);
                 fromMailId = req.body.email;
                 break;
+            case ORDER_ADMIN_MAIL:
+                output = orderAdminMail(req);
+                toMailId = req.body.email;
+                break;
+            case ORDER_CONFIRMATION_MAIL:
+                output = orderConfirmationMail(req);
+                toMailId = req.body.email;
+                break;
             default:
-
         }
 
         // setup email data with unicode symbols

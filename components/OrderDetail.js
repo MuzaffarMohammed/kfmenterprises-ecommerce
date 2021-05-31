@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import {patchData, postData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
-import { ORDER_MAIL,CONTACT_ADMIN_ERR_MSG , COD} from '../utils/constants.js'
+import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, COD} from '../utils/constants.js'
 
 
 const OrderDetail = ({orderDetail, state, dispatch}) => {
@@ -16,6 +16,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
         console.log('Orderdetail : ', orderDetail)
+        console.log('auth: ',auth)
     },[])
 
     const handlePayment = (e, order) =>{
@@ -67,12 +68,23 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 orderDate: order.createdAt, 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
-                                subject:'Order placed!',
-                                
+                                subject:'Order placed!'
                             }
-           
+            // Order placed summary mail to user
             postData('mail', userData, auth.token)
-            postData('mail', {userName: auth.user.name, email: process.env.NEXT_PUBLIC_ADMIN_ID, id: auth.user.id, mailType: ORDER_MAIL, subject:'New Order Request - Mode Of Payment: ['+payType+']'}, auth.token)
+            // Order placed notification mail to Admin
+            const adminData = {
+                                orderUrl: process.env.NEXT_PUBLIC_BASE_URL+`/order/${order._id}`,
+                                userName: auth.user.name, 
+                                email: process.env.NEXT_PUBLIC_ADMIN_ID, 
+                                address: order.address,
+                                mobile: order.mobile, 
+                                cusEmail: auth.user.email,
+                                orderId: order._id,
+                                mailType: ORDER_ADMIN_MAIL, 
+                                subject:'New Order Request - Mode Of Payment: ['+payType+']'
+                            }
+            postData('mail', adminData, auth.token)
         }
     }
 
@@ -87,6 +99,14 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                 dispatch(updateItem(orders, order._id, { ...order, accepted, dateOfAccept}, 'ADD_ORDERS'))
                 return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
             })
+            const userData = {  
+                                userName: order.user.name,
+                                email: order.user.email, 
+                                mailType: ORDER_CONFIRMATION_MAIL, 
+                                subject: `Order ID: ${order._id} accepted by seller`,
+                                orderUrl: process.env.NEXT_PUBLIC_BASE_URL+`/order/${order._id}`,
+                            }
+            postData('mail', userData, auth.token)
         } catch (err) {
             dispatch({ type: 'NOTIFY', payload: {error: CONTACT_ADMIN_ERR_MSG} })
         }

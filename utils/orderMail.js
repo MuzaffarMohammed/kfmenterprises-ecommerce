@@ -3,16 +3,17 @@ export const orderMail = (req) =>{
     return `<table style="height: 389px; width: 60%; border: none;">
     <tbody>
     <tr style="height: 17px;">
-    <td style="width: 100%; height: 17px; background-color: #00d27f;">&nbsp;</td>
+    <td style="width: 100%; height: 17px; background-color: black;">&nbsp;</td>
     </tr>
     <tr style="height: 94px;">
     <td style="width: 100%; height: 94px;" align="left">
     <p><strong>Dear ${req.body.userName},</strong></p>
     <p style="font-size: 12px;">Thank you for shopping with us. We would like to let you know that we have received your order:</p>
+    <p style="font-size: 12px;">Note: You will be notified once order is accepted.</p>
     </td>
     </tr>
     <tr style="height: 44px;">
-    <td style="width: 100%; height: 44px; background-color: #ccf6e5; color: #009358; font-weight: bold; text-align: center;">ORDER DETAILS</td>
+    <td style="width: 100%; height: 44px; background-color: black; color: white; font-weight: bold; text-align: center;">ORDER DETAILS</td>
     </tr>
     <tr style="height: 234px;">
     <td style="width: 100%; height: 234px;">
@@ -28,7 +29,7 @@ export const orderMail = (req) =>{
     <tr style="height: 45px;">
     <td style="width: 30%; height: 45px; border: 1px solid #cccccc;">
     <blockquote>
-    <p class="text-break" style="text-align: center; color: #009358; font-size: 13px;">${req.body.orderId}</p>
+    <p class="text-break" style="text-align: center; color: black; font-size: 13px;">${req.body.orderId}</p>
     </blockquote>
     </td>
     <td style="width: 10%; text-align: center; height: 45px; font-size: 11px; border: 1px solid #cccccc;">${req.body.orderDate}</td>
@@ -40,19 +41,19 @@ export const orderMail = (req) =>{
     <table style="border-collapse: collapse; width: 100%; height: 68px;" border="1">
     <tbody>
     <tr style="height: 17px;">
-    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Name</td>
+    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;Name</td>
     <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.userName}</td>
     </tr>
     <tr style="height: 17px;">
-    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Email</td>
+    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;Email</td>
     <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.email}</td>
     </tr>
     <tr style="height: 17px;">
-    <td style="width: 15%; font-size: 11px; border: 1px solid #cccccc; height: 17px;">Address</td>
+    <td style="width: 15%; font-size: 11px; border: 1px solid #cccccc; height: 17px;">&nbsp;Address</td>
     <td style="width: 84.4064%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.address}</td>
     </tr>
     <tr style="height: 17px;">
-    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">Mobile</td>
+    <td style="width: 15%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;Mobile</td>
     <td style="width: 84%; height: 17px; font-size: 11px; border: 1px solid #cccccc;">&nbsp;${req.body.mobile}</td>
     </tr>
     </tbody>
@@ -64,7 +65,7 @@ export const orderMail = (req) =>{
     <table style="border-collapse: collapse; width: 100%; height: 17px;" border="1">
     <tbody>
     <tr style="height: 17px;">
-    <td style="width: 100%; height: 17px; font-size: 10px; background-color: #00d27f; color: white;">&copy; 2021. All Right Reserved @KFM Cart</td>
+    <td style="width: 100%; height: 17px; font-size: 10px; background-color: black; color: white;">&copy; 2021. All Right Reserved @KFM Cart</td>
     </tr>
     </tbody>
     </table>
