@@ -20,7 +20,6 @@ const Cart = () => {
   const router = useRouter()
 
   useEffect(() => {
-
     console.log('Init : ', state)
     console.log('mobile : ', mobile)
     console.log('address : ', address)
