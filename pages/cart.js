@@ -5,6 +5,7 @@ import CartItem from '../components/CartItem'
 import Link from 'next/link'
 import { getData, postData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
+import {CITIES_ARR, STATES_ARR, COUNTRIES_ARR} from '../utils/constants'
 
 
 const Cart = () => {
@@ -12,7 +13,11 @@ const Cart = () => {
   const { cart, auth, orders } = state
 
   const [total, setTotal] = useState(0)
-
+  
+  const [city, setCity] = useState('')
+  const [countryState, setCountryState] = useState('')
+  const [country, setCountry] = useState('')
+ 
   const [address, setAddress] = useState('')
   const [mobile, setMobile] = useState('')
 
@@ -61,6 +66,10 @@ const Cart = () => {
 
   const handlePayment = async () => {
     const numRegex = /^[0-9]+$/;
+    
+    if(!city || city == "--Select--") return dispatch({ type: 'NOTIFY', payload: {error: 'Please choose a city.'}})
+    if(!countryState || countryState == "--Select--") return dispatch({ type: 'NOTIFY', payload: {error: 'Please choose a State.'}})
+    if(!country || country == "--Select--") return dispatch({ type: 'NOTIFY', payload: {error: 'Please choose a country.'}})
     if(!address || !mobile) return dispatch({ type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
     if(!(address.length >= 20)) return dispatch({ type: 'NOTIFY', payload: {error: 'Please add complete address (Flat No./H No./Door No. , Street, Locality, Area, City, State, Country, followed by pincode. ).'}})
     if(!(numRegex.test(mobile)) || !(mobile.length >= 10)) return dispatch({ type: 'NOTIFY', payload: {error: 'Please enter a valid mobile number.'}})
@@ -80,8 +89,35 @@ const Cart = () => {
       }})
     }
 
+    var addressCheck = address.toLowerCase( ); 
+    var finaladdr = addressCheck;
+
+    var addrCityCheck = addressCheck.includes("hyderabad");
+    var addrStateCheck = addressCheck.includes("telangana");
+    var addrCountryCheck = addressCheck.includes("india");
+
+    if(addrCityCheck || addrStateCheck || addrCountryCheck){
+    if(!addrCountryCheck){
+      finaladdr += " "+ country.toLowerCase()
+      if(!addrCityCheck){
+        var index = finaladdr.indexOf(countryState.toLowerCase());
+        finaladdr = [finaladdr.slice(0, index), " " +city.toLowerCase()+ " ", finaladdr.slice(index)].join('');
+    }
+    }else{
+      if(!addrStateCheck){ var index = finaladdr.indexOf(country.toLowerCase());
+        finaladdr = [finaladdr.slice(0, index), " " +countryState.toLowerCase()+ " ", finaladdr.slice(index)].join('');
+      }
+        if(!addrCityCheck){
+        var index = finaladdr.indexOf(countryState.toLowerCase());
+        finaladdr = [finaladdr.slice(0, index), " " +city.toLowerCase()+ " ", finaladdr.slice(index)].join('');
+    }
+    }
+    }else{
+      finaladdr = finaladdr+" "+city.toLowerCase()+" "+countryState.toLowerCase()+" "+country.toLowerCase()
+  }
+    
     dispatch({ type: 'NOTIFY', payload: {loading: true} })
-    postData('order', {address, mobile, cart, total}, auth.token)
+    postData('order', {address: finaladdr , mobile, cart, total}, auth.token)
     .then(res => {
       if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
       const newOrder = {
@@ -124,24 +160,52 @@ const Cart = () => {
           </table>
         </div>
 
-        <div className="col-md-5 my-3 text-left text-uppercase text-secondary cartitem-border">
+        <div className="col-md-5 my-3 text-left text-uppercase text-secondary border_login">
             <form>
-              <h2>Shipping</h2>
+              <h2>Shipping Details</h2>
 
               <label htmlFor="address">Address</label>
-              <input type="text" name="address" id="address"
+              <textarea type="text" name="address" id="address"
               className="form-control mb-2" value={address}
               onChange={e => setAddress(e.target.value)} />
+
+              <div className="row">
+              <div className="col-xl-4">
+             <label htmlFor="cities">City</label>
+             <select className="form-control mb-2 custom-select text-capitalize" onChange={e => setCity(e.target.value)}>
+                {
+              CITIES_ARR.map(city => (
+                <option value={city} key={city}>{city}</option>
+              ))}
+             </select>
+             </div>  
+             <div className="col-xl-4 pl-1">
+             <label htmlFor="state">State</label>
+             <select className="form-control mb-2 custom-select text-capitalize" onChange={e => setCountryState(e.target.value)}>
+                {
+              STATES_ARR.map(countryState => (
+                <option value={countryState} key={countryState}>{countryState}</option>
+              ))}
+             </select>
+             </div>
+             <div className="col-xl-4 pl-1">
+              <label htmlFor="country">Country</label>
+              <select className="form-control mb-2 custom-select text-capitalize"  onChange={e => setCountry(e.target.value)}>
+                {
+              COUNTRIES_ARR.map((country) => (
+                <option value={country}  key={country}>{country}</option>
+              ))}
+             </select>
+             </div>
+             </div>
 
               <label htmlFor="mobile">Mobile</label>
               <input type="text" name="mobile" id="mobile"
               className="form-control mb-2" value={mobile}
               onChange={e => setMobile(e.target.value)} />
             </form>
-
             <h3>Total: <span className="text-danger">₹{total}</span></h3>
 
-            
             <Link href={auth.user ? '#!' : '/signin'}>
               <a className="btn btn-dark my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
             </Link>

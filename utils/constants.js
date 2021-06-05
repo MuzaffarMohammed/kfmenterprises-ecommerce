@@ -6,3 +6,6 @@ export const CONTACT_MAIL = 'CONTACT_MAIL';
 export const CONTACT_ADMIN_ERR_MSG = 'Something went wrong! Please try again later or contact KFM administration.';
 export const COD = 'Cash on delivery';
 export const ONLINE = 'Online';
+export const CITIES_ARR = ['--Select--', 'Hyderabad', 'Secunderabad'];
+export const STATES_ARR = ['--Select--', 'Telangana'];
+export const COUNTRIES_ARR = ['--Select--', 'India'];

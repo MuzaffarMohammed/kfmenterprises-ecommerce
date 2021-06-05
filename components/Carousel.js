@@ -18,7 +18,7 @@ function ControlledCarousel() {
       <div className="row">
       <div className="col-xl-6 col-md-6">
       <h3>Large varities of grocery and food items</h3>
-          <p>Delivery at your door step with safty measures</p>
+          <p>Delivery at your door step with safety measures</p>
       </div>
       <div className="col-xl-6 col-md-6">
           <img
