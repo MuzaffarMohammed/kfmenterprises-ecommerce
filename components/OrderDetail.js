@@ -15,8 +15,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     useEffect(() => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
-        console.log('Orderdetail : ', orderDetail)
-        console.log('auth: ',auth)
     },[])
 
     const handlePayment = (e, order) =>{

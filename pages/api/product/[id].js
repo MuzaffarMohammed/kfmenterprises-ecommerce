@@ -5,7 +5,7 @@ import auth from '../../../middleware/auth'
 connectDB()
 
 export default async (req, res) => {
-    switch(req.method){
+    switch (req.method) {
         case "GET":
             await getProduct(req, res)
             break;
@@ -23,53 +23,55 @@ const getProduct = async (req, res) => {
         const { id } = req.query;
 
         const product = await Products.findById(id)
-        if(!product) return res.status(400).json({err: 'This product does not exist.'})
-        
+        if (!product) return res.status(400).json({ err: 'This product does not exist.' })
+
         res.json({ product })
 
     } catch (err) {
-        console.log('Error occurred while getProduct: '+err);
-        return res.status(500).json({err: err.message})
+        console.log('Error occurred while getProduct: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }
 
 const updateProduct = async (req, res) => {
     try {
-        const result = await auth(req, res)
-        if(result.role !== 'admin') 
-        return res.status(400).json({err: 'Authentication is not valid.'})
+        const { id } = req.query
+        const { title, price, tax, totalPrice, inStock, description, content, category, images, discount, updateStockAndSold, sold} = req.body
 
-        const {id} = req.query
-        const {title, price, tax, totalPrice, inStock, description, content, category, images} = req.body
+        if (updateStockAndSold) {
+            await Products.findOneAndUpdate({ _id: id }, { inStock, sold})
+            return res.status(200).json({ msg: 'Product updateStockAndSold updated!'})
+        } else {
+            const result = await auth(req, res)
+            if (result.role !== 'admin') return res.status(400).json({ err: 'Authentication is not valid.' })
+            if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
+                return res.status(400).json({ err: 'Please add all the fields.' })
 
-        if(!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
-        return res.status(400).json({err: 'Please add all the fields.'})
-
-        await Products.findOneAndUpdate({_id: id}, {
-            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images
-        })
-
-        res.json({msg: 'Success! Updated a product'})
+            await Products.findOneAndUpdate({ _id: id }, {
+                title, price, tax, totalPrice, inStock, description, content, category, images, discount
+            })
+            res.json({ msg: 'Success! Updated a product' })
+        }
     } catch (err) {
-        console.log('Error occurred while updateProduct: '+err);
-        return res.status(500).json({err: err.message})
+        console.log('Error occurred while updateProduct: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }
 
-const deleteProduct = async(req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-        
-        if(result.role !== 'admin') 
-        return res.status(400).json({err: 'Authentication is not valid.'})
 
-        const {id} = req.query
+        if (result.role !== 'admin')
+            return res.status(400).json({ err: 'Authentication is not valid.' })
+
+        const { id } = req.query
 
         await Products.findByIdAndDelete(id)
-        res.json({msg: 'Deleted a product.'})
+        res.json({ msg: 'Deleted a product.' })
 
     } catch (err) {
-        console.log('Error occurred while deleteProduct: '+err);
-        return res.status(500).json({err: err.message})
+        console.log('Error occurred while deleteProduct: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }

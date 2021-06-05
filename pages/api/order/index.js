@@ -42,12 +42,12 @@ const createOrder = async (req, res) => {
         const result = await auth(req, res)
         const { address, mobile, cart, total } = req.body
 
+        for(let i=0; i < cart.length; i++){
+            sold(cart, i)
+        }
+        
         const newOrder = new Orders({
             user: result.id, address, mobile, cart, total
-        })
-
-        cart.filter(item => {
-            return sold(item._id, item.quantity, item.inStock, item.sold)
         })
 
         await newOrder.save()
@@ -63,11 +63,15 @@ const createOrder = async (req, res) => {
     }
 }
 
-const sold = async (id, quantity, oldInStock, oldSold) => {
-    await Products.findOneAndUpdate({_id: id}, {
-        inStock: oldInStock - quantity,
-        sold: quantity + oldSold
-    })
+const sold = async (cart, index) => {
+    
+    let oldCartItem = cart[index];
+    const updatedStock = oldCartItem.inStock - oldCartItem.quantity;
+    const updatedSold = oldCartItem.quantity + oldCartItem.sold;
+    oldCartItem.inStock = updatedStock;
+    oldCartItem.sold = updatedSold;
+    cart[index] = oldCartItem;
+    await Products.findOneAndUpdate({_id: oldCartItem.id}, {inStock: updatedStock, sold: updatedSold})
 }
 
 const updateOrderPlaced = async (req, res) => {

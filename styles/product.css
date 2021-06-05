@@ -30,6 +30,21 @@
     -webkit-line-clamp: 3;
 }
 
+.products .stock{
+    font-size: 12px;
+}
+
+.products .offer-text{
+    margin-left: 5px;
+    font-size: 12px;
+    color:white;
+    background: teal;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
 @media (max-width: 768px) {
     .products .card{
         width: 85%;

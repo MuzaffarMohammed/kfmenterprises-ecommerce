@@ -14,11 +14,12 @@ const ProductsManager = () => {
         inStock: 0,
         description: '',
         content: '',
-        category: ''
+        category: '',
+        discount: Math.floor(Math.random() * 70) + 1
     }
     const TAX = 0.02
     const [product, setProduct] = useState(initialState)
-    const {title, price, inStock, tax, totalPrice, description, content, category} = product
+    const {title, price, inStock, tax, totalPrice, description, content, category, discount} = product
     const calcTotalPrice = (actPrice, calctTaxAmount) => Math.round((Number(actPrice) + calctTaxAmount));
     const calcTaxAmount = (actPrice) => Math.round(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
@@ -40,7 +41,7 @@ const ProductsManager = () => {
                 setTaxAmount(calcTax);
                 const calcTotal = calcTotalPrice(res.product.price, calcTax); 
                 setTotalAmount(calcTotal);
-                setProduct({...res.product, tax:calcTax, totalPrice:calcTotal})
+                setProduct({...res.product, tax:calcTax, totalPrice:calcTotal, discount: product.discount})
                 setImages(res.product.images)
             })
         }else{
@@ -60,10 +61,8 @@ const ProductsManager = () => {
         if(name==='price'){   
             const calcTax = calcTaxAmount(value);
             setTaxAmount(calcTax);
-            console.log('calcTax',calcTax)
             const calcTotal = calcTotalPrice(value, calcTax); 
             setTotalAmount(calcTotal);
-            console.log('calcTotal',calcTotal)
             setProduct({...product, [name]:value, tax:calcTax, totalPrice:calcTotal})
         }else{
             setProduct({...product, [name]:value});
