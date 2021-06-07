@@ -79,13 +79,13 @@ const updateOrderPlaced = async (req, res) => {
         const result = await auth(req, res)
         if(result.role === 'user'){
             const {id, method} = req.body
-            const data = {placed: true, dateOfPlaced: new Date().toISOString(), method : method}
+            const data = {placed: true, dateOfPlaced: new Date().toLocaleString(), method : method}
             await Orders.findOneAndUpdate({_id: id}, data)
     
             res.json({msg: 'Order placed successfully!',
                     result: {
                         placed : true,
-                        dateOfPlaced: new Date().toISOString(),
+                        dateOfPlaced: new Date().toLocaleString(),
                         method : method
                     }
             })

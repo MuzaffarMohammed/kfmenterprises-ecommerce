@@ -63,7 +63,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 address: order.address,
                                 mobile: order.mobile, 
                                 orderId: order._id,
-                                orderDate: order.createdAt, 
+                                orderDate: new Date(order.createdAt).toLocaleString(), 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
                                 subject:'Order placed!'
@@ -186,7 +186,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 d-flex justify-content-between align-items-center`} role="alert">
                                 {
                                     order.accepted ? 
-                                    `Order accepted on ${order.dateOfAccept}` 
+                                    `Order accepted on ${new Date(order.dateOfAccept).toLocaleString()}` 
                                     : 
                                     (auth.user.role === 'admin' ? 
                                     'Order Placed'
@@ -206,7 +206,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.delivered ? `Delivered on ${order.updatedAt}` : 'Not Delivered'
+                                    order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString()}` : 'Not Delivered'
                                 }
                                 {
                                     auth.user.role === 'admin' && !order.delivered &&
@@ -231,7 +231,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.paid ? 'alert-success' : 'alert-danger'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.paid ? `Paid on ${order.dateOfPayment}` : 'Not Paid'
+                                    order.paid ? `Paid on ${new Date(order.dateOfPayment).toLocaleString()}` : 'Not Paid'
                                 }
                                 
                             </div>

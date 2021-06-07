@@ -18,7 +18,7 @@ const acceptOrder = async(req, res) => {
         
         if(result.role === 'admin'){
             const {id} = req.query
-            const dateOfAccept = new Date().toISOString();
+            const dateOfAccept = new Date().toLocaleString();
             await Orders.findOneAndUpdate({_id: id}, {accepted: true, dateOfAccept})
     
             res.json({
