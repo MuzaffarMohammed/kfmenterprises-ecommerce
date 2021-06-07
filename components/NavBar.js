@@ -13,6 +13,7 @@ function NavBar() {
     const {state, dispatch} = useContext(DataContext)
     const { auth, cart, contactus } = state
     const [accountActivated, setAccountActivated] = useState(auth && auth.user && auth.user.activated)
+    const isAdmin = auth && auth.user && auth.user.role === 'admin';
 
     const isActive = (r) => {
         if(r === router.pathname){
@@ -110,7 +111,7 @@ function NavBar() {
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item" style={{display:`${isAdmin? 'none' : 'block'}`}}>
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>
                                 <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
