@@ -148,7 +148,7 @@ const Profile = () => {
 
                     <div className="my-3 table-responsive profilePageListColHeight">
                         <table className="table-bordered table-hover w-100 text-uppercase"
-                        style={{minWidth: '600px', cursor: 'pointer'}}>
+                        style={{minWidth: '600px'}}>
                             <thead className="bg-light font-weight-bold">
                                 <tr>
                                     <td className="p-2">id</td>
@@ -164,13 +164,13 @@ const Profile = () => {
                                     orders.map(order => (
                                         <tr key={order._id}>
                                             <td className="p-2">
-                                                <Link href={`/order/${order._id}`}>
+                                                <Link href={`/order/${order._id}`} style={{cursor: 'pointer'}}>
                                                     <a>{order._id}</a>
                                                 </Link>
                                                 
                                             </td>
                                             <td className="p-2">
-                                                {new Date(order.createdAt).toLocaleDateString()}
+                                                {new Date(order.createdAt).toLocaleString()}
                                             </td>
                                             <td className="p-2">₹{order.total}</td>
                                             <td className="p-2">
