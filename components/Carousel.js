@@ -13,7 +13,7 @@ function ControlledCarousel() {
   return (
     <Carousel className="test">
 
-      <Carousel.Item interval={2500} className="gradient01">
+      <Carousel.Item interval={3000} className="gradient01">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
             <h4>Large Varities Of Grocery And Food Items</h4>
@@ -29,7 +29,7 @@ function ControlledCarousel() {
         </div>
       </Carousel.Item>
 
-      <Carousel.Item interval={2500} className="gradient02">
+      <Carousel.Item interval={3000} className="gradient02">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
             <h4>Large Varities Of Desi Kitchen Spices</h4>
@@ -45,7 +45,7 @@ function ControlledCarousel() {
         </div>
       </Carousel.Item>
 
-      <Carousel.Item interval={2500} className="gradient03">
+      <Carousel.Item interval={3000} className="gradient03">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
             <h4 style={{ marginLeft: '35px' }}>Authentic Hyderabadi Dum Biryani Cooked In Clay Pot</h4>
