@@ -16,7 +16,7 @@ function ControlledCarousel() {
       <Carousel.Item interval={3000} className="gradient01">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
-            <h4>Large varities of Grocery and Food Items</h4>
+            <h4>Large varieties of Grocery and Food Items</h4>
             <p>Delivery at your door step with safety measures</p>
           </div>
           <div className="col-xl-4 col-md-4">
@@ -32,7 +32,7 @@ function ControlledCarousel() {
       <Carousel.Item interval={3000} className="gradient02">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
-            <h4>Large varities of Desi Kitchen Spices</h4>
+            <h4>Large varieties of Desi Kitchen Spices</h4>
             <p>Indian spices that go beyond flavours</p>
           </div>
           <div className="col-xl-4 col-md-4">
