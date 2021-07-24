@@ -4,7 +4,7 @@ import { upload } from "./multer";
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
-    console.log('Error occurred while image upload: '+err);
+    console.log('Error occurred while image upload: '+error);
     res.status(501).json({ error: `Image upload Error: ${error}`});
   },
   onNoMatch(req, res) {
