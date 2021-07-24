@@ -16,7 +16,7 @@ function ControlledCarousel() {
       <Carousel.Item interval={3000} className="gradient01">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
-            <h4>Large Varities Of Grocery And Food Items</h4>
+            <h4>Large varities of Grocery and Food Items</h4>
             <p>Delivery at your door step with safety measures</p>
           </div>
           <div className="col-xl-4 col-md-4">
@@ -32,7 +32,7 @@ function ControlledCarousel() {
       <Carousel.Item interval={3000} className="gradient02">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
-            <h4>Large Varities Of Desi Kitchen Spices</h4>
+            <h4>Large varities of Desi Kitchen Spices</h4>
             <p>Indian spices that go beyond flavours</p>
           </div>
           <div className="col-xl-4 col-md-4">
@@ -48,7 +48,7 @@ function ControlledCarousel() {
       <Carousel.Item interval={3000} className="gradient03">
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
-            <h4 style={{ marginLeft: '35px' }}>Authentic Hyderabadi Dum Biryani Cooked In Clay Pot</h4>
+            <h4 style={{ marginLeft: '35px' }}>Authentic Hyderabadi Dum Biryani cooked in Clay Pot</h4>
             <p>Purity & hygiene is our priority.</p>
           </div>
           <div className="col-xl-4 col-md-4">

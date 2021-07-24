@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react'
 import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 
-import valid from '../utils/valid'
+import {valid} from '../utils/valid'
 import { patchData } from '../utils/fetchData'
 
 import {imageUpload} from '../utils/imageUpload'
@@ -61,7 +61,7 @@ const Profile = () => {
 
         if(file.type !== "image/jpeg" && file.type !== "image/png") //1mb
             return dispatch({type: 'NOTIFY', payload: {error: 'Incorrect Image format! Please upload "jpeg/jpg/png" formats.'}})
-        
+       
         setData({...data, avatar: file})
     }
 
@@ -152,7 +152,7 @@ const Profile = () => {
                             <thead className="bg-light font-weight-bold">
                                 <tr>
                                     <td className="p-2">id</td>
-                                    <td className="p-2">date</td>
+                                    <td className="p-2">date & time</td>
                                     <td className="p-2">total</td>
                                     <td className="p-2">delivered</td>
                                     <td className="p-2">paid</td>
