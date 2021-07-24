@@ -50,7 +50,7 @@ const updateProduct = async (req, res) => {
             await Products.findOneAndUpdate({ _id: id }, {
                 title, price, tax, totalPrice, inStock, description, content, category, images, discount
             })
-            res.json({ msg: 'Success! Updated a product' })
+            res.json({ msg: 'Product updated successfully!' })
         }
     } catch (err) {
         console.log('Error occurred while updateProduct: ' + err);
