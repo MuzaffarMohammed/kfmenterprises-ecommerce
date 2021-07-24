@@ -34,6 +34,13 @@
     padding-left: 20px;
 }
 
+.sorry_and_comtinue_msg{
+    position: absolute;
+    margin-top: 35%;
+    margin-left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
 @media (max-width: 768px) {
     .border {
         margin-left: 0px;
@@ -64,3 +71,22 @@
         padding-left:15px;
     }
 }
+
+@media only screen and (max-width: 760px) and (min-width: 510px) {
+    .sorry_and_comtinue_msg{
+        margin-top: 16%;
+    }
+    }
+
+@media (max-width: 500px) {
+.sorry_and_comtinue_msg{
+    margin-top: 20%;
+}
+}
+
+@media (max-width: 330px) {
+    .sorry_and_comtinue_msg{
+        margin-top: 20%;
+        font-size: 14px;
+    }
+    }

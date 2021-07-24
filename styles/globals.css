@@ -23,6 +23,7 @@ body {
   display: block;
   position: relative;
   padding-bottom: 350px; /* height of your footer */
+  background-color: #f1f7f8;
 }
 .footer{
   color:white;
