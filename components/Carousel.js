@@ -33,7 +33,7 @@ function ControlledCarousel() {
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
             <h4>Large varieties of Desi Kitchen Spices</h4>
-            <p>Indian spices that go beyond flavours</p>
+            <p>Indian spices that go beyond flavours.</p>
           </div>
           <div className="col-xl-4 col-md-4">
             <img
