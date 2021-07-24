@@ -96,15 +96,21 @@ img{
 }
 
 @media (max-width: 768px) {
-  .main{
-    padding-bottom: 768px;
-  }
   .carousel-indicators {
   display: none;
   }
   .p-4{
     padding: 1.5rem!important;
   }
+  .main{
+    padding-bottom: 768px;
+  }
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+.main{
+  padding-bottom: 335px;
+}
 }
 /* ----------- Loading ------------- */
 @import url("./loading.css");
