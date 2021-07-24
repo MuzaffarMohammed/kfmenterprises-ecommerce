@@ -17,7 +17,7 @@ function ControlledCarousel() {
         <div className="row justify-content-center">
           <div className="col-xl-6 col-md-6">
             <h4>Large varieties of Grocery and Food Items</h4>
-            <p>Delivery at your door step with safety measures</p>
+            <p>Delivery at your door step with safety measures.</p>
           </div>
           <div className="col-xl-4 col-md-4">
             <img
