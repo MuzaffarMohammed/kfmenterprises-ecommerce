@@ -163,7 +163,7 @@ const ProductsManager = (props) => {
                 <title>KFM Cart - Products Manager</title>
             </Head>
             <form className="row my-3" onSubmit={handleSubmit}>
-                <div className="col-md-6">
+                <div className="col-xl-6 col-xs-12">
                     <div className="row mx-1">
                         <div className="col-sm-12">
                             <label htmlFor="title">Product Name</label>
@@ -172,7 +172,7 @@ const ProductsManager = (props) => {
                                 onChange={handleChangeInput}
                             />
                         </div>
-                        <div className="row mx-md-1 mx-2 my-md-1">
+                        <div className="row">
                             <div className="col-md-2 mt-1">
                                 <label htmlFor="price">Price</label>
                                 <input type="number" name="price" value={product.price}
@@ -233,7 +233,7 @@ const ProductsManager = (props) => {
                     </div>
                 </div>
 
-                <div className="col-md-5 mx-md-4 mx-xs-3 mt-5 mt-md-0 justify-content-md-center">
+                <div className="col-xl-5 col-xs-12 mx-md-4 mx-xs-3 mt-5 mt-md-0 justify-content-md-center">
                     Click to browse and upload your images
                     <div className="input-group mt-2 mb-3">
                         <div className="input-group-prepend">
@@ -257,7 +257,8 @@ const ProductsManager = (props) => {
                         }
                     </div>
                 </div>
-                <div className="row col-md-6 mt-4 justify-content-center">
+
+                <div className="row col-xl-12 mt-2 justify-content-center">
                     <button type="submit" className="btn btn-info w-100">
                         {onEdit ? 'Update' : 'Create'}
                     </button>

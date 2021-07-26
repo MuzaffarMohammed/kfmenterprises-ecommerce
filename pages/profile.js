@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react'
 import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 
-import valid from '../utils/valid'
+import {valid} from '../utils/valid'
 import { patchData } from '../utils/fetchData'
 
 import { imageUpload } from '../utils/imageUpload'
@@ -156,7 +156,7 @@ const Profile = () => {
                             <thead className="bg-light font-weight-bold">
                                 <tr>
                                     <td className="p-2">id</td>
-                                    <td className="p-2">date</td>
+                                    <td className="p-2">date & time</td>
                                     <td className="p-2">total</td>
                                     <td className="p-2">delivered</td>
                                     <td className="p-2">paid</td>

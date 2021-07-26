@@ -174,8 +174,8 @@ const Cart = () => {
   if (cart.length === 0) {
     return (
       <div className='text-alingn-center'>
-        <div style={{ position: 'absolute', top: '35%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          Sorry, your <i className="fas fa-shopping-cart position-relative" aria-hidden="true"></i>cart is empty. Please add an item to place an order : <a href='/' style={{ fontSize: '16px', fontWeight: '800' }}>
+        <div className="sorry_and_continue_msg">
+          Sorry, your <i className="fas fa-shopping-cart position-relative" aria-hidden="true"></i>cart is empty. Please add an item to place an order : <a href='/' style={{ fontWeight: '800' }}>
             Continue Shopping <i className="fas fa-home" aria-hidden="true" ></i></a>.
               </div>
       </div>

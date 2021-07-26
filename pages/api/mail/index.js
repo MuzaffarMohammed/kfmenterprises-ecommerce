@@ -1,11 +1,12 @@
 import connectDB from '../../../utils/connectDB'
-import {ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL} from '../../../utils/constants'
+import {ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL, PASSWORD_RESET_MAIL} from '../../../utils/constants'
 import nodemailer from 'nodemailer'
 import {orderMail} from '../../../utils/orderMail'
 import {accountActivationMail} from '../../../utils/accountActivationMail'
 import {contactMail} from '../../../utils/contactMail'
 import {orderAdminMail} from '../../../utils/orderAdminMail'
 import {orderConfirmationMail} from '../../../utils/orderConfirmationMail'
+import {restPasswordMail} from '../../../utils/resetPasswordMail'
 
 
 connectDB()
@@ -59,6 +60,10 @@ const sendMail = async (req, res) => {
                 output = orderConfirmationMail(req);
                 toMailId = req.body.email;
                 break;
+            case PASSWORD_RESET_MAIL:
+                output = restPasswordMail(req);
+                toMailId = req.body.email;
+                break;    
             default:
         }
 
