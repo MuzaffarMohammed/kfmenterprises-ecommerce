@@ -1,145 +1,163 @@
 import Head from 'next/head'
-import {useState, useContext, useEffect} from 'react'
-import {DataContext} from '../../store/GlobalState'
-import {imageUpload} from '../../utils/imageUpload'
-import {postData, getData, putData} from '../../utils/fetchData'
-import {useRouter} from 'next/router'
+import { useState, useContext, useEffect } from 'react'
+import { DataContext } from '../../store/GlobalState'
+import { imageUpload } from '../../utils/imageUpload'
+import { postData, getData, putData, deleteData } from '../../utils/fetchData'
+import { useRouter } from 'next/router'
+import { renameFile } from '../../utils/util'
 
-const ProductsManager = () => {
+const ProductsManager = (props) => {
     const initialState = {
         title: '',
         price: 0,
-        tax:0,
-        totalPrice:0,
+        tax: 0,
+        totalPrice: 0,
         inStock: 0,
         description: '',
         content: '',
         category: '',
+        number: 0,
         discount: Math.floor(Math.random() * 70) + 1
     }
-    const TAX = 0.02
+    const TAX = 0.02;
+    const Product_ = 'Product_';
+    const _Image_ = '_Image_';
     const [product, setProduct] = useState(initialState)
-    const {title, price, inStock, tax, totalPrice, description, content, category, discount} = product
+    const { title, price, inStock, tax, totalPrice, description, content, category } = product
     const calcTotalPrice = (actPrice, calctTaxAmount) => Math.round((Number(actPrice) + calctTaxAmount));
     const calcTaxAmount = (actPrice) => Math.round(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
     const [taxAmount, setTaxAmount] = useState(tax)
     const [totalAmount, setTotalAmount] = useState(totalPrice)
-
-    const {state, dispatch} = useContext(DataContext)
-    const {categories, auth} = state
+    const [totalProducts, setTotalProducts] = useState(props.totalProducts)
+    const { state, dispatch } = useContext(DataContext)
+    const { categories, auth } = state
 
     const router = useRouter()
-    const {id} = router.query
+    const { id } = router.query
     const [onEdit, setOnEdit] = useState(false)
 
     useEffect(() => {
-        if(id){
+        if (id) {
             setOnEdit(true)
-            getData(`product/${id}`).then(res => { 
+            getData(`product/${id}`).then(res => {
                 const calcTax = calcTaxAmount(res.product.price);
                 setTaxAmount(calcTax);
-                const calcTotal = calcTotalPrice(res.product.price, calcTax); 
+                const calcTotal = calcTotalPrice(res.product.price, calcTax);
                 setTotalAmount(calcTotal);
-                setProduct({...res.product, tax:calcTax, totalPrice:calcTotal, discount: product.discount})
+                setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotal, discount: product.discount })
                 setImages(res.product.images)
             })
-        }else{
+        } else {
             setOnEdit(false)
             const calcTax = calcTaxAmount(product.price);
             setTaxAmount(calcTax);
-            const calcTotal = calcTotalPrice(product.price, calcTax); 
+            const calcTotal = calcTotalPrice(product.price, calcTax);
             setTotalAmount(calcTotal);
-            setProduct({...initialState, tax:calcTax, totalPrice:calcTotal})
+            setProduct({ ...initialState, tax: calcTax, totalPrice: calcTotal })
             setImages([])
         }
-    },[id])
+    }, [id])
 
-    const handleChangeInput = async  e => {
-        const {name, value} = e.target;
+    const handleChangeInput = async e => {
+        const { name, value } = e.target;
         console.log(name)
-        if(name==='price'){   
+        if (name === 'price') {
             const calcTax = calcTaxAmount(value);
             setTaxAmount(calcTax);
-            const calcTotal = calcTotalPrice(value, calcTax); 
+            const calcTotal = calcTotalPrice(value, calcTax);
             setTotalAmount(calcTotal);
-            setProduct({...product, [name]:value, tax:calcTax, totalPrice:calcTotal})
-        }else{
-            setProduct({...product, [name]:value});
+            setProduct({ ...product, [name]: value, tax: calcTax, totalPrice: calcTotal })
+        } else {
+            setProduct({ ...product, [name]: value });
         }
-        dispatch({type: 'NOTIFY', payload: {}});
+        dispatch({ type: 'NOTIFY', payload: {} });
+    }
+   
+
+    const existingAllImgArr = (images) => {
+        const existingImgArr = [];
+        images.forEach(file => {
+            if (file.url && file.url.indexOf(Product_) !== -1 && file.url.indexOf(_Image_) !== -1) {
+                existingImgArr.push(parseInt(file.url.split(Product_)[1].split(_Image_)[1].split('.')[0]));
+            }
+        });
+        return existingImgArr;
+    }
+    const getSucceedingFileNo = (existingImgArr, imgNo) => {
+        while(existingImgArr.indexOf(imgNo) !== -1) ++imgNo;
+        return imgNo;
     }
 
     const handleUploadInput = e => {
-        dispatch({type: 'NOTIFY', payload: {}})
+        dispatch({ type: 'NOTIFY', payload: {} })
         let newImages = []
-        let num = 0
         let err = ''
         const files = [...e.target.files]
+        let existingImgCount = images.length;
 
-        if(files.length === 0) 
-        return dispatch({type: 'NOTIFY', payload: {error: 'Files does not exist.'}})
-
+        if (files.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Files does not exist.' } })
+        if (existingImgCount + files.length > 5) return dispatch({ type: 'NOTIFY', payload: { error: 'Select up to 5 images.' } })
+        const existingImgArr = existingAllImgArr(images);
         files.forEach(file => {
-            if(file.size > 1024 * 1024)
-            return err = 'The largest image size is 1mb'
+            if (file.size > 1024 * 1024) return err = 'The largest image size is 1mb'
+            if (file.type !== 'image/jpeg' && file.type !== 'image/png') return err = 'Image format is incorrect.'
 
-            if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-            return err = 'Image format is incorrect.'
-
-            num += 1;
-            if(num <= 5) newImages.push(file)
-            return newImages;
+            const imgNo = getSucceedingFileNo(existingImgArr, ++existingImgCount);
+            const fileExtn = file.name.split('.').pop();
+            if (!onEdit) file = renameFile(file, Product_ + totalProducts + _Image_ + imgNo + '.' + fileExtn);
+            else file = renameFile(file, Product_ + product.number + _Image_ + imgNo + '.' + fileExtn);
+            newImages.push(file);
         })
-
-        if(err) dispatch({type: 'NOTIFY', payload: {error: err}})
-
-        const imgCount = images.length
-        if(imgCount + newImages.length > 5)
-        return dispatch({type: 'NOTIFY', payload: {error: 'Select up to 5 images.'}})
+        if (err) dispatch({ type: 'NOTIFY', payload: { error: err } })
         setImages([...images, ...newImages])
     }
 
     const deleteImage = index => {
         const newArr = [...images]
-        newArr.splice(index, 1)
+        const deleteArr = newArr.splice(index, 1);
+        
+        if(deleteArr[0].public_id){
+            deleteData(`uploads?public_id=${deleteArr[0].public_id}`, auth.token);
+        }
+        console.log('deleteArr : ',deleteArr);
         setImages(newArr)
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        if(auth.user.role !== 'admin') 
-        return dispatch({type: 'NOTIFY', payload: {error: 'Authentication is not valid.'}})
+        if (auth.user.role !== 'admin')
+            return dispatch({ type: 'NOTIFY', payload: { error: 'Authentication is not valid.' } })
 
-        if(!title) return dispatch({type: 'NOTIFY', payload: {error: 'Please add a product name.'}})
-        if(!price) return dispatch({type: 'NOTIFY', payload: {error: 'Please add a product price.'}})
-        if(!inStock || inStock === 0) return dispatch({type: 'NOTIFY', payload: {error: 'Please add product stock.'}})
-        if(!description) return dispatch({type: 'NOTIFY', payload: {error: 'Please add a product description.'}})
-        if(!content) return dispatch({type: 'NOTIFY', payload: {error: 'Please add a product content.'}})
-        if(category === 'all') return dispatch({type: 'NOTIFY', payload: {error: 'Please add a product category.'}})
-        if(images.length === 0) return dispatch({type: 'NOTIFY', payload: {error: 'Please add product images.'}})
-    
-        dispatch({type: 'NOTIFY', payload: {loading: true}})
+        if (!title) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product name.' } })
+        if (!price) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product price.' } })
+        if (!inStock || inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product stock.' } })
+        if (!description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
+        if (!content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
+        if (category === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
+        if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product images.' } })
+
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
         let media = []
         const imgNewURL = images.filter(img => !img.url)
         const imgOldURL = images.filter(img => img.url)
-
-        if(imgNewURL.length > 0) media = await imageUpload(imgNewURL)
-
-        let res;
-        if(onEdit){
-            res = await putData(`product/${id}`, {...product, images: [...imgOldURL, ...media]}, auth.token)
-            if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
-        }else{
-            res = await postData('product', {...product, images: [...imgOldURL, ...media]}, auth.token)
-            if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
+        if (imgNewURL.length > 0) {
+            media = await imageUpload(imgNewURL, 'product');
+            setImages([...imgOldURL, ...media]);
         }
+        let res;
+        if (onEdit) {
+            res = await putData(`product/${id}`, { ...product, images: [...imgOldURL, ...media] }, auth.token)
+            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+        } else {
+            res = await postData('product', { ...product, number: totalProducts, images: [...imgOldURL, ...media] }, auth.token)
+            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+        }
+        return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
 
-        return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
-        
     }
 
-    return(
+    return (
         <div className="container-fluid products_manager">
             <Head>
                 <title>KFM Cart - Products Manager</title>
@@ -149,37 +167,37 @@ const ProductsManager = () => {
                     <div className="row mx-1">
                         <div className="col-sm-12">
                             <label htmlFor="title">Product Name</label>
-                            <input type="text" name="title" value={title}
+                            <input type="text" name="title" value={product.title}
                                 placeholder="Title" className="d-block w-100 p-2"
-                                onChange={handleChangeInput} 
+                                onChange={handleChangeInput}
                             />
                         </div>
                         <div className="row">
                             <div className="col-md-2 mt-1">
                                 <label htmlFor="price">Price</label>
-                                <input type="number" name="price" value={price}
-                                placeholder="Price" className="d-block w-100 p-2"
-                                onChange={handleChangeInput} />
+                                <input type="number" name="price" value={product.price}
+                                    placeholder="Price" className="d-block w-100 p-2"
+                                    onChange={handleChangeInput} />
                             </div>
                             <div className="col-md-2 mx-lg-3 mt-1">
                                 <label htmlFor="tax">Tax (2%)</label>
-                                <input type="text" name="tax" value={taxAmount}
+                                <input type="text" name="tax" value={product.tax}
                                     placeholder="Tax" className="d-block w-100 p-2"
                                     onChange={handleChangeInput}
                                 />
                             </div>
                             <div className="col-md-3 mx-lg-1 mt-1">
                                 <label htmlFor="total">Total Price</label>
-                                <input type="text" name="total" value={totalAmount}
+                                <input type="text" name="total" value={product.totalPrice}
                                     placeholder="Total Price" className="d-block w-100 p-2"
                                     onChange={handleChangeInput}
                                 />
                             </div>
                             <div className="col-lg-2 col-md-3 mx-lg-3 mt-1">
                                 <label htmlFor="inStock">In Stock</label>
-                                <input type="number" name="inStock" value={inStock}
+                                <input type="number" name="inStock" value={product.inStock}
                                     placeholder="inStock" className="d-block w-100 p-2"
-                                    onChange={handleChangeInput} 
+                                    onChange={handleChangeInput}
                                 />
                             </div>
                         </div>
@@ -187,20 +205,20 @@ const ProductsManager = () => {
                     <div className="row mx-1">
                         <textarea name="description" id="description" cols="30" rows="3"
                             placeholder="Description" onChange={handleChangeInput}
-                            className="d-block my-sm-4 mt-3 w-100 p-2" value={description}
+                            className="d-block my-sm-4 mt-3 w-100 p-2" value={product.description}
                         />
                     </div>
                     <div className="row mx-1">
                         <textarea name="content" id="content" cols="30" rows="6"
                             placeholder="Content" onChange={handleChangeInput}
-                            className="d-block my-sm-2 mt-3 w-100 p-2" value={content} 
+                            className="d-block my-sm-2 mt-3 w-100 p-2" value={product.content}
                         />
                     </div>
                     <div className="row mx-1">
                         <div className="col mt-2">
                             <div className="input-group-prepend px-0 my-2">
-                                <select name="category" id="category" value={category}
-                                onChange={handleChangeInput} className="custom-select text-capitalize">
+                                <select name="category" id="category" value={product.category}
+                                    onChange={handleChangeInput} className="custom-select text-capitalize">
                                     <option value="all">All Products</option>
                                     {
                                         categories.map(item => (
@@ -223,30 +241,40 @@ const ProductsManager = () => {
                         </div>
                         <div className="custom-file border">
                             <input type="file" className="custom-file-input" placeholder="Click here to upload"
-                            onChange={handleUploadInput} multiple accept="image/*" />
+                                onChange={handleUploadInput} multiple accept="image/*" />
                         </div>
-                    </div> 
+                    </div>
                     <div className="row img-up mx-0">
                         {
                             images.map((img, index) => (
                                 <div key={index} className="file_img my-1">
                                     <img src={img.url ? img.url : URL.createObjectURL(img)}
-                                     alt="" className="img-thumbnail rounded my-1" />
+                                        alt="" className="img-thumbnail rounded my-1" />
 
-                                     <span onClick={() => deleteImage(index)}>X</span>
+                                    <span onClick={() => deleteImage(index)}>X</span>
                                 </div>
                             ))
                         }
                     </div>
                 </div>
+
                 <div className="row col-xl-12 mt-2 justify-content-center">
                     <button type="submit" className="btn btn-info w-100">
-                        {onEdit ? 'Update': 'Create'}
+                        {onEdit ? 'Update' : 'Create'}
                     </button>
                 </div>
             </form>
         </div>
     )
+}
+
+export async function getServerSideProps({ params: { id } }) {
+
+    const res = await getData(`product?limit=99999999&category=all&sort=''&title=all`)
+    // server side rendering
+    return {
+        props: { totalProducts: res && res.result + 1 }, // will be passed to the page component as props
+    }
 }
 
 export default ProductsManager
