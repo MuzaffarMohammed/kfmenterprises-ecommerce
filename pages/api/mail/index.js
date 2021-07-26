@@ -75,7 +75,7 @@ const sendMail = async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log('Error occurred in Mail System transporter : ', error)
-                return res.status(500).json({err: err.message})
+                return res.status(500).json({err: error.message})
             }
             console.log('Message sent: %s', info.messageId);   
             res.status(200).json({info: 'Mail Sent!'});
