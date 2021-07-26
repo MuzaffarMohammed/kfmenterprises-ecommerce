@@ -30,7 +30,7 @@ const sendMail = async (req, res) => {
             secure: true, // true for 465, false for other ports
             auth: {
                 user: fromMailId, 
-                pass: 'kfmcart123'
+                pass: 'weluflshblbchdoa'
             },
             tls:{
                 rejectUnauthorized:false
