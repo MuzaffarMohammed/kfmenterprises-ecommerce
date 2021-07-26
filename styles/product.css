@@ -105,8 +105,29 @@ height:450px;
      
 }
 
-@media (max-width: 768px) {
+@media (max-width: 500px) {
     .detail_page .prodDetailImg{
         height:300px;
         }
+        .detail_page .prodDetialmultiImgs{
+            height:80px;  
+        }
   }
+
+@media only screen and (max-width: 900px) and (min-width: 768px) {
+    .detail_page .prodDetailImg{
+        height:500px;
+        }
+        .detail_page .prodDetialmultiImgs{
+            height:130px;  
+        }
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 900px) {
+    .detail_page .prodDetailImg{
+        height:600px;
+        }
+        .detail_page .prodDetialmultiImgs{
+            height:160px;  
+        }
+}
