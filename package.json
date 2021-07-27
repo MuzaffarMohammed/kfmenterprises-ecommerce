@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "heroku-postbuild": "npm run build",
-    "export": "next build && next export"
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
