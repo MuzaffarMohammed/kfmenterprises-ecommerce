@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-ecommerce",
+  "name": "kfmcart-ecommerce",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,17 +12,18 @@
     "bcrypt": "^5.0.0",
     "bootstrap": "*",
     "cloudinary": "^1.25.1",
+    "helmet": "^4.6.0",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.10.14",
     "multer": "^1.4.2",
-    "next": "10.0.1",
+    "next": "10.2.3",
     "next-connect": "^0.10.1",
     "nodemailer": "^6.6.0",
-    "react": "17.0.1",
+    "react": "17.0.2",
     "react-bootstrap": "^1.5.2",
-    "react-dom": "17.0.1",
+    "react-dom": "17.0.2",
     "react-slick": "^0.28.1",
     "slick-carousel": "^1.8.1",
     "yarn": "^1.22.10"

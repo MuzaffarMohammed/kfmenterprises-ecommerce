@@ -6,7 +6,8 @@ import Link from 'next/link'
 import {valid} from '../utils/valid'
 import { patchData } from '../utils/fetchData'
 
-import {imageUpload} from '../utils/imageUpload'
+import { imageUpload } from '../utils/imageUpload'
+import { renameFile } from '../utils/util'
 
 const Profile = () => {
     const initialSate = {
@@ -18,79 +19,82 @@ const Profile = () => {
     const [data, setData] = useState(initialSate)
     const { avatar, name, password, cf_password } = data
 
-    const {state, dispatch} = useContext(DataContext)
+    const { state, dispatch } = useContext(DataContext)
     const { auth, notify, orders } = state
 
     useEffect(() => {
-        if(auth.user) setData({...data, name: auth.user.name})
-    },[auth.user])
+        if (auth.user) setData({ ...data, name: auth.user.name })
+    }, [auth.user])
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setData({...data, [name]:value})
+        setData({ ...data, [name]: value })
         dispatch({ type: 'NOTIFY', payload: {} })
     }
 
     const handleUpdateProfile = e => {
         e.preventDefault()
-        if(password){
+        if (password) {
             const errMsg = valid(name, auth.user.email, password, cf_password)
-            if(errMsg) return dispatch({ type: 'NOTIFY', payload: {error: errMsg} })
+            if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
             updatePassword()
         }
 
-        if(name !== auth.user.name || avatar) updateInfor()
+        if (name !== auth.user.name || avatar) updateInfor()
     }
 
     const updatePassword = () => {
-        dispatch({ type: 'NOTIFY', payload: {loading: true} })
-        patchData('user/resetPassword', {password}, auth.token)
-        .then(res => {
-            if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
-            return dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
-        })
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
+        patchData('user/resetPassword', { password }, auth.token)
+            .then(res => {
+                if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+                return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+            })
     }
 
     const changeAvatar = (e) => {
         const file = e.target.files[0]
-        if(!file)
-            return dispatch({type: 'NOTIFY', payload: {error: 'File does not exist!'}})
+        if (!file)
+            return dispatch({ type: 'NOTIFY', payload: { error: 'File does not exist!' } })
 
-        if(file.size > 1024 * 1024) //1mb
-            return dispatch({type: 'NOTIFY', payload: {error: 'Image size should be less than 1MB!'}})
+        if (file.size > 1024 * 1024) //1mb
+            return dispatch({ type: 'NOTIFY', payload: { error: 'Image size should be less than 1MB!' } })
 
-        if(file.type !== "image/jpeg" && file.type !== "image/png") //1mb
-            return dispatch({type: 'NOTIFY', payload: {error: 'Incorrect Image format! Please upload "jpeg/jpg/png" formats.'}})
-       
-        setData({...data, avatar: file})
+        if (file.type !== "image/jpeg" && file.type !== "image/png") //1mb
+            return dispatch({ type: 'NOTIFY', payload: { error: 'Incorrect Image format! Please upload "jpeg/jpg/png" formats.' } })
+        const fileExtn = file.name.split('.').pop();
+        const renamedfile = renameFile(file, auth.user.name + '.' + fileExtn);
+        setData({ ...data, avatar: renamedfile })
     }
 
     const updateInfor = async () => {
         let media;
-        dispatch({type: 'NOTIFY', payload: {loading: true}})
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
         try {
-            if(avatar) media = await imageUpload([avatar],auth.token)
-            if(media && (media.length <=0 || media[0].url === undefined)) return dispatch({type: 'NOTIFY', payload: {error: 'Image upload failed! Please try again.'}})
-                patchData('user', {
-                    name, avatar: avatar ? media[0].url : auth.user.avatar
-                }, auth.token).then(res => {
-                    if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
-        
-                    dispatch({type: 'AUTH', payload: {
+            if (avatar) media = await imageUpload([avatar], 'profile', auth.token)
+            if (media && (media.length <= 0 || media[0].url === undefined)) return dispatch({ type: 'NOTIFY', payload: { error: 'Image upload failed! Please try again.' } })
+            patchData('user', {
+                name, avatar: avatar ? media[0].url : auth.user.avatar
+            }, auth.token).then(res => {
+                if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+                dispatch({
+                    type: 'AUTH', payload: {
                         token: auth.token,
                         user: res.user
-                    }})
-                    return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
+                    }
                 })
+                return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+            })
         } catch (err) {
-            dispatch({type: 'NOTIFY', payload: {loading: false}})
-            dispatch({type: 'NOTIFY', payload: {error: err.message}})
-        } 
+            dispatch({ type: 'NOTIFY', payload: { loading: false } })
+            dispatch({ type: 'NOTIFY', payload: { error: err.message } })
+        }
     }
 
 
-    if(!auth.user) return null;
-    return( 
+    if (!auth.user) return null;
+    return (
         <div className="container-fluid profile_page">
             <Head>
                 <title>KFM Cart - Profile</title>
@@ -103,42 +107,42 @@ const Profile = () => {
                     </h3>
 
                     <div className="avatar">
-                    <img src={  (avatar ? URL.createObjectURL(avatar) : auth.user.avatar)} 
-                        alt="avatar" />
+                        <img src={(avatar ? URL.createObjectURL(avatar) : auth.user.avatar)}
+                            alt="avatar" />
                         <span>
                             <i className="fas fa-camera"></i>
                             <p>Change</p>
                             <input type="file" name="file" id="file_up"
-                            accept="image/*" onChange={changeAvatar} />
+                                accept="image/*" onChange={changeAvatar} />
                         </span>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
                         <input type="text" name="name" value={name} className="form-control"
-                        placeholder="Your name" onChange={handleChange} />
+                            placeholder="Your name" onChange={handleChange} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input type="text" name="email" defaultValue={auth.user.email} 
-                        className="form-control" disabled={true} />
+                        <input type="text" name="email" defaultValue={auth.user.email}
+                            className="form-control" disabled={true} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">New Password</label>
                         <input type="password" name="password" value={password} className="form-control"
-                        placeholder="Your new password" onChange={handleChange} />
+                            placeholder="Your new password" onChange={handleChange} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="cf_password">Confirm New Password</label>
                         <input type="password" name="cf_password" value={cf_password} className="form-control"
-                        placeholder="Confirm new password" onChange={handleChange} />
+                            placeholder="Confirm new password" onChange={handleChange} />
                     </div>
 
                     <button className="btn btn-info w-100 signBtn" disabled={notify.loading}
-                    onClick={handleUpdateProfile}>
+                        onClick={handleUpdateProfile}>
                         Update
                     </button>
                 </div>
@@ -148,7 +152,7 @@ const Profile = () => {
 
                     <div className="my-3 table-responsive profilePageListColHeight">
                         <table className="table-bordered table-hover w-100 text-uppercase"
-                        style={{minWidth: '600px'}}>
+                            style={{ minWidth: '600px' }}>
                             <thead className="bg-light font-weight-bold">
                                 <tr>
                                     <td className="p-2">id</td>
@@ -164,10 +168,10 @@ const Profile = () => {
                                     orders.map(order => (
                                         <tr key={order._id}>
                                             <td className="p-2">
-                                                <Link href={`/order/${order._id}`} style={{cursor: 'pointer'}}>
+                                                <Link href={`/order/${order._id}`} style={{ cursor: 'pointer' }}>
                                                     <a>{order._id}</a>
                                                 </Link>
-                                                
+
                                             </td>
                                             <td className="p-2">
                                                 {new Date(order.createdAt).toLocaleString()}
@@ -176,18 +180,18 @@ const Profile = () => {
                                             <td className="p-2">
                                                 {
                                                     order.delivered
-                                                    ? <i className="fas fa-check text-success"></i>
-                                                    : <i className="fas fa-times text-danger"></i>
+                                                        ? <i className="fas fa-check text-success"></i>
+                                                        : <i className="fas fa-times text-danger"></i>
                                                 }
                                             </td>
                                             <td className="p-2">
                                                 {
                                                     order.paid
-                                                    ? <i className="fas fa-check text-success"></i>
-                                                    : <i className="fas fa-times text-danger"></i>
+                                                        ? <i className="fas fa-check text-success"></i>
+                                                        : <i className="fas fa-times text-danger"></i>
                                                 }
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     ))
                                 }
                             </tbody>

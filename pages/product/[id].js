@@ -29,7 +29,7 @@ const DetailProduct = (props) => {
                 <title>KFM Cart - Detail Product</title>
             </Head>
 
-            <div className="col-md-6">
+            <div className="col-xl-6 col-xs-12">
                 <img src={ product.images[tab].url } alt={ product.images[tab].url }
                 className="d-block img-thumbnail rounded mt-4 w-100 prodDetailImg" />
 
@@ -38,14 +38,14 @@ const DetailProduct = (props) => {
                     {product.images.map((img, index) => (
                         <img key={index} src={img.url} alt={img.url}
                         className={`img-thumbnail rounded ${isActive(index)}`}
-                        style={{height: '80px', width: '20%'}}
+                        style={{height: '100%', width: '20%'}}
                         onClick={() => setTab(index)} />
                     ))}
 
                 </div>
             </div>
 
-            <div className="col-md-5 mt-4 mx-3">
+            <div className="col-xl-5 col-xs-12 mt-4 mx-3">
                 <h2 className="text-uppercase">{product.title}</h2>
                 <h5 className="text-danger">₹{product.totalPrice}</h5>
 

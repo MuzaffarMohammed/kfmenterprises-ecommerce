@@ -23,8 +23,11 @@ const register = async (req, res) => {
         const errMsg = valid(name, email, password, cf_password)
         if(errMsg) return res.status(400).json({err: errMsg})
 
-        const user = await Users.findOne({ email })
-        if(user) return res.status(400).json({err: 'This email already exists.'})
+        const userExist = await Users.findOne({name: name.toLowerCase()})
+        if(userExist) return res.status(400).json({err: 'This user name already taken.'})
+
+        const emailExist = await Users.findOne({ email : email.toLowerCase() })
+        if(emailExist) return res.status(400).json({err: 'This email already exists.'})
 
         const passwordHash = await bcrypt.hash(password, 12)
 
