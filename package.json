@@ -1,12 +1,13 @@
 {
-  "name": "nextjs-ecommerce",
+  "name": "kfmcart-ecommerce",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "export": "next build && next export"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
