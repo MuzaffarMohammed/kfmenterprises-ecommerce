@@ -201,7 +201,7 @@ const ProductsManager = () => {
                             <div className="input-group-prepend px-0 my-2">
                                 <select name="category" id="category" value={category}
                                 onChange={handleChangeInput} className="custom-select text-capitalize">
-                                    <option value="all">All Products</option>
+                                    <option value="all">All</option>
                                     {
                                         categories.map(item => (
                                             <option key={item._id} value={item._id}>

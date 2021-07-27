@@ -3,7 +3,7 @@ export const accountActivationMail = (req) =>{
     return `
     <h3> Hello ${req.body.userName} </h3>
     <p>Thank you for registering into our Application. Much Appreciated! Just one last step is laying ahead of you...</p>
-    <p>To activate your account please follow this link: <a target="_" href="${process.env.NEXT_PUBLIC_BASE_URL}/api/user/accountActivation/${req.body.id}">${process.env.NEXT_PUBLIC_BASE_URL}/api/user/accountActivation</a></p>
+    <p>To activate your account please click this button: <a target="_" href="${process.env.NEXT_PUBLIC_BASE_URL}/api/user/accountActivation/${req.body.id}"><input type="button" value="Activate" style="width: 25%; height: 30px; background-color: black; color: white; font-weight: bold; text-align: center; border-radius:5px;"/></a></p>
     </br>
     <h3>Happy Shopping</h3>
     </br>
