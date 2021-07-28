@@ -6,12 +6,15 @@ import { useRouter } from 'next/router'
 import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, COD} from '../utils/constants.js'
 
 
+let isPayMethodCOD = false;
+
+
 const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
     const [payType, setPayType] = useState('');
     const [payBtnText, setPayBtnText] = useState('Click to finish');
     const router = useRouter()
-
+    
     useEffect(() => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
@@ -111,6 +114,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     }
 
     const handleDelivered = (order) => {
+        isPayMethodCOD = true;
         dispatch({type: 'NOTIFY', payload: {loading: true}})
 
         patchData(`order/delivered/${order._id}`, null, auth.token)
@@ -136,7 +140,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
             setPayBtnText('Click to finish')
         }
     }
-
     if(!auth.user) return null;
     return(
         <>
@@ -186,7 +189,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 d-flex justify-content-between align-items-center`} role="alert">
                                 {
                                     order.accepted ? 
-                                    `Order accepted on ${new Date(order.dateOfAccept).toLocaleString()}` 
+                                    `Order accepted on ${new Date(order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` 
                                     : 
                                     (auth.user.role === 'admin' ? 
                                     'Order Placed'
@@ -206,7 +209,10 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString()}` : 'Not Delivered'
+                                   isPayMethodCOD ?               
+                                    order.delivered ? `Delivered on ${new Date(order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
+                                    :
+                                    order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'                                 
                                 }
                                 {
                                     auth.user.role === 'admin' && !order.delivered &&
@@ -231,7 +237,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.paid ? 'alert-success' : 'alert-danger'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.paid ? `Paid on ${new Date(order.dateOfPayment).toLocaleString()}` : 'Not Paid'
+                                    order.paid ? `Paid on ${new Date(order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Paid'
                                 }
                                 
                             </div>

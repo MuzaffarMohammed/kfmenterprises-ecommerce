@@ -51,11 +51,11 @@ const ForgotPassword = () => {
           <form className="container-fluid mx-auto my-4 border_login" style={{maxWidth: '500px'}} onSubmit={handleSubmit}>
           <h1>Find Your Account</h1>
 
-          <p>Please enter your email address or username to search for your account.</p>
+          <p>Please enter your Email address.</p>
             <div className="form-group">
-              <label htmlFor="userName">User Name</label>
+              {/* <label htmlFor="userName">Email Address</label> */}
               <input type="email" className="form-control" id="exampleAccountRecoveryEmail" aria-describedby="emailHelp"
-            name="accountRecoveryEmail" value={accountRecoveryEmail} onChange={handleChangeInput} />
+            name="accountRecoveryEmail" value={accountRecoveryEmail} onChange={handleChangeInput}  placeholder="example@gmail.com"/>
             </div>
             
             <button type="submit" className="btn btn-dark signBtn w-100">Submit</button>

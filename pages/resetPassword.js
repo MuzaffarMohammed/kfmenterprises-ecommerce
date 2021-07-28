@@ -74,7 +74,7 @@ const ResetPassword = (props) => {
 
             <form className="container-fluid mx-auto my-4 border_login" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
                 <h1>Reset Password</h1>
-                <p>Please enter your new password.</p>
+                <p>Please enter your new Password.</p>
                 <section>
                     <div className="userProfileCol">
                         <h3 className="text-center text-uppercase">
@@ -84,13 +84,13 @@ const ResetPassword = (props) => {
                         <div className="form-group">
                             <label htmlFor="password">New Password</label>
                             <input type="password" name="password" value={password} className="form-control"
-                                placeholder="Your new password" onChange={handleChange} />
+                                placeholder="Your new Password" onChange={handleChange} />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="cf_password">Confirm New Password</label>
                             <input type="password" name="cf_password" value={cf_password} className="form-control"
-                                placeholder="Confirm new password" onChange={handleChange} />
+                                placeholder="Confirm new Password" onChange={handleChange} />
                         </div>
 
                         <button className="btn btn-dark w-100 signBtn" disabled={notify.loading}
