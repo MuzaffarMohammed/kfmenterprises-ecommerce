@@ -118,7 +118,7 @@ const ProductsManager = (props) => {
         const deleteArr = newArr.splice(index, 1);
         
         if(deleteArr[0].public_id){
-            deleteData(`uploads?public_id=${deleteArr[0].public_id}`, auth.token);
+            deleteData(`uploads/delete`, auth.token, {publicIds: [deleteArr[0].public_id]});
         }
         console.log('deleteArr : ',deleteArr);
         setImages(newArr)
