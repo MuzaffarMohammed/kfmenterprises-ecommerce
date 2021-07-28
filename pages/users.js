@@ -23,7 +23,7 @@ const Users = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Admin</th>
-                        <th>Action</th>
+                        {/* <th>Action</th> */}
                     </tr>
                 </thead>
 
@@ -51,7 +51,7 @@ const Users = () => {
                                         :<i className="fas fa-times text-danger"></i>
                                     }
                                 </th>
-                                <th>
+                                {/* <th>
                                     <Link href={
                                         auth.user.root && auth.user.email !== user.email
                                         ? `/edit_user/${user._id}` : '#!'
@@ -71,7 +71,7 @@ const Users = () => {
                                         : <i className="fas fa-trash-alt text-danger ml-2" title="Remove"></i>
                                     }
 
-                                </th>
+                                </th> */}
                             </tr>
                         ))
                     }

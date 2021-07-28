@@ -33,7 +33,7 @@ const Filter = ({state}) => {
                 <select className="custom-select text-capitalize"
                 value={category} onChange={handleCategory}>
 
-                    <option value="all">All Products</option>
+                    <option value="all">All</option>
 
                     {
                         categories.map(item => (

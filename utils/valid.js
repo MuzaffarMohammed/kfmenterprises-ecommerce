@@ -4,7 +4,7 @@ export const valid = (name, email, password, cf_password) => {
     return 'Please add all the fields.'
 
     if(!validateUserName(name))
-    return "Only Alphabets, Numbers, and only these three special characters [ .   @   _ ]  are allowed in 'User Name'."
+    return "Only Alphabets, Numbers, and three special characters [ . @ _ ] are allowed in 'User Name'."
 
     if(!validateEmail(email))
     return 'Invalid email address.'

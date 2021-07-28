@@ -217,9 +217,9 @@ const ProductsManager = (props) => {
                     <div className="row mx-1">
                         <div className="col mt-2">
                             <div className="input-group-prepend px-0 my-2">
-                                <select name="category" id="category" value={product.category}
-                                    onChange={handleChangeInput} className="custom-select text-capitalize">
-                                    <option value="all">All Products</option>
+                                <select name="category" id="category" value={category}
+                                onChange={handleChangeInput} className="custom-select text-capitalize">
+                                    <option value="all">All</option>
                                     {
                                         categories.map(item => (
                                             <option key={item._id} value={item._id}>
