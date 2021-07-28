@@ -57,9 +57,10 @@ export const patchData = async (url, post, token) => {
 }
 
 
-export const deleteData = async (url, token) => {
+export const deleteData = async (url, token, post) => {
     const res = await fetch(`${baseUrl}/api/${url}`, {
         method: 'DELETE',
+        body: JSON.stringify(post),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token

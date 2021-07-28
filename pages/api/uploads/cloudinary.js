@@ -26,12 +26,17 @@ export const cloud_uploads = (file, folder) => {
     })
 }
 
-export const cloud_delete = (public_id) => {
+export const cloud_delete = (publicIds) => {
     return new Promise(resolve => {
-        cloudinary.v2.uploader.destroy(public_id, async (error, response) => {
-            if (error) throw error;
-            if (result)
-            return result;
-        })
-    })
+        publicIds.forEach(public_id => {
+            console.log('Deleting image : ', public_id);
+            cloudinary.v2.uploader.destroy(public_id, async (error, response) => {
+                if (error) throw error;
+                if (response) {
+                    console.log('Image deleted : ', response.result);
+                    return response.result;
+                }
+            });
+        });
+    });
 }

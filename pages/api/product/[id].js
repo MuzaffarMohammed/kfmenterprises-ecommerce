@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { deleteData } from '../../../utils/fetchData'
 
 connectDB()
 
@@ -36,14 +37,14 @@ const getProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.query
-        const { title, price, tax, totalPrice, inStock, description, content, category, images, discount, updateStockAndSold, sold} = req.body
+        const { title, price, tax, totalPrice, inStock, description, content, category, images, discount, updateStockAndSold, sold } = req.body
 
         if (updateStockAndSold) {
-            await Products.findOneAndUpdate({ _id: id }, { inStock, sold})
-            return res.status(200).json({ msg: 'Product updateStockAndSold updated!'})
+            await Products.findOneAndUpdate({ _id: id }, { inStock, sold })
+            return res.status(200).json({ msg: 'Product updateStockAndSold updated!' })
         } else {
             const result = await auth(req, res)
-            if (result.role !== 'admin') return res.status(400).json({ err: 'Authentication is not valid.' })
+            if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
             if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
@@ -62,16 +63,30 @@ const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
 
-        if (result.role !== 'admin')
-            return res.status(400).json({ err: 'Authentication is not valid.' })
+        if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
 
-        const { id } = req.query
+        const { id } = req.query;
+
+        deleteImages(id, req.headers.authorization, res);
 
         await Products.findByIdAndDelete(id)
-        res.json({ msg: 'Deleted a product.' })
+        res.json({ msg: 'Product deleted successfully.' })
 
     } catch (err) {
         console.log('Error occurred while deleteProduct: ' + err);
+        return res.status(500).json({ err: err.message })
+    }
+}
+
+const deleteImages = async (id, token, res) => {
+    console.log("Deleting Images ...")
+    try {
+        const product = await Products.findById(id);
+        const publicIds = product.images.map(image => image.public_id);
+        console.log('Public Ids : ', publicIds);
+        deleteData(`uploads/delete`, token, { publicIds });
+    } catch (err) {
+        console.log('Error occurred while deleteImages: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }

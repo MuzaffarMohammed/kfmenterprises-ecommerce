@@ -17,7 +17,7 @@ const ProductItem = ({ product, handleCheck }) => {
     const userLink = () => {
         return (
             <>
-                <Link href={`product/${product._id}`}>
+                <Link href={`/product/${product._id}`}>
                     <a className="btn btn-info"
                         style={{ marginRight: '5px', flex: 1 }}>View</a>
                 </Link>
@@ -34,7 +34,7 @@ const ProductItem = ({ product, handleCheck }) => {
     const adminLink = () => {
         return (
             <>
-                <Link href={`create/${product._id}`}>
+                <Link href={`/create/${product._id}`}>
                     <a className="btn btn-info"
                         style={{ marginRight: '5px', flex: 1 }}>Edit</a>
                 </Link>
@@ -45,7 +45,8 @@ const ProductItem = ({ product, handleCheck }) => {
                         type: 'ADD_MODAL',
                         payload: [{
                             data: '', id: product._id,
-                            title: product.title, type: 'DELETE_PRODUCT'
+                            title: product.title,
+                            type: 'DELETE_PRODUCT'
                         }]
                     })} >
                     Delete
@@ -63,7 +64,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     style={{ height: '20px', width: '20px' }}
                     onChange={() => handleCheck(product._id)} />
             }
-            <Link href={`product/${product._id}`}>
+            <Link href={`/product/${product._id}`}>
                 <img className="card-img-top" src={product.images[0].url} alt={product.images[0].url} />
             </Link>
             <div className="card-body">
@@ -72,15 +73,15 @@ const ProductItem = ({ product, handleCheck }) => {
                 </h6>
 
                 <div className="row justify-content-between mx-0">
-                    <h6 className="text-success">₹{product.totalPrice}  
-                    {product.discount !== 0 && 
-                        <>
-                            <span style={{marginLeft:'5px', textDecoration: 'line-through', color:'grey', fontSize:'12px'}}>
-                                {product.totalPrice + (product.totalPrice - ((product.totalPrice * product.discount)/100))}
-                            </span>
-                            <span className='offer-text'>{product.discount}% Off</span>
-                        </>
-                    }
+                    <h6 className="text-success">₹{product.totalPrice}
+                        {product.discount !== 0 &&
+                            <>
+                                <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px' }}>
+                                    {product.totalPrice + (product.totalPrice - ((product.totalPrice * product.discount) / 100))}
+                                </span>
+                                <span className='offer-text'>{product.discount}% Off</span>
+                            </>
+                        }
                     </h6>
                     {
                         product.inStock > 0
