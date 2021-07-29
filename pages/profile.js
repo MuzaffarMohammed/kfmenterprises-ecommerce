@@ -132,13 +132,13 @@ const Profile = () => {
                     <div className="form-group">
                         <label htmlFor="password">New Password</label>
                         <input type="password" name="password" value={password} className="form-control"
-                            placeholder="Your new Password" onChange={handleChange} />
+                            placeholder="Your new password" onChange={handleChange} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="cf_password">Confirm New Password</label>
                         <input type="password" name="cf_password" value={cf_password} className="form-control"
-                            placeholder="Confirm new Password" onChange={handleChange} />
+                            placeholder="Confirm new password" onChange={handleChange} />
                     </div>
 
                     <button className="btn btn-info w-100 signBtn" disabled={notify.loading}
