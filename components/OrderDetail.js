@@ -5,14 +5,12 @@ import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
 import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, COD} from '../utils/constants.js'
 
-
-let isPayMethodCOD = false;
-
-
 const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
     const [payType, setPayType] = useState('');
     const [payBtnText, setPayBtnText] = useState('Click to finish');
+    // const [isPayMethodCOD, setIsPayMethodCOD] = useState(false);
+
     const router = useRouter()
     
     useEffect(() => {
@@ -114,7 +112,8 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     }
 
     const handleDelivered = (order) => {
-        isPayMethodCOD = true;
+        // if(payType === 'cod') setIsPayMethodCOD(true);
+
         dispatch({type: 'NOTIFY', payload: {loading: true}})
 
         patchData(`order/delivered/${order._id}`, null, auth.token)
@@ -209,7 +208,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                   isPayMethodCOD ?               
+                                   payType === 'cod' ?               
                                     order.delivered ? `Delivered on ${new Date(order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
                                     :
                                     order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'                                 
