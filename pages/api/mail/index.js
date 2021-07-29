@@ -11,6 +11,10 @@ import {restPasswordMail} from '../../../utils/resetPasswordMail'
 
 connectDB()
 
+/*
+    POST     - Public
+*/
+
 export default async (req, res) => {
     switch(req.method){
         case "POST":
