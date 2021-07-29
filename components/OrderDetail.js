@@ -204,10 +204,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                   payType === 'cod' ?               
-                                    order.delivered ? `Delivered on ${new Date(order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
-                                    :
-                                    order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'                                 
+                                    order.delivered ? `Delivered on ${new Date(payType === 'cod' ? order.dateOfPayment : order.updatedAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
                                 }
                                 {
                                     auth.user.role === 'admin' && !order.delivered &&
