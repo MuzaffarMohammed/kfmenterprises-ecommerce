@@ -9,8 +9,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
     const [payType, setPayType] = useState('');
     const [payBtnText, setPayBtnText] = useState('Click to finish');
-    // const [isPayMethodCOD, setIsPayMethodCOD] = useState(false);
-
     const router = useRouter()
     
     useEffect(() => {
@@ -112,8 +110,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
     }
 
     const handleDelivered = (order) => {
-        // if(payType === 'cod') setIsPayMethodCOD(true);
-
         dispatch({type: 'NOTIFY', payload: {loading: true}})
 
         patchData(`order/delivered/${order._id}`, null, auth.token)
