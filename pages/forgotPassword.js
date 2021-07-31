@@ -4,7 +4,7 @@ import { postData } from '../utils/fetchData'
 import { useState, useContext } from 'react'
 import { DataContext } from '../store/GlobalState'
 import moment from 'moment';
-
+import os  from "os";
 import { PASSWORD_RESET_MAIL } from '../utils/constants.js'
 
 const ForgotPassword = () => {
@@ -35,7 +35,18 @@ const ForgotPassword = () => {
     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
     if (res && res.user && !res.user.activated) return dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
 
-    const resMail = await postData('mail', { forgotPasswordUrl: process.env.NEXT_PUBLIC_BASE_URL + `/resetPassword?userid=${res.user.id}&ts=${moment().valueOf()}`, email: accountRecoveryEmail, mailType: PASSWORD_RESET_MAIL, subject: 'Password Reset Request', userName: res.user.name })
+    const resMail = await postData(
+      'mail',
+      {
+        forgotPasswordUrl: process.env.NEXT_PUBLIC_BASE_URL + `/resetPassword?userid=${res.user.id}&ts=${moment().valueOf()}`,
+        email: accountRecoveryEmail,
+        mailType: PASSWORD_RESET_MAIL,
+        subject: 'Password Reset Request',
+        userName: res.user.name,
+        hostName: os.hostname(),
+        type: os.type()
+      }
+    )
     if (resMail.err) return dispatch({ type: 'NOTIFY', payload: { error: "Sorry, something went wrong! Please try again." } })
 
     return dispatch({ type: 'NOTIFY', payload: { success: "We have successfully sent a password reset mail to your verified email address. Please check your mail inbox." } })
