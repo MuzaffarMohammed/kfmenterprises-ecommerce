@@ -46,9 +46,7 @@ const createCategory = async (req, res) => {
 const getCategories = async (req, res) => {
     try {
         const categories = await Categories.find()
-
         res.json({categories})
-
     } catch (err) {
         console.log('Error occurred while getCategories: '+err);
         return res.status(500).json({err: err.message})
