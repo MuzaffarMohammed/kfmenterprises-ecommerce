@@ -3,6 +3,10 @@ import Users from '../../../../models/userModel'
 
 connectDB()
 
+/*
+    GET    - Unprotected
+*/
+
 export default async (req, res) => {
     switch(req.method){
         case "GET":
@@ -20,7 +24,7 @@ const accountActivation = async (req, res) => {
         res.send(` <!DOCTYPE html />
                     <html>
                     <body>
-                     <h3>Congratulations, account Activated Successfully!</h3>
+                     <h3>Congratulations, account activated successfully!</h3>
                      <a href=${process.env.NEXT_PUBLIC_BASE_URL}>Continue Shopping</a>
                     </body>
                     </html>

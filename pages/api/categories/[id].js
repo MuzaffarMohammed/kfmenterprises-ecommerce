@@ -4,7 +4,10 @@ import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 
 connectDB()
-
+/*
+    PUT     - protected
+    DELETE  - protected
+*/
 export default async (req, res) => {
     switch(req.method){
         case "PUT":
