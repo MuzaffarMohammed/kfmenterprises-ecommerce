@@ -21,7 +21,7 @@ const paymentOrder = async(req, res) => {
             const { paymentId } = req.body
     
             await Orders.findOneAndUpdate({_id: id}, {
-                paid: true, dateOfPayment: new Date().toLocaleString(), paymentId,
+                paid: true, dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), paymentId,
                 method: 'Paypal'
             })
     
