@@ -7,7 +7,7 @@ import { createAccessToken, createRefreshToken } from '../../../utils/generateTo
 connectDB()
 
 export default async (req, res) => {
-    switch(req.method){
+    switch (req.method) {
         case "POST":
             await login(req, res)
             break;
@@ -15,18 +15,18 @@ export default async (req, res) => {
 }
 
 const login = async (req, res) => {
-    try{
+    try {
         const { userName: email, password } = req.body
         let user = await Users.findOne({ email })
-        if(!user) user = await Users.findOne({ name: email })
-        if(!user) return res.status(400).json({err: 'This user does not exist.'})
+        if (!user) user = await Users.findOne({ name: email })
+        if (!user) return res.status(400).json({ err: 'Incorrect User Name/Password.' })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if(!isMatch) return res.status(400).json({err: 'Incorrect User Name/Password.'})
+        if (!isMatch) return res.status(400).json({ err: 'Incorrect User Name/Password.' })
 
-        const access_token = createAccessToken({id: user._id})
-        const refresh_token = createRefreshToken({id: user._id})
-        
+        const access_token = createAccessToken({ id: user._id })
+        const refresh_token = createRefreshToken({ id: user._id })
+
         res.json({
             msg: "Login Success!",
             refresh_token,
@@ -42,8 +42,8 @@ const login = async (req, res) => {
             }
         })
 
-    }catch(err){
-        console.log('Error occurred while login: '+err);
-        return res.status(500).json({err: err.message})
+    } catch (err) {
+        console.log('Error occurred while login: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }

@@ -5,6 +5,10 @@ import bcrypt from 'bcrypt'
 
 connectDB()
 
+/*
+    PATCH    - Unprotected
+*/
+
 export default async (req, res) => {
     switch (req.method) {
         case "PATCH":

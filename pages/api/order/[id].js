@@ -4,6 +4,11 @@ import auth from '../../../middleware/auth'
 
 connectDB()
 
+/*
+    GET     - Protected
+    DELETE  - Protected
+*/
+
 export default async (req, res) => {
     switch (req.method) {
         case "GET":

@@ -7,7 +7,9 @@ import bcrypt from 'bcrypt'
 
 
 connectDB()
-
+/*
+    POST - public
+*/
 export default async (req, res) => {
     switch(req.method){
         case "POST":

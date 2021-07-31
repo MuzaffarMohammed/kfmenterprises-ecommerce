@@ -5,6 +5,12 @@ import { deleteData } from '../../../utils/fetchData'
 
 connectDB()
 
+/*
+    GET     - Protected
+    PUT      - Partial Protected
+    DELETE    - Protected
+*/
+
 export default async (req, res) => {
     switch (req.method) {
         case "GET":

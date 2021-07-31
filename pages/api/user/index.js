@@ -4,6 +4,11 @@ import auth from '../../../middleware/auth'
 
 connectDB()
 
+/*
+    PATCH    - Protected
+    GET    - Protected
+*/
+
 export default async (req, res) => {
     switch(req.method){
         case "PATCH":

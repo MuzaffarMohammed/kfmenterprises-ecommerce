@@ -2,6 +2,10 @@ import auth from '../../../middleware/auth';
 import { cloud_delete } from './cloudinary';
 
 
+/*
+    DELETE    - Protected
+*/
+
 export default async (req, res) => {
     switch (req.method) {
         case "DELETE":

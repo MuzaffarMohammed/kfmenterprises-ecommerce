@@ -1,6 +1,11 @@
 import nextConnect from 'next-connect';
+import auth from '../../../middleware/auth';
 import { cloud_uploads } from './cloudinary';
 import { upload } from "./multer";
+
+/*
+    DELETE    - Unprotected
+*/
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
@@ -22,21 +27,27 @@ apiRoute.use(upload.array('file'), async (req, res) => {
 });
 
 const uploadImage = async (req, res) => {
-  const files = req.files;
-  var urls = [];
-  const uploader = async (path) => await cloud_uploads(path, req.query.to);
-  for (const file of files) {
-    const { path } = file;
-    const newPath = await uploader(path)
-    urls.push({ url: newPath })
+  try {
+    const files = req.files;
+    var urls = [];
+    const uploader = async (path) => await cloud_uploads(path, req.query.to);
+    for (const file of files) {
+      const { path } = file;
+      const newPath = await uploader(path)
+      urls.push({ url: newPath })
+    }
+    res.status(200).json({
+      message: 'images uploaded successfully',
+      data: urls
+    })
+  } catch (err) {
+    console.log('Error occured while uploadImage : ', err);
+    res.status(500).json({ error: `Image upload failed!` });
   }
-  res.status(200).json({
-    message: 'images uploaded successfully',
-    data: urls
-  })
 }
 
 apiRoute.post((req, res) => {
+  console.log('POSTING IMAGES...', req.body)
   res.status(200).json({ data: 'success' });
 });
 

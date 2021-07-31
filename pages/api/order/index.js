@@ -5,6 +5,12 @@ import auth from '../../../middleware/auth'
 
 connectDB()
 
+/*
+    POST     - Protected
+    GET      - Protected
+    PATCH    - Protected
+*/
+
 export default async (req, res) => {
     switch(req.method){
         case "POST":
