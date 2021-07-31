@@ -1,5 +1,3 @@
-import os  from "os";
-
 export const restPasswordMail = (req) =>{
     return `<p>Hi ${req.body.userName},</p>
     <p><span style="color: #000000;">&nbsp;You recently requested to reset your password for your KFM Cart account. Click on 'Change Password' to reset it. <br><strong>Note: This password reset is only valid for the next 20 Minutes. </strong></span></p>
@@ -25,5 +23,5 @@ export const restPasswordMail = (req) =>{
     </tr>
     </tbody>
     </table>
-    <p>For security, this request was received from a ${os.hostname()} device using ${os.type()}. If you did not request a password reset, please report us &nbsp;<a href="https://www.kfmcart.com/contactus">contact support</a>&nbsp; or we suggest changing your password right away from the application.</p><p>Thanks,<br />The KFM Cart Team</p>`;
+    <p>For security, this request was received from a ${req.body.hostName} device using ${req.body.type}. If you did not request a password reset, please report us &nbsp;<a href="https://www.kfmcart.com/contactus">contact support</a>&nbsp; or we suggest changing your password right away from the application.</p><p>Thanks,<br />The KFM Cart Team</p>`;
 }
