@@ -62,7 +62,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 address: order.address,
                                 mobile: order.mobile, 
                                 orderId: order._id,
-                                orderDate: new Date(order.createdAt).toLocaleString(), 
+                                orderDate: new Date(order.dateOfPlaced).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
                                 subject:'Order placed!'
@@ -204,7 +204,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.delivered ? `Delivered on ${new Date(payType === 'cod' ? order.dateOfPayment : order.updatedAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
+                                    order.delivered ? `Delivered on ${new Date(payType === 'cod' ? order.dateOfPayment : order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
                                 }
                                 {
                                     auth.user.role === 'admin' && !order.delivered &&
