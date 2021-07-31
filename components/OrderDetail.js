@@ -5,13 +5,12 @@ import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
 import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, COD} from '../utils/constants.js'
 
-
 const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
     const [payType, setPayType] = useState('');
     const [payBtnText, setPayBtnText] = useState('Click to finish');
     const router = useRouter()
-
+    
     useEffect(() => {
         dispatch({ type: 'NOTIFY', payload: {loading: false} })
         setPayType('cod');
@@ -63,7 +62,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 address: order.address,
                                 mobile: order.mobile, 
                                 orderId: order._id,
-                                orderDate: new Date(order.createdAt).toLocaleString(), 
+                                orderDate: new Date(order.dateOfPlaced).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
                                 subject:'Order placed!'
@@ -136,7 +135,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
             setPayBtnText('Click to finish')
         }
     }
-
     if(!auth.user) return null;
     return(
         <>
@@ -186,7 +184,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 d-flex justify-content-between align-items-center`} role="alert">
                                 {
                                     order.accepted ? 
-                                    `Order accepted on ${new Date(order.dateOfAccept).toLocaleString()}` 
+                                    `Order accepted on ${new Date(order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` 
                                     : 
                                     (auth.user.role === 'admin' ? 
                                     'Order Placed'
@@ -206,7 +204,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.delivered ? 'alert-success' : 'alert-warning'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.delivered ? `Delivered on ${new Date(order.updatedAt).toLocaleString()}` : 'Not Delivered'
+                                    order.delivered ? `Delivered on ${new Date(payType === 'cod' ? order.dateOfPayment : order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Delivered'
                                 }
                                 {
                                     auth.user.role === 'admin' && !order.delivered &&
@@ -231,7 +229,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                             <div className={`alert ${order.paid ? 'alert-success' : 'alert-danger'}
                             d-flex justify-content-between align-items-center`} role="alert">
                                 {
-                                    order.paid ? `Paid on ${new Date(order.dateOfPayment).toLocaleString()}` : 'Not Paid'
+                                    order.paid ? `Paid on ${new Date(order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Paid'
                                 }
                                 
                             </div>
