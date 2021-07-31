@@ -62,7 +62,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 address: order.address,
                                 mobile: order.mobile, 
                                 orderId: order._id,
-                                orderDate: new Date(order.dateOfPlaced).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), 
+                                orderDate: new Date(order.createdAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
                                 subject:'Order placed!'
