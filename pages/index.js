@@ -62,7 +62,7 @@ const Home = (props) => {
 
   const handleLoadmore = () => {
     setPage(page + 1)
-    filterSearch({ router, page: page + 1 })
+    filterSearch({ router, page: page + 1 }, '/', false)
   }
 
   const settings = {
@@ -81,23 +81,23 @@ const Home = (props) => {
       <Head>
         <title>KFM Cart - Home</title>
       </Head>
-      
+
       <div className="carousel image img-fluid">
         <ControlledCarousel />
         <HomePageCards />
 
-            <h2>BEST SELLING PRODUCTS</h2>
-            <Slider {...settings}>
-              {
-                bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
-                  <div key={product._id} className="productsCarousel">
-                    <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
-                  </div>
-                )) : <h2>No Products</h2>
-              }
-            </Slider>
-          </div>
-          
+        <h2>BEST SELLING PRODUCTS</h2>
+        <Slider {...settings}>
+          {
+            bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
+              <div key={product._id} className="productsCarousel">
+                <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
+              </div>
+            )) : <h2>No Products</h2>
+          }
+        </Slider>
+      </div>
+
       <div className="container-fluid ">
         <Filter state={state} />
 
@@ -110,7 +110,7 @@ const Home = (props) => {
               data-toggle="modal" data-target="#exampleModal"
               onClick={handleDeleteAll}>
               DELETE ALL
-          </button>
+            </button>
           </div>
         }
       </div>
@@ -130,7 +130,7 @@ const Home = (props) => {
           : <button className="btn btn-outline-info d-block mx-auto mb-4"
             onClick={handleLoadmore}>
             See All
-        </button>
+          </button>
       }
     </div>
   )
