@@ -1,37 +1,37 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import filterSearch from '../utils/filterSearch'
-import {getData} from '../utils/fetchData'
-import {useRouter} from 'next/router'
+import { getData } from '../utils/fetchData'
+import { useRouter } from 'next/router'
 
-const Filter = ({state}) => {
+const Filter = ({ state }) => {
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('')
     const [category, setCategory] = useState('')
 
-    const {categories} = state
+    const { categories } = state
 
     const router = useRouter()
 
 
     const handleCategory = (e) => {
         setCategory(e.target.value)
-        filterSearch({router, category: e.target.value})
+        filterSearch({ router, category: e.target.value }, '/', false);
     }
 
     const handleSort = (e) => {
         setSort(e.target.value)
-        filterSearch({router, sort: e.target.value})
+        filterSearch({ router, sort: e.target.value }, '/', false)
     }
 
     useEffect(() => {
-        filterSearch({router, search: search ? search.toLowerCase() : 'all'})
-    },[search])
+        filterSearch({ router, search: search ? search.toLowerCase() : 'all' }, '/', false)
+    }, [search])
 
     return (
         <div className="input-group">
             <div className="input-group-prepend col-md-2 px-2 mt-2">
                 <select className="custom-select text-capitalize"
-                value={category} onChange={handleCategory}>
+                    value={category} onChange={handleCategory}>
 
                     <option value="all">All</option>
 
@@ -45,18 +45,18 @@ const Filter = ({state}) => {
 
             <form autoComplete="off" className="mt-2 col-md-8 px-2">
                 <input type="text" className="form-control" list="title_product" placeholder="Search"
-                value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} />
+                    value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} />
             </form>
 
             <div className="input-group-prepend col-md-2 px-2 mt-2">
                 <select className="custom-select text-capitalize"
-                value={sort} onChange={handleSort}>
+                    value={sort} onChange={handleSort}>
 
-                     <option value="-createdAt">Newest</option>
-                     <option value="oldest">Oldest</option>
-                     <option value="-sold">Best sales</option>
-                     <option value="-totalPrice">Price: High-Low</option>
-                     <option value="totalPrice">Price: Low-High</option>
+                    <option value="-createdAt">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="-sold">Best sales</option>
+                    <option value="-totalPrice">Price: High-Low</option>
+                    <option value="totalPrice">Price: Low-High</option>
 
                 </select>
             </div>
