@@ -54,9 +54,6 @@
 .profile_page .userProfileCol{
     padding-right:10px;
 }
-.profile_page .profilePageListColHeight {
-    height:540px;
-}
 
 @media (max-width: 768px) {
     .profile_page .userProfileCol{
