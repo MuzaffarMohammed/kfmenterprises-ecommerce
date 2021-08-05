@@ -34,7 +34,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #17a2b8;
   text-decoration: none;
 }
 
@@ -147,3 +147,6 @@ img{
 
 /* ----------- carousel ------------- */
 @import url("./carousel.css");
+
+/* ----------- Orders ------------- */
+@import url("./orders.css");

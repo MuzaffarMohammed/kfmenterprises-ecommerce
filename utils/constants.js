@@ -10,3 +10,13 @@ export const ONLINE = 'Online';
 export const CITIES_ARR = ['-Select-', 'Hyderabad', 'Secunderabad'];
 export const STATES_ARR = ['Telangana'];
 export const COUNTRIES_ARR = ['India'];
+
+//Filters.js
+
+export const ALL = 'All Orders';
+export const TODAY = 'Today';
+export const REJECTED = 'Rejected';
+export const DELIVERED = 'Delivered';
+export const ACCEPTED = 'Accepted';
+export const IN_TRANSIT = 'In Transit';
+export const YET_TO_DISPATCH = 'Yet To Dispatch';
