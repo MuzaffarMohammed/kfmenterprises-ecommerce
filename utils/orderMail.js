@@ -29,7 +29,7 @@ export const orderMail = (req) =>{
     <tr style="height: 45px;">
     <td style="width: 30%; height: 45px; border: 1px solid #cccccc;">
     <blockquote>
-    <p class="text-break" style="text-align: center; color: black; font-size: 13px;">${req.body.orderId}</p>
+    <p class="text-break" style="text-align: center; color: black; font-size: 13px;"><a href="${req.body.orderUrl}" style="text-decoration: none;">${req.body.orderId}</a></p>
     </blockquote>
     </td>
     <td style="width: 10%; text-align: center; height: 45px; font-size: 11px; border: 1px solid #cccccc;">${req.body.orderDate}</td>
@@ -58,6 +58,7 @@ export const orderMail = (req) =>{
     </tr>
     </tbody>
     </table>
+    <a href="${req.body.orderUrl}" style="text-decoration: none;"><input type="button" value="View Order" style="margin-top:10px; background-color: black; color: white; font-weight: bold; text-align: center; border-radius:5px;"/></a>
     <p style="font-size: 10px;"><br />In case you have further queries, please feel free to reach out to us on&nbsp; +91 8247732147 &nbsp;or mail us at&nbsp;<a href="mailto:kfmcart@gmail.com" target="_blank" rel="noopener">kfmcart@gmail.<wbr />com</a>.</p>
     <p style="font-size: 10px;">&nbsp;</p>
     <p style="font-size: 10px;">Warm Regards,</p>

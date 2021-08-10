@@ -22,7 +22,7 @@ return`<p>Hi ${req.body.userName},</p>
 <tbody>
 <tr style="height: 41px;">
 <td style="width: 23.1075%; height: 10px; text-align: right;">&nbsp;Order Details URL:</td>
-<td style="width: 86.0762%; height: 10px;">&nbsp;<a href="${req.body.orderUrl}" target="_blank" rel="noopener">https://www.kfmcart.com/order</a></td>
+<td style="width: 86.0762%; height: 10px;">&nbsp;<a href="${req.body.orderUrl}" target="_blank" rel="noopener"><input type="button" value="View Order" style="background-color: black; color: white; font-weight: bold; text-align: center; border-radius:5px;"/></a></td>
 </tr>
 </tbody>
 </table>
