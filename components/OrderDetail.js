@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import {patchData, postData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
 import { useRouter } from 'next/router'
-import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, COD} from '../utils/constants.js'
+import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, ORDER_DELIVERED_MAIL, COD} from '../utils/constants.js'
 
 const OrderDetail = ({orderDetail, state, dispatch}) => {
     const {auth, orders} = state
@@ -65,7 +65,8 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                 orderDate: new Date(order.createdAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), 
                                 id: auth.user.id, 
                                 mailType: ORDER_MAIL, 
-                                subject:'Order placed!'
+                                subject:'Order placed!',
+                                orderUrl: process.env.NEXT_PUBLIC_BASE_URL+`/order/${order._id}`,
                             }
             // Order placed summary mail to user
             postData('mail', userData, auth.token)
@@ -124,6 +125,15 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
 
             return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
         })
+        const userData = {  
+                                userName: order.user.name,
+                                mailType: ORDER_DELIVERED_MAIL, 
+                                subject: 'Order Delivered.',
+                                email: order.user.email,
+                                orderId: order._id,
+                                orderUrl: process.env.NEXT_PUBLIC_BASE_URL+`/order/${order._id}`,
+                            }
+            postData('mail', userData, auth.token)
     }
 
     const handlePayTypeChange = (e) =>{

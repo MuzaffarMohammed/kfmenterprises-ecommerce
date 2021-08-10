@@ -1,5 +1,5 @@
 import connectDB from '../../../utils/connectDB'
-import { ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL, PASSWORD_RESET_MAIL } from '../../../utils/constants'
+import { ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL, PASSWORD_RESET_MAIL, ORDER_DELIVERED_MAIL } from '../../../utils/constants'
 import nodemailer from 'nodemailer'
 import { orderMail } from '../../../utils/orderMail'
 import { accountActivationMail } from '../../../utils/accountActivationMail'
@@ -7,6 +7,7 @@ import { contactMail } from '../../../utils/contactMail'
 import { orderAdminMail } from '../../../utils/orderAdminMail'
 import { orderConfirmationMail } from '../../../utils/orderConfirmationMail'
 import { restPasswordMail } from '../../../utils/resetPasswordMail'
+import { orderDeliveredMail } from '../../../utils/orderDeliveredMail'
 import auth from '../../../middleware/auth'
 
 
@@ -19,6 +20,7 @@ connectDB()
     ORDER_ADMIN_MAIL        - Protected
     ORDER_CONFIRMATION_MAIL - Protected
     PASSWORD_RESET_MAIL     - Public
+    ORDER_DELIVERED_MAIL    - Protected
 */
 
 export default async (req, res) => {
@@ -79,6 +81,10 @@ const sendMail = async (req, res) => {
                 output = restPasswordMail(req);
                 toMailId = req.body.email;
                 break;
+            case ORDER_DELIVERED_MAIL:
+                output = orderDeliveredMail(req);
+                toMailId = req.body.email;
+                break;        
             default:
         }
 
