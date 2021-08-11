@@ -15,7 +15,9 @@ export default function OrdersGrid(props) {
                         </Link>
                     </td>
                     <td className="p-2">
-                        {order.dateOfPlaced && moment(order.dateOfPlaced).format("LT, ll")}
+                        {order.placed ? 
+                        order.dateOfPlaced && moment(order.dateOfPlaced).format("LT, ll")
+                        :order.createdAt && moment(order.createdAt).format("LT, ll")}
                     </td>
                     <td className="p-2">₹{order.total}</td>
                     {props.isAdmin && (

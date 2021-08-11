@@ -98,30 +98,32 @@ const Cart = () => {
           user: auth.user
         }
         dispatch({ type: 'ADD_ORDERS', payload: [newOrder, ...orders] })
-        scheduleAutoCancelOrder(newOrder);
+        //scheduleAutoCancelOrder(newOrder);
         return router.push(`/order/${res.newOrder._id}`)
       })
   }
 
   const scheduleAutoCancelOrder = (newOrder) => {
     try {
-      let time = process.env.NEXT_PUBLIC_AUTO_CANCEL_ORDER_TIME;
       const timer = setTimeout(() => {
+        console.log('Product Auto Cancellation Process Check Start...');
         getData(`order/${newOrder._id}`, auth.token)
           .then(res => {
             if (res.err) return;
             const order = res.order;
             if (order && !order.placed || (order.method === undefined || order.method === ONLINE)) {
+              //console.log('No payment done for order : ', order._id);
               deleteOrder(order);
             }
           })
         clearTimeout(timer);
-      }, time);
+      }, process.env.NEXT_PUBLIC_AUTO_CANCEL_ORDER_TIME);
     } catch (error) {
     }
   }
 
-  const deleteOrder = (order) =>{
+  const deleteOrder = (order) => {
+    console.log('Deleting order...')
     deleteData(`order/${order._id}`, auth.token)
       .then(res => {
         if (res.err) return;
@@ -130,13 +132,14 @@ const Cart = () => {
       })
   }
 
-  const updateInStockAndSoldOfProduct = (order) =>{
-    order.cart.map( product =>{
-      putData(`product/${product._id}`, {updateStockAndSold: true, sold: product.sold - product.quantity, inStock: product.inStock + product.quantity}, auth.token)
-        .then(res =>{
-          if(res.err) return;
-          console.log(res.msg)
-        })  
+  const updateInStockAndSoldOfProduct = (order) => {
+    console.log('Updating Instock and Sold count...')
+    order.cart.map(product => {
+      putData(`product/${product._id}`, { updateStockAndSold: true, sold: product.sold - product.quantity, inStock: product.inStock + product.quantity }, auth.token)
+        .then(res => {
+          if (res.err) return;
+          //console.log(res.msg)
+        })
     })
   }
 
@@ -177,7 +180,7 @@ const Cart = () => {
         <div className="sorry_and_continue_msg">
           Sorry, your <i className="fas fa-shopping-cart position-relative" aria-hidden="true"></i>cart is empty. Please add an item to place an order : <a href='/' style={{ fontWeight: '800' }}>
             Continue Shopping <i className="fas fa-home" aria-hidden="true" ></i></a>.
-              </div>
+        </div>
       </div>
     )
   }
@@ -245,6 +248,7 @@ const Cart = () => {
           <label htmlFor="mobile">Mobile</label>
           <input type="text" name="mobile" id="mobile"
             className="form-control mb-2" value={mobile}
+            maxlength="10"
             onChange={e => setMobile(e.target.value)} />
         </form>
         <h3>Total: <span className="text-danger">₹{total}</span></h3>
