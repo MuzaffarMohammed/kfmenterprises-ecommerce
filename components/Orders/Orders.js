@@ -4,6 +4,7 @@ import { DataContext } from '../../store/GlobalState'
 import OrdersGrid from './OrdersGrid';
 import Filters from './Filters'
 import { applyFilter, getAllFiltersLengths } from './filtersUtil';
+import { getData } from '../../utils/fetchData';
 
 export default function Orders() {
     const { state, dispatch } = useContext(DataContext);
@@ -13,11 +14,22 @@ export default function Orders() {
     const [filterLengths, setFilterLengths] = useState({})
     const [filteredOrders, setFilteredOrders] = useState(orders);
 
+
+    useEffect(() => {
+        getData('order', auth.token)
+            .then(res => {
+                if (res.err) setFilteredOrders([]);
+                else {
+                    const lengths = getAllFiltersLengths(res.orders);
+                    setFilterLengths(lengths);
+                    setFilteredOrders(res.orders);
+                }
+            })
+    }, [])
+
     useEffect(() => {
         if (orders) {
-            const lengths = getAllFiltersLengths(orders);
-            setFilterLengths(lengths);
-            setFilteredOrders(orders);
+
         }
     }, [orders])
 

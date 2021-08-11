@@ -55,7 +55,6 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
 
     const notifyUserAndAdminAboutOrder = (order) =>{
         if(auth && auth.user && auth.user.email){
-           console.log('order : ',order)
            const userData = {
                                 userName: auth.user.name, 
                                 email: auth.user.email,
