@@ -49,7 +49,7 @@ const Cart = () => {
           if (inStock > 0) {
             newArr.push({
               _id, title, images, totalPrice, inStock, sold,
-              quantity: item.quantity > inStock ? 1 : item.quantity
+              quantity: item.quantity > inStock ? inStock : item.quantity
             })
           }
         }
@@ -71,18 +71,21 @@ const Cart = () => {
     if (!(numRegex.test(mobile)) || !(mobile.length >= 10)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please enter a valid mobile number.' } })
 
     let newCart = [];
+    let nonAvailProducts = [];
     for (const item of cart) {
       const res = await getData(`product/${item._id}`)
       if (res.product.inStock - item.quantity >= 0) {
         newCart.push(item)
+      } else {
+        nonAvailProducts.push(item.title);
       }
     }
-
+    console.log('newCart : ', newCart, 'old cart : ', cart)
     if (newCart.length < cart.length) {
       setCallback(!callback)
       return dispatch({
         type: 'NOTIFY', payload: {
-          error: 'The product is out of stock or the quantity is insufficient.'
+          error: `This Product(s) - [${nonAvailProducts.join(',')}] quantity is insufficient or out of stock.`
         }
       })
     }
@@ -248,7 +251,7 @@ const Cart = () => {
           <label htmlFor="mobile">Mobile</label>
           <input type="text" name="mobile" id="mobile"
             className="form-control mb-2" value={mobile}
-            maxlength="10"
+            maxLength="10"
             onChange={e => setMobile(e.target.value)} />
         </form>
         <h3>Total: <span className="text-danger">₹{total}</span></h3>
