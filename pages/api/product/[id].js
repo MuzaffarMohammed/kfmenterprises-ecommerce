@@ -6,7 +6,7 @@ import { deleteData } from '../../../utils/fetchData'
 connectDB()
 
 /*
-    GET     - Protected
+    GET     - Public
     PUT      - Partial Protected
     DELETE    - Protected
 */
@@ -27,10 +27,12 @@ export default async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id, count } = req.query;
 
         const product = await Products.findById(id)
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
+
+        if (count) return res.json({ count: product.inStock })
 
         res.json({ product })
 
