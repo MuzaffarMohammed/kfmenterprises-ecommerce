@@ -15,7 +15,7 @@ export const orderDeliveredMail = (req) => {
 <table style="margin-bottom: 20px; width: 100%; min-width: 338px; border-collapse: collapse!important; text-align: left;">
 <tbody>
 <tr>
-<td style="border-collapse: collapse!important; font-family: Arial,sans-serif;" align="center"><a href="https://www.kfmcart.com" target="_blank" rel="noopener"><img class="CToWUd" style="width: 130px;" title="www.kfmcart.com" src="https://res.cloudinary.com/kfmproducts/image/upload/v1628196441/product/kfm_logo_hxptia.png" alt="www.kfmcart.com" width="130" border="0" /></a></td>
+<td style="border-collapse: collapse!important; font-family: Arial,sans-serif;" align="center"><a href="https://www.kfmcart.com" target="_blank" rel="noopener"><img class="CToWUd" style="width: 130px;" title="www.kfmcart.com" src="https://res.cloudinary.com/kfmcartproducts/image/upload/v1628853272/kfmlogo.png" alt="www.kfmcart.com" width="130" border="0" /></a></td>
 </tr>
 </tbody>
 </table>
