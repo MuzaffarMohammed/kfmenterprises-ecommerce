@@ -24,13 +24,13 @@ const getUsers = async (req, res) => {
     try {
        const result = await auth(req, res)
        if(result.role !== 'admin') 
-       return res.status(400).json({err: "Authentication is not valid"})
+       return res.status(401).json({err: "Unauthorized Access"})
 
         const users = await Users.find().select('-password')
         res.json({users})
 
     } catch (err) {
-        console.log('Error occurred while getUsers: '+err);
+        console.error('Error occurred while getUsers: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -54,7 +54,7 @@ const uploadInfor = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log('Error occurred while uploadInfor: '+err);
+        console.error('Error occurred while uploadInfor: '+err);
         return res.status(500).json({err: err.message})
     }
 }

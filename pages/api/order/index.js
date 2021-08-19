@@ -38,7 +38,7 @@ const getOrders = async (req, res) => {
 
         res.json({ orders })
     } catch (err) {
-        console.log('Error occurred while getOrders: ' + err);
+        console.error('Error occurred while getOrders: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -65,7 +65,7 @@ const createOrder = async (req, res) => {
         })
 
     } catch (err) {
-        console.log('Error occurred while createOrder: ' + err);
+        console.error('Error occurred while createOrder: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -100,7 +100,7 @@ const updateOrderPlaced = async (req, res) => {
             })
         }
     } catch (err) {
-        console.log('Error occurred while updateOrderPlaced: ' + err);
+        console.error('Error occurred while updateOrderPlaced: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }

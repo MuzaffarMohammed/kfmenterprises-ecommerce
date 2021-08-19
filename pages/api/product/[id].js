@@ -37,7 +37,7 @@ const getProduct = async (req, res) => {
         res.json({ product })
 
     } catch (err) {
-        console.log('Error occurred while getProduct: ' + err);
+        console.error('Error occurred while getProduct: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -52,7 +52,7 @@ const updateProduct = async (req, res) => {
             return res.status(200).json({ msg: 'Product updateStockAndSold updated!' })
         } else {
             const result = await auth(req, res)
-            if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
+            if (result.role !== 'admin') return res.status(401).json({ err: 'Unauthorized Access!' })
             if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
@@ -62,7 +62,7 @@ const updateProduct = async (req, res) => {
             res.json({ msg: 'Product updated successfully!' })
         }
     } catch (err) {
-        console.log('Error occurred while updateProduct: ' + err);
+        console.error('Error occurred while updateProduct: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -71,7 +71,7 @@ const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
 
-        if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
+        if (result.role !== 'admin') return res.status(401).json({ err: 'Unauthorized Access!' })
 
         const { id } = req.query;
 
@@ -81,7 +81,7 @@ const deleteProduct = async (req, res) => {
         res.json({ msg: 'Product deleted successfully.' })
 
     } catch (err) {
-        console.log('Error occurred while deleteProduct: ' + err);
+        console.error('Error occurred while deleteProduct: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -94,7 +94,7 @@ const deleteImages = async (id, token, res) => {
         console.log('Public Ids : ', publicIds);
         deleteData(`uploads/delete`, token, { publicIds });
     } catch (err) {
-        console.log('Error occurred while deleteImages: ' + err);
+        console.error('Error occurred while deleteImages: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }

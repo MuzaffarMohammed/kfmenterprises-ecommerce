@@ -9,7 +9,7 @@ connectDB()
     DELETE  - protected
 */
 export default async (req, res) => {
-    switch(req.method){
+    switch (req.method) {
         case "PUT":
             await updateCategory(req, res)
             break;
@@ -22,13 +22,12 @@ export default async (req, res) => {
 const updateCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if(result.role !== 'admin')
-        return res.status(400).json({err: "Authentication is not valid."})
+        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
 
-        const {id} = req.query
-        const {name} = req.body
+        const { id } = req.query
+        const { name } = req.body
 
-        const newCategory = await Categories.findOneAndUpdate({_id: id}, {name})
+        const newCategory = await Categories.findOneAndUpdate({ _id: id }, { name })
         res.json({
             msg: "Success! Update a new category",
             category: {
@@ -37,29 +36,29 @@ const updateCategory = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log('Error occurred while updateCategory: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while updateCategory: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }
 
 const deleteCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if(result.role !== 'admin')
-        return res.status(400).json({err: "Authentication is not valid."})
+        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
 
-        const {id} = req.query
 
-        const products = await Products.findOne({category: id})
-        if(products) return res.status(400).json({
+        const { id } = req.query
+
+        const products = await Products.findOne({ category: id })
+        if (products) return res.status(400).json({
             err: "Please delete all products with a relationship"
         })
 
         await Categories.findByIdAndDelete(id)
-        
-        res.json({msg: "Success! Deleted a category"})
+
+        res.json({ msg: "Success! Deleted a category" })
     } catch (err) {
-        console.log('Error occurred while deleteCategory: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while deleteCategory: ' + err);
+        return res.status(500).json({ err: err.message })
     }
 }

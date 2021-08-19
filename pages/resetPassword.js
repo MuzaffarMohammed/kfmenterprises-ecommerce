@@ -9,16 +9,8 @@ import moment from 'moment'
 
 const ResetPassword = (props) => {
     const router = useRouter()
-    const oldTime = props.query.ts;
-    const newTime = moment().valueOf();
+    const { id, rt } = props.query; // ts: Time in (ms) when requested, id - userId , rt - resetToken
 
-    const previousDate = moment.unix(oldTime / 1000);
-    const newDate = moment.unix(newTime / 1000);
-
-    let minutesDiff = newDate.diff(previousDate, 'minutes');
-    console.log('Minutes:' + minutesDiff);
-
-   
     const initialSate = {
         password: '',
         cf_password: ''
@@ -28,14 +20,7 @@ const ResetPassword = (props) => {
 
     const { state, dispatch } = useContext(DataContext)
     const { notify } = state
-    
-    const userid = props.query.userid
 
-    if (minutesDiff > 20) return false
-    console.log("USERID :", userid);
-    // useEffect(() => {
-    //     if(auth.user) setData({...data, name: auth.user.name})
-    // },[auth.user])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -54,7 +39,7 @@ const ResetPassword = (props) => {
 
     const updatePassword = () => {
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
-        patchData('user/resetPassword', { password, urlPwdResetFlag: true, userid }, undefined)
+        patchData('user/resetPassword', { password, urlPwdResetFlag: true, id, rt }, undefined)
             .then(res => {
                 if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                 dispatch({ type: 'NOTIFY', payload: { success: res.msg } })

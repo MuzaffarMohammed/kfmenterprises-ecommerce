@@ -102,7 +102,7 @@ const sendMail = async (req, res) => {
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log('Error occurred in Mail System transporter : ', error)
+                console.error('Error occurred in Mail System transporter : ', error)
                 throw error;
             }
             console.log('Message sent: %s', info.accepted);   
@@ -110,7 +110,7 @@ const sendMail = async (req, res) => {
         });
         return res.status(200).json({ info: 'Mail Sent!' });
     } catch (err) {
-        console.log('Error occurred while sendMail: ' + err);
+        console.error('Error occurred while sendMail: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }

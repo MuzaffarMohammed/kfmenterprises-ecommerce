@@ -21,7 +21,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
         try {
             e.preventDefault();
             if (auth && auth.user && !auth.user.activated) return dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
-            if (payType === 'online') return dispatch({ type: 'NOTIFY', payload: { error: 'Online payment is not available at this moment! Please try after sometime.' } })
+            if (payType === 'online') return dispatch({ type: 'NOTIFY', payload: { error: 'Online payment is not available at this moment! Please try after sometime.', delay: 8000 } })
             if (payType === 'cod') return codPay(order)
         } catch (err) {
             dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
@@ -49,7 +49,6 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
             // Redirecting to Thank you for shopping page.
             return router.push('/thankyou')
         } catch (err) {
-            console.log(err)
             dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
     }

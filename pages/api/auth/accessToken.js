@@ -11,10 +11,10 @@ export default async (req, res) => {
         if(!rf_token) return res.status(400).json({err: 'Please login now!'})
 
         const result = jwt.verify(rf_token, process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET)
-        if(!result) return res.status(400).json({err: 'Your token is incorrect or has expired.'})
+        if(!result) return res.status(401).json({err: 'Unauthorized Access!'})
 
         const user = await Users.findById(result.id)
-        if(!user) return res.status(400).json({err: 'User does not exist.'})
+        if(!user) return res.status(401).json({err: 'User does not exist.'})
 
         const access_token = createAccessToken({id: user._id})
         res.json({
@@ -30,7 +30,7 @@ export default async (req, res) => {
             }
         })
     }catch(err){
-        console.log('Error occurred while accessToken: '+err);
+        console.error('Error occurred while accessToken: '+err);
         return res.status(500).json({err: err.message})
     }
 }

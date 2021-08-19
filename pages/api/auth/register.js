@@ -39,10 +39,10 @@ const register = async (req, res) => {
         const addedUser = await newUser.save()
         const {_id: id, name:userName} = addedUser;
         postData('mail', {id, userName, email, mailType: ACC_ACT_MAIL, subject: 'Account Activation Request'})
-        res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping."})
+        res.json({msg: "Registration Successful, an email has been sent to your mail address, please activate your account to continue shopping.", delay:12000})
 
     }catch(err){
-        console.log('Error occurred while register: '+err);
+        console.error('Error occurred while register: '+err);
         return res.status(500).json({err: err.message})
     }
 }

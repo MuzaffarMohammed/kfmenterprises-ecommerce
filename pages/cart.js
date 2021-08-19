@@ -61,10 +61,13 @@ const Cart = () => {
   }, [callback])
 
   const handlePayment = async () => {
+
+    if (!auth.user) return dispatch({ type: 'NOTIFY', payload: { error: 'Please sign in to proceed further!' } })
+
     const numRegex = /^[0-9]+$/;
     //console.log('address: ', address+' mobile: '+mobile+ ' city : '+city+ ' countryState : '+countryState+ ' country: '+country);
     if (!address || !mobile || !city || !countryState || !country) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add all your details to proceed further.' } })
-    if (!(address.length >= 15)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add address like (Flat No./H No./Door No. , Street, Locality, Area) only.' } })
+    if (!(address.length >= 15)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add address like (Flat No./H No./Door No. , Street, Locality, Area) only.', delay: 12000 } })
     if (city == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a city.' } })
     if (countryState == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a State.' } })
     if (country == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a country.' } })
@@ -80,7 +83,7 @@ const Cart = () => {
         nonAvailProducts.push(item.title);
       }
     }
-    console.log('newCart : ', newCart, 'old cart : ', cart)
+
     if (newCart.length < cart.length) {
       setCallback(!callback)
       return dispatch({
@@ -189,7 +192,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="container row mx-auto">
+    <div className="container-fluid row justify-content-md-between">
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
@@ -207,12 +210,13 @@ const Cart = () => {
         </table>
       </div>
 
-      <div className="shipping-card col-md-5 my-3 text-left text-uppercase text-secondary border_login">
+      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-uppercase text-secondary border_login">
         <form>
-          <h2>Shipping Details</h2>
+          <h4>Shipping Details</h4>
 
           <label htmlFor="address">Address</label>
           <textarea type="text" name="address" id="address"
+            maxLength="30"
             className="form-control mb-2" value={address}
             onChange={e => setAddress(e.target.value)} />
 
@@ -254,7 +258,7 @@ const Cart = () => {
             maxLength="10"
             onChange={e => setMobile(e.target.value)} />
         </form>
-        <h3>Total: <span className="text-danger">₹{total}</span></h3>
+        <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
         <Link href={auth.user ? '#!' : '/signin'}>
           <a className="btn btn-dark my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>

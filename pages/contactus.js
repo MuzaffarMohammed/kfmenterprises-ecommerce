@@ -18,7 +18,6 @@ const ContactUs = () => {
 
   const handleChangeInput = e => {
     const {name, value} = e.target
-    console.log(name + value);
     setUserData({...userData, [name]:value})
     dispatch({ type: 'NOTIFY', payload: {} })
   }
