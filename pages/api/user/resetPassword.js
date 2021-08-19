@@ -45,11 +45,11 @@ const resetPassword = async (req, res) => {
 
 const validateResetToken = async (token, userId, res) => {
     try {
-        const passwordResetToken = await Tokens.findOne({ userId });
+        const passwordResetToken = await Tokens.findOne({ userId }).sort({ createdAt: -1 });
         if (!passwordResetToken) return res.status(401).json({ err: "Invalid request!" })
         const isValid = token === passwordResetToken.token;
         if (!isValid) return res.status(401).json({ err: "Invalid request!" });
-        else await Tokens.deleteOne({ userId });
+        else await Tokens.deleteMany({ userId });
     } catch (err) {
         console.error('Error occurred while validateResetToken: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })

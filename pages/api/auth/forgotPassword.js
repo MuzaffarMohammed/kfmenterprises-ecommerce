@@ -46,8 +46,8 @@ const forgotPassword = async (req, res) => {
 
 const generateNewToken = async (userId, res) => {
     try {
-        const token = await Tokens.findOne({ userId });
-        if (!token) await Tokens.deleteOne({ userId });
+        const token = await Tokens.findOne({ userId })
+        if (token) await Tokens.deleteMany({ userId });
 
         let resetToken = crypto.randomBytes(60).toString("hex");
         const hashedToken = await bcrypt.hash(resetToken, 12);
