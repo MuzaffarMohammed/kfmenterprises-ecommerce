@@ -18,7 +18,6 @@ const ContactUs = () => {
 
   const handleChangeInput = e => {
     const {name, value} = e.target
-    console.log(name + value);
     setUserData({...userData, [name]:value})
     dispatch({ type: 'NOTIFY', payload: {} })
   }
@@ -33,9 +32,9 @@ const ContactUs = () => {
       return dispatch({ type: 'NOTIFY', payload: {success: "Mail sent! Thank you for contacting us, we will get back to you shortly."} })
   }
 
-  useEffect(() => {
-    if(Object.keys(auth).length !== 0) router.push("/")
-  }, [auth])
+  // useEffect(() => {
+  //   if(Object.keys(auth).length !== 0) router.push("/")
+  // }, [auth])
 
     return(
       <div className="container-fluid">

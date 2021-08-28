@@ -61,7 +61,6 @@ const ProductsManager = (props) => {
 
     const handleChangeInput = async e => {
         const { name, value } = e.target;
-        console.log(name)
         if (name === 'price') {
             const calcTax = calcTaxAmount(value);
             setTaxAmount(calcTax);
@@ -120,7 +119,6 @@ const ProductsManager = (props) => {
         if(deleteArr[0].public_id){
             deleteData(`uploads/delete`, auth.token, {publicIds: [deleteArr[0].public_id]});
         }
-        console.log('deleteArr : ',deleteArr);
         setImages(newArr)
     }
 

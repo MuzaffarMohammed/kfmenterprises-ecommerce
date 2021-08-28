@@ -73,7 +73,7 @@ const getProducts = async (req, res) => {
             products
         })
     } catch (err) {
-        console.log('Error occurred while getProducts: '+err);
+        console.error('Error occurred while getProducts: '+err);
         return res.status(500).json({err: err.message})
     }
 }
@@ -81,9 +81,9 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if(result.role !== 'admin') return res.status(400).json({err: 'Authentication is not valid.'})
+        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
 
-        const {title, price, tax, totalPrice, inStock, description, content, category, images, number} = req.body
+        const {title, price, tax, totalPrice, inStock, description, content, category, images, number, discount} = req.body
 
         if(!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
         return res.status(400).json({err: 'Please add all the fields.'})
@@ -92,14 +92,14 @@ const createProduct = async (req, res) => {
         if(product) return res.status(400).json({err: 'Product Name already exist, please choose different name.'})
 
         const newProduct = new Products({
-            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images, number
+            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images, number, discount
         })
         await newProduct.save()
 
         res.json({msg: 'New product added successfully.'})
 
     } catch (err) {
-        console.log('Error occurred while createProduct: '+err);
+        console.error('Error occurred while createProduct: '+err);
         return res.status(500).json({err: err.message})
     }
 }

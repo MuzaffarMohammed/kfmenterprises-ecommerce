@@ -1,9 +1,9 @@
-
 import { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import OrdersGrid from './OrdersGrid';
 import Filters from './Filters'
 import { applyFilter, getAllFiltersLengths } from './filtersUtil';
+import { getData } from '../../utils/fetchData';
 
 export default function Orders() {
     const { state, dispatch } = useContext(DataContext);
@@ -13,11 +13,22 @@ export default function Orders() {
     const [filterLengths, setFilterLengths] = useState({})
     const [filteredOrders, setFilteredOrders] = useState(orders);
 
+
+    useEffect(() => {
+        getData('order', auth.token)
+            .then(res => {
+                if (res.err) setFilteredOrders([]);
+                else {
+                    const lengths = getAllFiltersLengths(res.orders);
+                    setFilterLengths(lengths);
+                    setFilteredOrders(res.orders);
+                }
+            })
+    }, [])
+
     useEffect(() => {
         if (orders) {
-            const lengths = getAllFiltersLengths(orders);
-            setFilterLengths(lengths);
-            setFilteredOrders(orders);
+
         }
     }, [orders])
 
@@ -33,7 +44,7 @@ export default function Orders() {
                 <div className="p-1">
                     <Filters isAdmin={isAdmin} isUser={isUser} handleFilter={handleFilter} lengths={filterLengths} />
                 </div>
-                <div className="p-1 table-responsive order-grid-height">
+                <div className="p-2 table-responsive orders-grid">
                     <OrdersGrid orders={filteredOrders} isAdmin={isAdmin} isUser={isUser} />
                 </div>
             </div>

@@ -6,8 +6,8 @@ import { getData } from '../utils/fetchData'
 export const DataContext = createContext()
 
 
-export const DataProvider = ({children}) => {
-    const initialState = { 
+export const DataProvider = ({ children }) => {
+    const initialState = {
         notify: {}, auth: {}, cart: [], modal: [], orders: [], users: [], categories: []
     }
 
@@ -15,11 +15,12 @@ export const DataProvider = ({children}) => {
     const { cart, auth } = state
 
     useEffect(() => {
+        //redirectToHttps();
         const firstLogin = localStorage.getItem("firstLogin");
-        if(firstLogin){
+        if (firstLogin) {
             getData('auth/accessToken').then(res => {
-                if(res.err) return localStorage.removeItem("firstLogin")
-                dispatch({ 
+                if (res.err) return localStorage.removeItem("firstLogin")
+                dispatch({
                     type: "AUTH",
                     payload: {
                         token: res.access_token,
@@ -30,20 +31,20 @@ export const DataProvider = ({children}) => {
         }
 
         getData('categories').then(res => {
-            if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
+            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
 
-            dispatch({ 
+            dispatch({
                 type: "ADD_CATEGORIES",
                 payload: res.categories
             })
         })
-        
-    },[])
+
+    }, [])
 
     useEffect(() => {
         const __next__cart01 = JSON.parse(localStorage.getItem('__next__cart01'))
 
-        if(__next__cart01) dispatch({ type: 'ADD_CART', payload: __next__cart01 })
+        if (__next__cart01) dispatch({ type: 'ADD_CART', payload: __next__cart01 })
     }, [])
 
     useEffect(() => {
@@ -51,30 +52,38 @@ export const DataProvider = ({children}) => {
     }, [cart])
 
     useEffect(() => {
-        if(auth.token){
+        if (auth.token) {
             getData('order', auth.token)
-            .then(res => {
-                if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
-                
-                dispatch({type: 'ADD_ORDERS', payload: res.orders})
-            })
-
-            if(auth.user.role === 'admin'){
-                getData('user', auth.token)
                 .then(res => {
-                    if(res.err) return dispatch({type: 'NOTIFY', payload: {error: res.err}})
-                
-                    dispatch({type: 'ADD_USERS', payload: res.users})
-                })
-            }
-        }else{
-            dispatch({type: 'ADD_ORDERS', payload: []})
-            dispatch({type: 'ADD_USERS', payload: []})
-        }
-    },[auth.token])
+                    if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
 
-    return(
-        <DataContext.Provider value={{state, dispatch}}>
+                    dispatch({ type: 'ADD_ORDERS', payload: res.orders })
+                })
+
+            if (auth.user.role === 'admin') {
+                getData('user', auth.token)
+                    .then(res => {
+                        if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+                        dispatch({ type: 'ADD_USERS', payload: res.users })
+                    })
+            }
+        } else {
+            dispatch({ type: 'ADD_ORDERS', payload: [] })
+            dispatch({ type: 'ADD_USERS', payload: [] })
+        }
+    }, [auth.token])
+
+    const redirectToHttps = () => {
+        if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_HOSTNAME !== 'localhost') {
+            if (window.location.protocol == 'http:') {
+                window.location.href = window.location.href.replace('http:', 'https:');
+            }
+        }
+    }
+
+    return (
+        <DataContext.Provider value={{ state, dispatch }}>
             {children}
         </DataContext.Provider>
     )

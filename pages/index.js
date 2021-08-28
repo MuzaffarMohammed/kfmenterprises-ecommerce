@@ -98,7 +98,7 @@ const Home = (props) => {
         </Slider>
       </div>
 
-      <div className="container-fluid ">
+      <div className="container-fluid p-0">
         <Filter state={state} />
 
         {

@@ -33,7 +33,7 @@ export const getAllFiltersLengths = (orders) => {
 }
 
 const getTodayOrders = (orders) => {
-    return orders.filter(order => order.dateOfPlaced ? moment(order.dateOfPlaced).isSame(moment(), 'day') : false);
+    return orders.filter(order => order.dateOfPlaced ? moment(order.dateOfPlaced).isSame(moment(), 'day') : !order.placed);
 }
 
 const getYetToDispatchOrders = (orders) => {

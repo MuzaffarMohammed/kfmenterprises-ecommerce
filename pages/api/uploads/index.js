@@ -9,7 +9,7 @@ import { upload } from "./multer";
 
 const apiRoute = nextConnect({
   onError(error, req, res) {
-    console.log('Error occurred while image upload: ' + error);
+    console.error('Error occurred while image upload: ' + error);
     res.status(501).json({ error: `Image upload Error: ${error}` });
   },
   onNoMatch(req, res) {
@@ -41,13 +41,12 @@ const uploadImage = async (req, res) => {
       data: urls
     })
   } catch (err) {
-    console.log('Error occured while uploadImage : ', err);
+    console.error('Error occured while uploadImage : ', err);
     res.status(500).json({ error: `Image upload failed!` });
   }
 }
 
 apiRoute.post((req, res) => {
-  console.log('POSTING IMAGES...', req.body)
   res.status(200).json({ data: 'success' });
 });
 

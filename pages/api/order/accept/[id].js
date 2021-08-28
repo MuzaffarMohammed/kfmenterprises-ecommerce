@@ -35,7 +35,7 @@ const acceptOrder = async(req, res) => {
         }
         
     } catch (err) {
-        console.log('Error occurred while acceptOrder: '+err);
+        console.error('Error occurred while acceptOrder: '+err);
         return res.status(500).json({err: err.message})
     }
 }

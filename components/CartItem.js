@@ -1,13 +1,20 @@
 import Link from 'next/link'
 import { decrease, increase } from '../store/Actions'
+import { getData } from '../utils/fetchData'
 
-const CartItem = ({item, dispatch, cart, isAdmin}) => {
+const plusProductCountClick = async (cart, itemId, quantity, dispatch) => {
+    const res = await getData(`product/${itemId}?count=true`)
+    if (res.error) return;
+    if (res.count && quantity < res.count) dispatch(increase(cart, itemId));
+}
+
+const CartItem = ({ item, dispatch, cart, isAdmin }) => {
     return (
         <tr>
             <td className='product-img'>
-                <img src={item.images[0].url} alt={item.images[0].url}
-                className="img-thumbnail w-100"
-                style={{minWidth: '70px', height: '70px'}} />
+                <img src={item.images[0].url} alt={item.title}
+                    className="img-thumbnail w-100"
+                    style={{ minWidth: '70px', height: '70px' }} />
             </td>
 
             <td className="product-row w-50 align-middle" >
@@ -17,26 +24,28 @@ const CartItem = ({item, dispatch, cart, isAdmin}) => {
                     </Link>
                 </h5>
 
-                <h6 className="text-danger">₹{item.quantity * item.totalPrice}</h6>
+                <p className="item-total">₹{`${item.totalPrice} x ${item.quantity} = ${item.quantity * item.totalPrice}`}</p>
                 {
                     item.inStock > 0
-                    ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock: ""}</p>
-                    : <p className="mb-1 text-danger">Out Of Stock</p>
+                        ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock : ""}</p>
+                        : <p className="mb-1 text-danger">Out Of Stock</p>
                 }
             </td>
 
             <td className="product-quantity align-middle">
                 <button className="btn btn-outline-secondary"
-                onClick={ () => dispatch(decrease(cart, item._id)) } 
-                disabled={item.quantity === 1 ? true : false} > - </button>
+                    onClick={() => dispatch(decrease(cart, item._id))}
+                    disabled={item.quantity === 1 ? true : false} > - </button>
 
                 <span className="px-2">{item.quantity}</span>
 
                 <button className="btn btn-outline-secondary"
-                onClick={ () => dispatch(increase(cart, item._id)) }
-                disabled={item.quantity === item.inStock ? true : false} > + </button>
+                    onClick={() => plusProductCountClick(cart, item._id, item.quantity, dispatch)}
+                >
+                    +
+                </button>
 
-                <i className="product-delete far fa-trash-alt text-danger" aria-hidden="true" 
+                <i className="product-delete far fa-trash-alt text-danger" aria-hidden="true"
                     data-toggle="modal" data-target="#exampleModal"
                     onClick={() => dispatch({
                         type: 'ADD_MODAL',
@@ -45,7 +54,7 @@ const CartItem = ({item, dispatch, cart, isAdmin}) => {
                 </i>
             </td>
 
-            
+
         </tr>
     )
 }

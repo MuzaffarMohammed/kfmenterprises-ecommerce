@@ -29,7 +29,7 @@ const getOrder = async (req, res) => {
             res.json({ order })
         }
     } catch (err) {
-        console.log('Error occurred while getOrder: ' + err);
+        console.error('Error occurred while getOrder: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
@@ -43,7 +43,7 @@ const deleteOrder = async (req, res) => {
             res.json({msg: "Order deleted due to non-payment policy!"})
         }
     } catch (err) {
-        console.log('Error occurred while deleteOrder: ' + err);
+        console.error('Error occurred while deleteOrder: ' + err);
         return res.status(500).json({ err: err.message })
     }
 }
