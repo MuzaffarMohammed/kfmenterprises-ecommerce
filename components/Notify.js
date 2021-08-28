@@ -8,7 +8,6 @@ const Notify = () => {
     const { notify } = state
 
     if (notify.error || notify.success) {
-        console.log('Delay : ', notify.delay)
         setTimeout(() => {
             dispatch({ type: 'NOTIFY', payload: {} })
         }, notify.delay ? notify.delay : 6000);

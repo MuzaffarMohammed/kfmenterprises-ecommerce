@@ -21,3 +21,10 @@
     background-color: #fff;
     color: #000;
   } */
+  .text-hover{
+    padding: 5px;
+  }
+  .text-hover:hover{
+    background: black;
+    border-radius: 5px; 
+  }
