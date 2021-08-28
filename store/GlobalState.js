@@ -15,7 +15,7 @@ export const DataProvider = ({ children }) => {
     const { cart, auth } = state
 
     useEffect(() => {
-        //redirectToHttps();
+        redirectToHttps();
         const firstLogin = localStorage.getItem("firstLogin");
         if (firstLogin) {
             getData('auth/accessToken').then(res => {
