@@ -55,6 +55,11 @@ const ProductItem = ({ product, handleCheck }) => {
         )
     }
 
+    const calculateDiscountedPercentage = (product) => {
+        const discountPercent = (product.discount / product.totalPrice) * 100;
+        return Math.round(discountPercent);
+    }
+
     return (
         <div className="card">
             {
@@ -65,7 +70,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     onChange={() => handleCheck(product._id)} />
             }
             <Link href={`/product/${product._id}`}>
-                <img className="card-img-top" src={product.images[0].url} alt={product.images[0].url} />
+                <img className="card-img-top" src={product.images[0].url} alt={product.title} />
             </Link>
             <div className="card-body">
                 <h6 className="card-title text-capitalize" title={product.title}>
@@ -77,9 +82,9 @@ const ProductItem = ({ product, handleCheck }) => {
                         {product.discount !== 0 &&
                             <>
                                 <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px' }}>
-                                    {product.totalPrice + (product.totalPrice - ((product.totalPrice * product.discount) / 100))}
+                                    {product.totalPrice + product.discount}
                                 </span>
-                                <span className='offer-text'>{product.discount}% Off</span>
+                                <span className='offer-text'>{calculateDiscountedPercentage(product)}% Off</span>
                             </>
                         }
                     </h6>

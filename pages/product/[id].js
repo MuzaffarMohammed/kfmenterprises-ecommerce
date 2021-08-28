@@ -30,7 +30,7 @@ const DetailProduct = (props) => {
             </Head>
 
             <div className="col-xl-6 col-xs-12">
-                <img src={ product.images[tab].url } alt={ product.images[tab].url }
+                <img src={ product.images[tab].url } alt={ product.title }
                 className="d-block img-thumbnail rounded mt-4 w-100 prodDetailImg" />
 
                 <div className="prodDetialmultiImgs row mx-0 mt-1" style={{cursor: 'pointer'}} >

@@ -170,7 +170,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
                                         order.cart.map(item => (
                                             <div className="row border-bottom mx-0 p-4 justify-content-betwenn
                                         align-items-center" key={item._id} style={{ maxWidth: '550px' }}>
-                                                <img src={item.images[0].url} alt={item.images[0].url}
+                                                <img src={item.images[0].url} alt={item.title}
                                                     style={{ width: '50px', height: '45px', objectFit: 'cover' }} />
                                                 <div className="flex-fill font-weight-normal px-3 m-0">
                                                     <Link href={`/product/${item._id}`}>
