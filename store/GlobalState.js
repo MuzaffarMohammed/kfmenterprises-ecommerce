@@ -1,7 +1,7 @@
 import { createContext, useReducer, useEffect } from 'react'
 import reducers from './Reducers'
 import { getData } from '../utils/fetchData'
-
+import Cookie from 'js-cookie';
 
 export const DataContext = createContext()
 
@@ -16,7 +16,8 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         redirectToHttps();
-        const firstLogin = localStorage.getItem("firstLogin");
+        const firstLogin = Cookie.get("firstLogin");
+        console.log('First Login!: ', firstLogin);
         if (firstLogin) {
             getData('auth/accessToken').then(res => {
                 if (res.err) return localStorage.removeItem("firstLogin")

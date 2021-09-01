@@ -38,10 +38,18 @@ const Signin = () => {
 
       Cookie.set('refreshtoken', res.refresh_token, {
         path: 'api/auth/accessToken',
-        expires: 7
+        expires: 7,
+        secure: process.env.NEXT_PUBLIC_HOSTNAME !== 'localhost',
+        sameSite: 'Lax'
       })
 
-      localStorage.setItem('firstLogin', true)
+      Cookie.set('firstLogin', true, {
+        path: '/',
+        expires: 15/1440,
+        httpOnly: true,
+        secure: process.env.NEXT_PUBLIC_HOSTNAME !== 'localhost',
+        sameSite: 'Lax'
+      })
     }catch(err){
       dispatch({ type: 'NOTIFY', payload: {loading: false} })
       if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
