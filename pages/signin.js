@@ -38,15 +38,14 @@ const Signin = () => {
 
       Cookie.set('refreshtoken', res.refresh_token, {
         path: 'api/auth/accessToken',
-        expires: 7,
+        expires: 7,//7 days
         secure: process.env.NEXT_PUBLIC_HOSTNAME !== 'localhost',
         sameSite: 'Lax'
       })
 
       Cookie.set('firstLogin', true, {
         path: '/',
-        expires: 15/1440,
-        httpOnly: true,
+        expires: 15/1440,//15 minutes
         secure: process.env.NEXT_PUBLIC_HOSTNAME !== 'localhost',
         sameSite: 'Lax'
       })
