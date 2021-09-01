@@ -80,7 +80,7 @@ const Footer = () => {
 
           <a className='text-light'> &copy; {new Date().getFullYear()}{' '} KFM Enterprises Private Limited.</a>
 
-          <a className='text-light ml-2 text-hover' href='https://appseonit.com'>
+          <a className='text-light ml-2 text-hover' style={{paddingTop: '0px'}}href='https://appseonit.com'>
             Designed By Appseonit Technologies Private Limited.
           </a>
         </div>
