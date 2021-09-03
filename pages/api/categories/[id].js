@@ -2,6 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoriesModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 /*
@@ -37,7 +38,7 @@ const updateCategory = async (req, res) => {
         })
     } catch (err) {
         console.error('Error occurred while updateCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -59,6 +60,6 @@ const deleteCategory = async (req, res) => {
         res.json({ msg: "Success! Deleted a category" })
     } catch (err) {
         console.error('Error occurred while deleteCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

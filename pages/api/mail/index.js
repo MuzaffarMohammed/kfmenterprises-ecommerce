@@ -1,5 +1,5 @@
 import connectDB from '../../../utils/connectDB'
-import { ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL, PASSWORD_RESET_MAIL, ORDER_DELIVERED_MAIL } from '../../../utils/constants'
+import { ORDER_MAIL, ACC_ACT_MAIL, CONTACT_MAIL, ORDER_ADMIN_MAIL, ORDER_CONFIRMATION_MAIL, PASSWORD_RESET_MAIL, ORDER_DELIVERED_MAIL, CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 import nodemailer from 'nodemailer'
 import { orderMail } from '../../../utils/orderMail'
 import { accountActivationMail } from '../../../utils/accountActivationMail'
@@ -111,6 +111,6 @@ const sendMail = async (req, res) => {
         return res.status(200).json({ info: 'Mail Sent!' });
     } catch (err) {
         console.error('Error occurred while sendMail: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

@@ -1,7 +1,7 @@
 import connectDB from '../../../../utils/connectDB'
 import Orders from '../../../../models/orderModel'
 import auth from '../../../../middleware/auth'
-import { COD } from '../../../../utils/constants'
+import { COD, CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
 
 connectDB()
 
@@ -57,6 +57,6 @@ const deliveredOrder = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while deliveredOrder: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

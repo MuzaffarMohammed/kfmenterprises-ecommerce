@@ -1,5 +1,5 @@
 import connectDB from '../../../utils/connectDB'
-import {ACC_ACT_MAIL} from '../../../utils/constants'
+import {ACC_ACT_MAIL, CONTACT_ADMIN_ERR_MSG} from '../../../utils/constants'
 import Users from '../../../models/userModel'
 import {valid} from '../../../utils/valid'
 import {postData} from '../../../utils/fetchData'
@@ -43,6 +43,6 @@ const register = async (req, res) => {
 
     }catch(err){
         console.error('Error occurred while register: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

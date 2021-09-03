@@ -1,8 +1,11 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
+import Tokens from '../../../models/tokenModel'
 import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 import { createAccessToken, createRefreshToken } from '../../../utils/generateToken'
-
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import moment from 'moment'
 
 connectDB()
 
@@ -25,7 +28,11 @@ const login = async (req, res) => {
         if (!isMatch) return res.status(401).json({ err: 'Incorrect User Name/Password.' })
 
         const access_token = createAccessToken({ id: user._id })
-        const refresh_token = createRefreshToken({ id: user._id })
+
+        const refreshTokenId = crypto.randomBytes(16).toString('hex');
+        const refresh_token = createRefreshToken({ id: user._id, refreshTokenId })
+
+        saveRefreshToken(refreshTokenId, user._id, refresh_token);
 
         res.json({
             msg: "Login Success!",
@@ -44,6 +51,16 @@ const login = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while login: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
+}
+
+const saveRefreshToken = async (refreshTokenId, userId, refreshToken) =>{
+    await new Tokens({
+        userId,
+        refreshTokenId,
+        token: refreshToken,
+        createdAt: Date.now(),
+        expiresAt: moment().add(7, 'days')
+    }).save();
 }

@@ -2,6 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { deleteData } from '../../../utils/fetchData'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -38,7 +39,7 @@ const getProduct = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while getProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -63,7 +64,7 @@ const updateProduct = async (req, res) => {
         }
     } catch (err) {
         console.error('Error occurred while updateProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -82,7 +83,7 @@ const deleteProduct = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while deleteProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -95,6 +96,6 @@ const deleteImages = async (id, token, res) => {
         deleteData(`uploads/delete`, token, { publicIds });
     } catch (err) {
         console.error('Error occurred while deleteImages: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -34,7 +35,7 @@ const updateRole = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while updateRole: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -51,6 +52,6 @@ const deleteUser = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while deleteUser: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

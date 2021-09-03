@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoriesModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -38,7 +39,7 @@ const createCategory = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while createCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -48,6 +49,6 @@ const getCategories = async (req, res) => {
         res.json({ categories })
     } catch (err) {
         console.error('Error occurred while getCategories: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

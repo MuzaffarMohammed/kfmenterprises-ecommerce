@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -31,7 +32,7 @@ const getUsers = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while getUsers: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -55,6 +56,6 @@ const uploadInfor = async (req, res) => {
         })
     } catch (err) {
         console.error('Error occurred while uploadInfor: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

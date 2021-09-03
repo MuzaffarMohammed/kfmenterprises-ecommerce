@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -74,7 +75,7 @@ const getProducts = async (req, res) => {
         })
     } catch (err) {
         console.error('Error occurred while getProducts: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -100,6 +101,6 @@ const createProduct = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while createProduct: '+err);
-        return res.status(500).json({err: err.message})
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
