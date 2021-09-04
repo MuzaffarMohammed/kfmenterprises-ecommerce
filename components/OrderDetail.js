@@ -151,7 +151,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
                 orderDetail.map(order => (
 
                     <div key={order._id} style={{ margin: '20px auto' }} className="border_login row justify-content-around">
-                        <div className="row col-12 justify-content-center" style={{ background: 'black', color: 'white' }}>
+                        <div className="row col-12 justify-content-center" style={{ background: '#144271', color: 'white' }}>
                             <h4 className='primary my-3'>SHIPPING & PAYMENT</h4>
                         </div>
                         <div className="my-3" style={{ maxWidth: '600px' }}>
@@ -209,7 +209,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
                                             }
                                             {
                                                 auth.user.role === 'admin' && !order.accepted &&
-                                                <button className="btn btn-dark text-uppercase"
+                                                <button className="btn btn-primary text-uppercase"
                                                     onClick={() => handleAccept(order)}>
                                                     Accept Order
                                                 </button>
@@ -224,7 +224,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
                                             }
                                             {
                                                 auth.user.role === 'admin' && !order.delivered &&
-                                                <button className="btn btn-dark text-uppercase"
+                                                <button className="btn btn-primary text-uppercase"
                                                     style={{ marginLeft: '10px' }}
                                                     onClick={() => handleDelivered(order)}>
                                                     Mark as delivered

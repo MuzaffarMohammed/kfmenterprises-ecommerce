@@ -49,7 +49,7 @@ const ForgotPassword = () => {
           <input type="email" className="form-control" id="exampleAccountRecoveryEmail" aria-describedby="emailHelp"
             name="accountRecoveryEmail" value={accountRecoveryEmail} onChange={handleChangeInput} placeholder="example@gmail.com" />
         </div>
-        <button type="submit" className="btn btn-dark signBtn w-100">Submit</button>
+        <button type="submit" className="btn btn-primary signBtn w-100">Submit</button>
         <p className="my-2">
           You don't have an account? <Link href="/register"><a style={{ color: '#2196f3' }}>Register Now</a></Link>
         </p>

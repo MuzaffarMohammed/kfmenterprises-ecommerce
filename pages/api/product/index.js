@@ -1,7 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
-import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
@@ -82,7 +82,7 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const {title, price, tax, totalPrice, inStock, description, content, category, images, number, discount} = req.body
 

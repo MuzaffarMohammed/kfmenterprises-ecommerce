@@ -2,7 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { deleteData } from '../../../utils/fetchData'
-import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
@@ -53,7 +53,7 @@ const updateProduct = async (req, res) => {
             return res.status(200).json({ msg: 'Product updateStockAndSold updated!' })
         } else {
             const result = await auth(req, res)
-            if (result.role !== 'admin') return res.status(401).json({ err: 'Unauthorized Access!' })
+            if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
             if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
@@ -72,7 +72,7 @@ const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
 
-        if (result.role !== 'admin') return res.status(401).json({ err: 'Unauthorized Access!' })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const { id } = req.query;
 

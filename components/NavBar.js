@@ -5,6 +5,7 @@ import { DataContext } from '../store/GlobalState'
 import { postData, putData } from '../utils/fetchData'
 import Cookie from 'js-cookie'
 import { ACC_ACT_MAIL } from '../utils/constants.js'
+import isEmpty from 'lodash/isEmpty';
 
 function NavBar() {
     const router = useRouter()
@@ -88,11 +89,11 @@ function NavBar() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <Link href="/">
                 <div className="d-flex align-items-end mb-0" style={{ cursor: 'pointer' }}>
                     <img src="/assets/images/icon/KFM_Logo_Small_Black.svg" alt="KFM Enterprises" />
-                    <h4 style={{ marginBottom: '0px', marginLeft: '2px', color: 'white' }}>CART</h4>
+                    <h4 style={{ marginBottom: '0px', marginLeft: '2px', color: '#3b6c84' }}>CART</h4>
                 </div>
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,16 +116,7 @@ function NavBar() {
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>
                                 <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
-                                    <span className="position-absolute"
-                                        style={{
-                                            padding: '3px 6px',
-                                            background: '#ed143dc2',
-                                            borderRadius: '50%',
-                                            top: '-10px',
-                                            right: '-10px',
-                                            color: 'white',
-                                            fontSize: '14px'
-                                        }}>
+                                    <span className="position-absolute cart-count-badge">
                                         {cart.length}
                                     </span>
                                 </i> Cart
@@ -132,7 +124,7 @@ function NavBar() {
                         </Link>
                     </li>
                     {
-                        Object.keys(auth).length === 0
+                        isEmpty(auth)
                             ? <li className="nav-item">
                                 <Link href="/signin">
                                     <a className={"nav-link" + isActive('/signin')}>

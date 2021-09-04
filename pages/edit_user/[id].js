@@ -56,11 +56,11 @@ const EditUser = () => {
                 <title>KFM Cart - Edit User</title>
             </Head>
 
-            <div>
-                <button className="btn btn-dark" onClick={() => router.back()}>
+            {/* <div>
+                <button className="btn btn-primary" onClick={() => router.back()}>
                     <i className="fas fa-long-arrow-alt-left" aria-hidden></i> Go Back
                 </button>
-            </div>
+            </div> */}
 
             <div className="col-md-4 mx-auto my-4">
                 <h2 className="text-uppercase text-secondary">Edit User</h2>
@@ -84,7 +84,7 @@ const EditUser = () => {
                     </label>
                 </div>
 
-                <button className="btn btn-dark" onClick={handleSubmit}>Update</button>
+                <button className="btn btn-primary" onClick={handleSubmit}>Update</button>
 
             </div>
 

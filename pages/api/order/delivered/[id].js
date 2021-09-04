@@ -1,7 +1,7 @@
 import connectDB from '../../../../utils/connectDB'
 import Orders from '../../../../models/orderModel'
 import auth from '../../../../middleware/auth'
-import { COD, CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
+import { COD, CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../../utils/constants'
 
 connectDB()
 
@@ -20,7 +20,7 @@ export default async (req, res) => {
 const deliveredOrder = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const { id } = req.query
 

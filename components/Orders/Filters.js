@@ -8,7 +8,7 @@ export default function Filters(props) {
             {props.isAdmin && (
                 <>
                     <button onClick={() => { props.handleFilter(YET_TO_DISPATCH) }} className="btn btn-warning btn-sm m-1 " data-toggle="tooltip" data-placement="bottom" title="Awaiting Confirmation Orders">New Orders <span className="badge badge-light">{props.lengths || props.lengths === 0 ? props.lengths['YET_TO_DISPATCH'] : ''}</span></button>
-                    <button onClick={() => { props.handleFilter(ACCEPTED) }} className="btn btn-info btn-sm m-1 " data-toggle="tooltip" data-placement="bottom" title="Accepted Orders">Accepted <span className="badge badge-light">{props.lengths || props.lengths === 0 ? props.lengths['ACCEPTED'] : ''}</span></button>
+                    <button onClick={() => { props.handleFilter(ACCEPTED) }} className="btn btn-primary btn-sm m-1 " data-toggle="tooltip" data-placement="bottom" title="Accepted Orders">Accepted <span className="badge badge-light">{props.lengths || props.lengths === 0 ? props.lengths['ACCEPTED'] : ''}</span></button>
                 </>
             )}
             {props.isUser && (

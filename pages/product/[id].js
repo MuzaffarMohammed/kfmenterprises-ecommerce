@@ -64,7 +64,7 @@ const DetailProduct = (props) => {
                     {product.content}
                 </div>
 
-                <button type="button" className="btn btn-dark d-block my-3 px-5"
+                <button type="button" className="btn btn-primary d-block my-3 px-5"
                 disabled={isAdmin ? true : false}
                 onClick={()=>{dispatchAddToCart()}} >
                     Buy
