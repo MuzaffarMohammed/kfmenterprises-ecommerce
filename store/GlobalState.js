@@ -17,10 +17,14 @@ export const DataProvider = ({ children }) => {
     useEffect(() => {
         redirectToHttps();
         const firstLogin = Cookie.get("firstLogin");
-        console.log('First Login!: ', firstLogin);
-        if (firstLogin) {
+        const refreshtoken = Cookie.get("refreshtoken");
+        if (firstLogin || refreshtoken) {
             getData('auth/accessToken').then(res => {
-                if (res.err) return localStorage.removeItem("firstLogin")
+                if (res.err) {
+                    Cookie.remove('firstLogin', { path: 'api/auth/accessToken' });
+                    Cookie.remove('refreshtoken', { path: 'api/auth/accessToken' });
+                    return;
+                }
                 dispatch({
                     type: "AUTH",
                     payload: {

@@ -1,10 +1,11 @@
 import Head from 'next/head'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { imageUpload } from '../../utils/imageUpload'
 import { postData, getData, putData, deleteData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
-import { renameFile } from '../../utils/util'
+import { isAdmin, isLoggedIn, renameFile } from '../../utils/util'
+import isEmpty from 'lodash/isEmpty';
 
 const ProductsManager = (props) => {
     const initialState = {
@@ -27,6 +28,7 @@ const ProductsManager = (props) => {
     const calcTotalPrice = (actPrice, calctTaxAmount) => Math.round((Number(actPrice) + calctTaxAmount));
     const calcTaxAmount = (actPrice) => Math.round(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
+    let delImages = useRef([])
     const [taxAmount, setTaxAmount] = useState(tax)
     const [totalAmount, setTotalAmount] = useState(totalPrice)
     const [totalProducts, setTotalProducts] = useState(props.totalProducts)
@@ -37,7 +39,14 @@ const ProductsManager = (props) => {
     const { id } = router.query
     const [onEdit, setOnEdit] = useState(false)
 
+    // useEffect(() => {
+    //     console.log('auth : ', auth)
+    //     isLoggedIn(auth, dispatch, router);
+
+    // }, [])
+
     useEffect(() => {
+        console.log('id : ', id)
         if (id) {
             setOnEdit(true)
             getData(`product/${id}`).then(res => {
@@ -46,7 +55,7 @@ const ProductsManager = (props) => {
                 const calcTotal = calcTotalPrice(res.product.price, calcTax);
                 setTotalAmount(calcTotal);
                 setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotal, discount: product.discount })
-                setImages(res.product.images)
+                setImages(res.product.images);
             })
         } else {
             setOnEdit(false)
@@ -55,7 +64,7 @@ const ProductsManager = (props) => {
             const calcTotal = calcTotalPrice(product.price, calcTax);
             setTotalAmount(calcTotal);
             setProduct({ ...initialState, tax: calcTax, totalPrice: calcTotal })
-            setImages([])
+            setImages([]);
         }
     }, [id])
 
@@ -72,11 +81,11 @@ const ProductsManager = (props) => {
         }
         dispatch({ type: 'NOTIFY', payload: {} });
     }
-   
 
-    const existingAllImgArr = (images) => {
+
+    const existingAllImgArr = (imgs) => {
         const existingImgArr = [];
-        images.forEach(file => {
+        imgs.forEach(file => {
             if (file.url && file.url.indexOf(Product_) !== -1 && file.url.indexOf(_Image_) !== -1) {
                 existingImgArr.push(parseInt(file.url.split(Product_)[1].split(_Image_)[1].split('.')[0]));
             }
@@ -84,7 +93,7 @@ const ProductsManager = (props) => {
         return existingImgArr;
     }
     const getSucceedingFileNo = (existingImgArr, imgNo) => {
-        while(existingImgArr.indexOf(imgNo) !== -1) ++imgNo;
+        while (existingImgArr.indexOf(imgNo) !== -1) ++imgNo;
         return imgNo;
     }
 
@@ -96,7 +105,7 @@ const ProductsManager = (props) => {
         let existingImgCount = images.length;
 
         if (files.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Files does not exist.' } })
-        if (existingImgCount + files.length > 5) return dispatch({ type: 'NOTIFY', payload: { error: 'Select up to 5 images.' } })
+        if (existingImgCount + files.length > 5) return dispatch({ type: 'NOTIFY', payload: { error: 'Select upto 5 images only!' } })
         const existingImgArr = existingAllImgArr(images);
         files.forEach(file => {
             if (file.size > 1024 * 1024) return err = 'The largest image size is 1mb'
@@ -109,50 +118,58 @@ const ProductsManager = (props) => {
             newImages.push(file);
         })
         if (err) dispatch({ type: 'NOTIFY', payload: { error: err } })
-        setImages([...images, ...newImages])
+        setImages([...images, ...newImages]);
     }
 
     const deleteImage = index => {
         const newArr = [...images]
-        const deleteArr = newArr.splice(index, 1);
-        
-        if(deleteArr[0].public_id){
-            deleteData(`uploads/delete`, auth.token, {publicIds: [deleteArr[0].public_id]});
+        delImages.current = newArr.splice(index, 1);
+        setImages(newArr);
+    }
+
+    const deleteImagesFromCloudinary = (imgsTodelete) => {
+        let publicIds = [];
+        imgsTodelete.map(img => { if (img.public_id) publicIds.push(img.public_id) });
+        if (publicIds) deleteData(`uploads/delete`, auth.token, { publicIds });
+        delImages.current = [];
+    }
+
+    const handleCloudinaryImages = async (imgs) => {
+        deleteImagesFromCloudinary(delImages.current);
+        let newUploadedImgsURLs = [];
+        const imgsToUpload = imgs.filter(img => !img.url)
+        const oldImgsURLs = imgs.filter(img => img.url)
+        if (imgsToUpload.length > 0) {
+            newUploadedImgsURLs = await imageUpload(imgsToUpload, 'product');
+            const handledImgs = [...oldImgsURLs, ...newUploadedImgsURLs];
+            setImages(handledImgs);
+            return handledImgs;
         }
-        setImages(newArr)
+        return images;
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (auth.user.role !== 'admin')
-            return dispatch({ type: 'NOTIFY', payload: { error: 'Authentication is not valid.' } })
-
+        isAdmin(auth, dispatch);
         if (!title) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product name.' } })
         if (!price) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product price.' } })
         if (!inStock || inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product stock.' } })
         if (!description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
         if (!content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
-        if (category === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
+        if (category === '' || category === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
         if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product images.' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
-        let media = []
-        const imgNewURL = images.filter(img => !img.url)
-        const imgOldURL = images.filter(img => img.url)
-        if (imgNewURL.length > 0) {
-            media = await imageUpload(imgNewURL, 'product');
-            setImages([...imgOldURL, ...media]);
-        }
+        const handledImages = await handleCloudinaryImages(images);
         let res;
         if (onEdit) {
-            res = await putData(`product/${id}`, { ...product, images: [...imgOldURL, ...media] }, auth.token)
+            res = await putData(`product/${id}`, { ...product, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         } else {
-            res = await postData('product', { ...product, number: totalProducts, images: [...imgOldURL, ...media] }, auth.token)
+            res = await postData('product', { ...product, number: totalProducts, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         }
         return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
-
     }
 
     return (
@@ -216,7 +233,7 @@ const ProductsManager = (props) => {
                         <div className="col mt-2">
                             <div className="input-group-prepend px-0 my-2">
                                 <select name="category" id="category" value={category}
-                                onChange={handleChangeInput} className="custom-select text-capitalize">
+                                    onChange={handleChangeInput} className="custom-select text-capitalize">
                                     <option value="all">All</option>
                                     {
                                         categories.map(item => (
@@ -257,7 +274,7 @@ const ProductsManager = (props) => {
                 </div>
 
                 <div className="row col-xl-12 mt-2 justify-content-center">
-                    <button type="submit" className="btn btn-info w-100">
+                    <button type="submit" className="btn btn-primary w-100">
                         {onEdit ? 'Update' : 'Create'}
                     </button>
                 </div>

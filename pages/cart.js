@@ -261,7 +261,7 @@ const Cart = () => {
         <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
         <Link href={auth.user ? '#!' : '/signin'}>
-          <a className="btn btn-dark my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
+          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
         </Link>
 
       </div>

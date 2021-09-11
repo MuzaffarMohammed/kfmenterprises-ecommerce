@@ -12,9 +12,19 @@ const tokenSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 900,// this is the expiry time in seconds : 15 mins
+        // expires: 900,// this is the expiry time in seconds : 15 mins
     },
+    refreshTokenId:{
+        type: String,
+        default: ''
+    },
+    isBlackListed: {
+        type: Boolean,
+        default: false
+    },
+    expiresAt:  {type: Date, default: undefined } 
 });
 
+tokenSchema.index({ "expiresAt": 1 }, { expireAfterSeconds: 0 });
 let Dataset = mongoose.models.token || mongoose.model('token', tokenSchema)
 export default Dataset

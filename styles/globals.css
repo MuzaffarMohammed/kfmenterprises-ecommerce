@@ -1,33 +1,37 @@
 * {
   box-sizing: border-box;
- }
-*:before,
-*:after {
+}
+
+*:before, *:after {
   box-sizing: border-box;
 }
-html,
-body {
+
+html, body {
   height: 100%;
   position: relative;
 }
-html,
-body {
+
+html, body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
-.main{
-  min-height: 100vh; /* will cover the 100% of viewport */
+
+.main {
+  min-height: 100vh;
+  /* will cover the 100% of viewport */
   overflow: hidden;
   display: block;
   position: relative;
-  padding-bottom: 350px; /* height of your footer */
+  padding-bottom: 350px;
+  /* height of your footer */
   background-color: #f1f7f8;
 }
-.footer{
-  color:white;
-  background-color: #191919;
+
+.footer {
+  color: white;
+  /* background-color: #191919; */
+  background: linear-gradient(to right, #092f56, #000000);
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -42,111 +46,187 @@ a {
   box-sizing: border-box;
 }
 
-.p-4{
+.p-4 {
   padding: 0.5rem!important;
 }
 
-img{
+img {
   /* object-fit: cover; */
   object-position: 0 30%;
 }
 
-.home_page{
+h1, h2, h3 {
+  color: #144271;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #144271;
+  border-color: #144271;
+}
+
+.btn-outline-primary {
+  color: #144271;
+  border-color: #144271;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus {
+  color: white;
+  border-color: #144271;
+  background-color: #144271;
+}
+
+/* .btn-success {
+  background-color: #144271;
+  border-color: #0f1f2e;
+} */
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+  background-color: #0f1f2e;
+  border-color: #0f1f2e;
+}
+
+.home_page {
   background-color: #f1f7f8;
   margin-top: -4px;
 }
 
-.payment-section{margin-top: 58px;}
+.payment-section {
+  margin-top: 58px;
+}
 
 @media (max-width: 768px) {
-  .home_page{ margin-top: -4px;}
+  .home_page {
+    margin-top: -4px;
+  }
 }
 
 @media (max-width: 1024px) {
-  .payment-section{margin-top: 5px;}
+  .payment-section {
+    margin-top: 5px;
+  }
 }
 
-.home_page h2 {margin: 15px; font-size: 18px; font-weight: 700; text-align: left;}
+.home_page h2 {
+  margin: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: left;
+}
 
-.border_login{
+.border_login {
   box-shadow: 0px 0px 15px 0px rgb(197 197 197);
   border-radius: 10px;
   padding: 20px;
   margin-left: 20px;
   width: 100%;
   height: 100%;
+  background-color: white;
 }
 
-.signBtn{
+.signBtn {
   box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 20%);
 }
 
 /* Term or policy Pages css */
 
-.terms h1 {font-size: 28px; margin-top: 4%;}
-.terms h2 {font-size: 21px; text-align: left;}
-.terms strong{font-size: 13px;}
-.terms p {font-size: 13px; text-align: left;}
-.terms li{font-size: 13px;}
+.terms h1 {
+  font-size: 28px;
+  margin-top: 4%;
+}
+
+.terms h2 {
+  font-size: 21px;
+  text-align: left;
+}
+
+.terms strong {
+  font-size: 13px;
+}
+
+.terms p {
+  font-size: 13px;
+  text-align: left;
+}
+
+.terms li {
+  font-size: 13px;
+}
+
+.company-logo {
+  margin-bottom: 0px;
+  margin-left: 2px;
+  color: #074968;
+  font-weight: 900
+}
 
 @media (max-width: 767px) {
-  .terms h1 {font-size: 22px;}
-  .terms h2 {font-size: 16px; text-align: left;}
-  .home_page h2 {text-align: center;}
+  .terms h1 {
+    font-size: 22px;
+  }
+  .terms h2 {
+    font-size: 16px;
+    text-align: left;
+  }
+  .home_page h2 {
+    text-align: center;
+  }
 }
 
 @media (max-width: 768px) {
   .carousel-indicators {
-  display: none;
+    display: none;
   }
-  .p-4{
+  .p-4 {
     padding: 1.5rem!important;
   }
-  .main{
+  .main {
     padding-bottom: 768px;
   }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 768px) {
-.main{
-  padding-bottom: 335px;
+  .main {
+    padding-bottom: 335px;
+  }
 }
-}
+
 /* ----------- Loading ------------- */
+
 @import url("./loading.css");
-
 /* ----------- Products ------------- */
+
 @import url("./product.css");
-
 /* ----------- Profile ------------- */
+
 @import url("./profile.css");
-
 /* ----------- Products Manager ------------- */
+
 @import url("./products_manager.css");
-
 /* ----------- Nav Bar ------------- */
+
 @import url("./navbar.css");
-
 /* ----------- Footer ------------- */
+
 @import url("./footer.css");
-
 /* ----------- Cart ------------- */
+
 @import url("./cart.css");
-
 /* ----------- ProductsCarousel ------------- */
+
 @import url("./products_carousel.css");
-
 /* ----------- ContactUs ------------- */
+
 @import url("./contactus.css");
-
 /* ----------- HomePageCards ------------- */
+
 @import url("./HomePageCards.css");
-
 /* ----------- THank You Page ------------- */
+
 @import url("./thank_you.css");
-
 /* ----------- carousel ------------- */
-@import url("./carousel.css");
 
+@import url("./carousel.css");
 /* ----------- Orders ------------- */
+
 @import url("./orders.css");

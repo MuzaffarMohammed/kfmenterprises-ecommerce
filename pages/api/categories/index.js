@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoriesModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
@@ -23,7 +24,7 @@ export default async (req, res) => {
 const createCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const { name } = req.body
         if (!name) return res.status(400).json({ err: "Name can not be left blank." })
@@ -38,7 +39,7 @@ const createCategory = async (req, res) => {
 
     } catch (err) {
         console.error('Error occurred while createCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -48,6 +49,6 @@ const getCategories = async (req, res) => {
         res.json({ categories })
     } catch (err) {
         console.error('Error occurred while getCategories: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

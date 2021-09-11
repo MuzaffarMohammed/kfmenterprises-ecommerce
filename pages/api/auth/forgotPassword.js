@@ -56,6 +56,7 @@ const generateNewToken = async (userId, res) => {
             userId,
             token: hashedToken,
             createdAt: Date.now(),
+            expiresAt: moment().add(20, 'minutes') 
         }).save();
 
         return hashedToken;

@@ -26,11 +26,11 @@ const DetailOrder = () => {
                 <title>KFM Cart - Detail Orders</title>
             </Head>
 
-            <div>
-                <button className="btn btn-dark" onClick={() => router.back()}>
+            {/* <div>
+                <button className="btn btn-primary" onClick={() => router.back()}>
                     <i className="fas fa-long-arrow-alt-left"  aria-hidden="true"></i> Go Back
                 </button>
-            </div>
+            </div> */}
             
             <OrderDetail orderDetail={orderDetail} state={state} dispatch={dispatch} />
         

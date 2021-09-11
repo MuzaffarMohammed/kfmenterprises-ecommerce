@@ -78,7 +78,7 @@ const ResetPassword = (props) => {
                                 placeholder="Confirm new password" onChange={handleChange} />
                         </div>
 
-                        <button className="btn btn-dark w-100 signBtn" disabled={notify.loading}
+                        <button className="btn btn-primary w-100 signBtn" disabled={notify.loading}
                             onClick={handleUpdateProfile}>
                             Update
                         </button>

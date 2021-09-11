@@ -18,7 +18,7 @@ const ProductItem = ({ product, handleCheck }) => {
         return (
             <>
                 <Link href={`/product/${product._id}`}>
-                    <a className="btn btn-info"
+                    <a className="btn btn-primary"
                         style={{ marginRight: '5px', flex: 1 }}>View</a>
                 </Link>
                 <button className="btn btn-success"
@@ -35,7 +35,7 @@ const ProductItem = ({ product, handleCheck }) => {
         return (
             <>
                 <Link href={`/create/${product._id}`}>
-                    <a className="btn btn-info"
+                    <a className="btn btn-primary"
                         style={{ marginRight: '5px', flex: 1 }}>Edit</a>
                 </Link>
                 <button className="btn btn-danger"

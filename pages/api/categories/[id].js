@@ -2,6 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoriesModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 /*
@@ -22,7 +23,7 @@ export default async (req, res) => {
 const updateCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const { id } = req.query
         const { name } = req.body
@@ -37,14 +38,14 @@ const updateCategory = async (req, res) => {
         })
     } catch (err) {
         console.error('Error occurred while updateCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
 const deleteCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: "Unauthorized Access!" })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
 
         const { id } = req.query
@@ -59,6 +60,6 @@ const deleteCategory = async (req, res) => {
         res.json({ msg: "Success! Deleted a category" })
     } catch (err) {
         console.error('Error occurred while deleteCategory: ' + err);
-        return res.status(500).json({ err: err.message })
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
