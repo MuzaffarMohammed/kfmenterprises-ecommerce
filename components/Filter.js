@@ -45,7 +45,7 @@ const Filter = ({ state }) => {
 
             <form autoComplete="off" className="mt-2 col-md-8 px-2">
                 <input type="text" className="form-control" list="title_product" placeholder="Search"
-                    value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} />
+                    value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} maxLength='25' />
             </form>
 
             <div className="input-group-prepend col-md-2 px-2 mt-2">

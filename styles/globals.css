@@ -154,10 +154,17 @@ h1, h2, h3 {
 }
 
 .company-logo {
-  margin-bottom: 0px;
+  margin-bottom: -2px;
   margin-left: 2px;
   color: #074968;
   font-weight: 900
+}
+
+.cart-logo {
+  font-size: 32px;
+  color: #074968;
+  margin-left: -5px;
+  padding-bottom: 2px;
 }
 
 @media (max-width: 767px) {

@@ -5,7 +5,7 @@ import Link from 'next/link'
 const Footer = () => {
   return (
     <footer className='footer'>
-      <div style={{height:'10px',background:'#092e55'}}></div>
+      <div style={{ height: '10px', background: '#092e55' }}></div>
       <div className='text-left'>
         <div className='container-fluid m-1 pt-1'>
           <div className="row" >
@@ -14,6 +14,7 @@ const Footer = () => {
                 <div className="d-flex align-items-end" style={{ cursor: 'pointer' }}>
                   <img src="/assets/images/icon/KFM_Logo_Small_Black.svg" alt="KFM Enterprises" />
                   <h4 className='company-logo'>CART</h4>
+                  <i className="fas fa-shopping-cart position-relative cart-logo" aria-hidden="true"></i>
                 </div>
               </Link>
               <p className='pt-2'>KFM Cart, Purity is our priority, an ecommerce service, a part of KFM Enterprises Private Limited. We believe in hygienic, efficient and smooth delivery of all the items listed on our website. You are only a click away to place your order with KFM CART.</p>
@@ -81,7 +82,7 @@ const Footer = () => {
 
           <a className='text-light'> &copy; {new Date().getFullYear()}{' '} KFM Enterprises Private Limited.</a>
 
-          <a className='text-light ml-2 text-hover' style={{paddingTop: '0px'}}href='https://appseonit.com'>
+          <a className='text-light ml-2 text-hover' style={{ paddingTop: '0px' }} href='https://appseonit.com'>
             Designed By Appseonit Technologies Private Limited.
           </a>
         </div>
