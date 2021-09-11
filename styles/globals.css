@@ -153,6 +153,13 @@ h1, h2, h3 {
   font-size: 13px;
 }
 
+.company-logo {
+  margin-bottom: 0px;
+  margin-left: 2px;
+  color: #074968;
+  font-weight: 900
+}
+
 @media (max-width: 767px) {
   .terms h1 {
     font-size: 22px;

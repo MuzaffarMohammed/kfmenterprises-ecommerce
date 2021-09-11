@@ -13,7 +13,7 @@ const Footer = () => {
               <Link href="/">
                 <div className="d-flex align-items-end" style={{ cursor: 'pointer' }}>
                   <img src="/assets/images/icon/KFM_Logo_Small_Black.svg" alt="KFM Enterprises" />
-                  <h4 style={{ marginBottom: '0px', marginLeft: '2px', color: '#3b6c84' }}>CART</h4>
+                  <h4 className='company-logo'>CART</h4>
                 </div>
               </Link>
               <p className='pt-2'>KFM Cart, Purity is our priority, an ecommerce service, a part of KFM Enterprises Private Limited. We believe in hygienic, efficient and smooth delivery of all the items listed on our website. You are only a click away to place your order with KFM CART.</p>

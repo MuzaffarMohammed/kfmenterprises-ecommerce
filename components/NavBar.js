@@ -93,7 +93,7 @@ function NavBar() {
             <Link href="/">
                 <div className="d-flex align-items-end mb-0" style={{ cursor: 'pointer' }}>
                     <img src="/assets/images/icon/KFM_Logo_Small_Black.svg" alt="KFM Enterprises" />
-                    <h4 style={{ marginBottom: '0px', marginLeft: '2px', color: '#3b6c84' }}>CART</h4>
+                    <h4 className='company-logo'>CART</h4>
                 </div>
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
