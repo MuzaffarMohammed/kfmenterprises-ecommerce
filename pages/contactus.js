@@ -67,27 +67,27 @@ const ContactUs = () => {
           <div className="col-xl-6">
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
-            <input type="text" className="form-control" id="name"
+            <input type="text" className="form-control" id="name" maxLength='25'
             name="contName" value={contName} onChange={handleChangeInput} />
           </div>
 
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Email address</label>
             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            name="contEmail" value={contEmail} onChange={handleChangeInput} />
+            name="contEmail" value={contEmail} onChange={handleChangeInput} maxLength='100'/>
             <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
 
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Phone Number</label>
             <input type="number" className="form-control" id="phonenumber"
-            name="phoneNumber" value={phoneNumber} onChange={handleChangeInput} />
+            name="phoneNumber" value={phoneNumber} onChange={handleChangeInput} maxLength='15'/>
           </div>
 
           <div className="form-group">
             <label htmlFor="exampleInputPassword2">Message</label>
             <textarea type="text" className="form-control" id="message"
-            name="message" value={message}  onChange={handleChangeInput} />
+            name="message" value={message}  onChange={handleChangeInput} maxLength='250'/>
           </div>
           
           <button type="submit" className="btn btn-success signBtn w-100">Send Message</button>

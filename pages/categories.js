@@ -50,7 +50,7 @@ const Categories = () => {
             <div className="input-group mb-3">
                 <input type="text" className="form-control"
                 placeholder="Add a new category" value={name}
-                onChange={e => setName(e.target.value)} />
+                onChange={e => setName(e.target.value)} maxLength='25'/>
 
                 <button className="btn btn-secondary ml-1"
                 onClick={createCategory}>

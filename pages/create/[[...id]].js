@@ -185,6 +185,7 @@ const ProductsManager = (props) => {
                             <input type="text" name="title" value={product.title}
                                 placeholder="Title" className="d-block w-100 p-2"
                                 onChange={handleChangeInput}
+                                maxLength='25'
                             />
                         </div>
                         <div className="row">
@@ -192,12 +193,15 @@ const ProductsManager = (props) => {
                                 <label htmlFor="price">Price</label>
                                 <input type="number" name="price" value={product.price}
                                     placeholder="Price" className="d-block w-100 p-2"
-                                    onChange={handleChangeInput} />
+                                    onChange={handleChangeInput} 
+                                    maxLength='5'
+                                    />
                             </div>
                             <div className="col-md-2 mx-lg-3 mt-1">
                                 <label htmlFor="tax">Tax (2%)</label>
                                 <input type="text" name="tax" value={product.tax}
                                     placeholder="Tax" className="d-block w-100 p-2"
+                                    disabled
                                     onChange={handleChangeInput}
                                 />
                             </div>
@@ -206,6 +210,7 @@ const ProductsManager = (props) => {
                                 <input type="text" name="total" value={product.totalPrice}
                                     placeholder="Total Price" className="d-block w-100 p-2"
                                     onChange={handleChangeInput}
+                                    disabled
                                 />
                             </div>
                             <div className="col-lg-2 col-md-3 mx-lg-3 mt-1">
@@ -213,6 +218,7 @@ const ProductsManager = (props) => {
                                 <input type="number" name="inStock" value={product.inStock}
                                     placeholder="inStock" className="d-block w-100 p-2"
                                     onChange={handleChangeInput}
+                                    maxLength='5'
                                 />
                             </div>
                         </div>
@@ -221,12 +227,14 @@ const ProductsManager = (props) => {
                         <textarea name="description" id="description" cols="30" rows="3"
                             placeholder="Description" onChange={handleChangeInput}
                             className="d-block my-sm-4 mt-3 w-100 p-2" value={product.description}
+                            maxLength='250'
                         />
                     </div>
                     <div className="row mx-1">
                         <textarea name="content" id="content" cols="30" rows="6"
                             placeholder="Content" onChange={handleChangeInput}
                             className="d-block my-sm-2 mt-3 w-100 p-2" value={product.content}
+                            maxLength='700'
                         />
                     </div>
                     <div className="row mx-1">

@@ -67,12 +67,12 @@ const EditUser = () => {
 
                 <div className="form-group">
                     <label htmlFor="name" className="d-block">Name</label>
-                    <input type="text" id="name" defaultValue={editUser.name} disabled />
+                    <input type="text" id="name" defaultValue={editUser.name} maxLength='100' disabled />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="email" className="d-block">Email</label>
-                    <input type="text" id="email" defaultValue={editUser.email} disabled />
+                    <input type="text" id="email" defaultValue={editUser.email} maxLength='100' disabled />
                 </div>
 
                 <div className="form-group">
