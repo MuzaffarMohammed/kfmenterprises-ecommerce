@@ -56,7 +56,7 @@ img{
   margin-top: -4px;
 }
 
-.payment-section{margin-top: 58px;}
+/* .payment-section{margin-top: 58px;} */
 
 @media (max-width: 768px) {
   .home_page{ margin-top: -4px;}
@@ -150,3 +150,15 @@ img{
 
 /* ----------- Orders ------------- */
 @import url("./orders.css");
+
+/* ----------- Order Details ------------- */
+@import url("./orderDetails.css");
+
+/* ----------- Order Info ------------- */
+@import url("./orderInfo.css");
+
+/* ----------- Shippin Details ------------- */
+@import url("./shippingDetails.css");
+
+/* ----------- Order Items Card------------- */
+@import url("./orderItems.css");

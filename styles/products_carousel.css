@@ -16,7 +16,7 @@ h2{
 
 .slick-prev{
     z-index: 100;
-    left: 20px !important;
+    left: -50px !important;
 }
 
 .slick-prev:before, .slick-next:before {
@@ -25,9 +25,20 @@ h2{
 
 .slick-next{
     z-index: 100;
-    right:20px !important;
+    right:-50px !important;
 }
 
+.bestSellCaroIndicators:hover .slick-prev {
+    z-index: 100;
+    left: 20px !important;
+    transition: 0.5s;
+  }
+
+  .bestSellCaroIndicators:hover .slick-next {
+    z-index: 100;
+    right:35px !important;
+    transition: 0.5s;
+  }
 
 @media (max-width: 767px) {
     .slick-prev:before, .slick-next:before {

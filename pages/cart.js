@@ -60,7 +60,8 @@ const Cart = () => {
     }
   }, [callback])
 
-  const handlePayment = async () => {
+  const handlePayment = async (e) => {
+    e.preventDefault();
     const numRegex = /^[0-9]+$/;
     //console.log('address: ', address+' mobile: '+mobile+ ' city : '+city+ ' countryState : '+countryState+ ' country: '+country);
     if (!address || !mobile || !city || !countryState || !country) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add all your details to proceed further.' } })
@@ -186,7 +187,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="container row mx-auto">
+    <div className="container row mx-auto" onSubmit={handlePayment}>
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>

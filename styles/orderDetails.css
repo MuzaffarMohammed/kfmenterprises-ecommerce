@@ -1,0 +1,28 @@
+@media(max-width:1024px){
+    .orderStatusMobileTopMarg{
+        margin-top:20px;
+    }
+}
+
+@media(max-width:1024px){
+    .mobileTopMarg{
+        margin-top:10px;
+    }
+}
+
+@media(max-width:330px){
+    .orderStatusFont{font-size: 14px;}
+}
+
+.statusInfo_icon{
+    border-radius: 100%;
+    width: 70%;
+    height: 40%;
+    align-items: center!important;
+    justify-content: center !important;
+}
+
+@media(max-width:330px){
+    .statusInfo_icon{
+    width: 50%;}
+}
