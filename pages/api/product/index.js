@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
@@ -73,17 +74,17 @@ const getProducts = async (req, res) => {
             products
         })
     } catch (err) {
-        console.log('Error occurred while getProducts: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while getProducts: '+err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
 const createProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if(result.role !== 'admin') return res.status(400).json({err: 'Authentication is not valid.'})
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
-        const {title, price, tax, totalPrice, inStock, description, content, category, images, number} = req.body
+        const {title, price, tax, totalPrice, inStock, description, content, category, images, number, discount} = req.body
 
         if(!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
         return res.status(400).json({err: 'Please add all the fields.'})
@@ -92,14 +93,14 @@ const createProduct = async (req, res) => {
         if(product) return res.status(400).json({err: 'Product Name already exist, please choose different name.'})
 
         const newProduct = new Products({
-            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images, number
+            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images, number, discount
         })
         await newProduct.save()
 
         res.json({msg: 'New product added successfully.'})
 
     } catch (err) {
-        console.log('Error occurred while createProduct: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while createProduct: '+err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

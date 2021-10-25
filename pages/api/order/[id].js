@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Orders from '../../../models/orderModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -29,8 +30,8 @@ const getOrder = async (req, res) => {
             res.json({ order })
         }
     } catch (err) {
-        console.log('Error occurred while getOrder: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while getOrder: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -43,7 +44,7 @@ const deleteOrder = async (req, res) => {
             res.json({msg: "Order deleted due to non-payment policy!"})
         }
     } catch (err) {
-        console.log('Error occurred while deleteOrder: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while deleteOrder: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

@@ -100,7 +100,7 @@ const Home = (props) => {
         </div>
       </div>
 
-      <div className="container-fluid ">
+      <div className="container-fluid p-0">
         <Filter state={state} />
 
         {
@@ -129,7 +129,7 @@ const Home = (props) => {
 
       {
         props.result < page * 6 ? ""
-          : <button className="btn btn-outline-info d-block mx-auto mb-4"
+          : <button className="btn btn-outline-primary d-block mx-auto mb-4"
             onClick={handleLoadmore}>
             See All
           </button>

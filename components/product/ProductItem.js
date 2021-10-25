@@ -18,7 +18,7 @@ const ProductItem = ({ product, handleCheck }) => {
         return (
             <>
                 <Link href={`/product/${product._id}`}>
-                    <a className="btn btn-info"
+                    <a className="btn btn-primary"
                         style={{ marginRight: '5px', flex: 1 }}>View</a>
                 </Link>
                 <button className="btn btn-success"
@@ -35,7 +35,7 @@ const ProductItem = ({ product, handleCheck }) => {
         return (
             <>
                 <Link href={`/create/${product._id}`}>
-                    <a className="btn btn-info"
+                    <a className="btn btn-primary"
                         style={{ marginRight: '5px', flex: 1 }}>Edit</a>
                 </Link>
                 <button className="btn btn-danger"
@@ -55,6 +55,11 @@ const ProductItem = ({ product, handleCheck }) => {
         )
     }
 
+    const calculateDiscountedPercentage = (product) => {
+        const discountPercent = (product.discount / product.totalPrice) * 100;
+        return Math.round(discountPercent);
+    }
+
     return (
         <div className="card">
             {
@@ -65,7 +70,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     onChange={() => handleCheck(product._id)} />
             }
             <Link href={`/product/${product._id}`}>
-                <img className="card-img-top" src={product.images[0].url} alt={product.images[0].url} />
+                <img className="card-img-top" src={product.images[0].url} alt={product.title} />
             </Link>
             <div className="card-body">
                 <h6 className="card-title text-capitalize" title={product.title}>
@@ -77,9 +82,9 @@ const ProductItem = ({ product, handleCheck }) => {
                         {product.discount !== 0 &&
                             <>
                                 <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px' }}>
-                                    {product.totalPrice + (product.totalPrice - ((product.totalPrice * product.discount) / 100))}
+                                    {product.totalPrice + product.discount}
                                 </span>
-                                <span className='offer-text'>{product.discount}% Off</span>
+                                <span className='offer-text'>{calculateDiscountedPercentage(product)}% Off</span>
                             </>
                         }
                     </h6>

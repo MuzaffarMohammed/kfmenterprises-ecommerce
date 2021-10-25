@@ -1,16 +1,22 @@
-import {useContext} from 'react'
-import {DataContext} from '../store/GlobalState'
+import { useContext } from 'react'
+import { DataContext } from '../store/GlobalState'
 import Loading from './Loading'
 import Toast from './Toast'
 
 const Notify = () => {
-    const {state, dispatch} = useContext(DataContext)
+    const { state, dispatch } = useContext(DataContext)
     const { notify } = state
 
-    return(
-        <> 
+    if (notify.error || notify.success) {
+        setTimeout(() => {
+            dispatch({ type: 'NOTIFY', payload: {} })
+        }, notify.delay ? notify.delay : 6000);
+    }
+
+    return (
+        <>
             {notify.loading && <Loading />}
-            {notify.error && 
+            {notify.error &&
                 <Toast
                     msg={{ msg: notify.error, title: "Error" }}
                     handleShow={() => dispatch({ type: 'NOTIFY', payload: {} })}
@@ -18,7 +24,7 @@ const Notify = () => {
                 />
             }
 
-            {notify.success && 
+            {notify.success &&
                 <Toast
                     msg={{ msg: notify.success, title: "Success" }}
                     handleShow={() => dispatch({ type: 'NOTIFY', payload: {} })}

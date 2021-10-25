@@ -2,6 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
 
 connectDB()
 
@@ -38,8 +39,8 @@ const getOrders = async (req, res) => {
 
         res.json({ orders })
     } catch (err) {
-        console.log('Error occurred while getOrders: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while getOrders: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -65,8 +66,8 @@ const createOrder = async (req, res) => {
         })
 
     } catch (err) {
-        console.log('Error occurred while createOrder: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while createOrder: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -100,7 +101,7 @@ const updateOrderPlaced = async (req, res) => {
             })
         }
     } catch (err) {
-        console.log('Error occurred while updateOrderPlaced: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while updateOrderPlaced: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

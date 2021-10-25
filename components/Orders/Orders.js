@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import OrdersGrid from './OrdersGrid';
@@ -45,7 +44,7 @@ export default function Orders() {
                 <div className="p-1">
                     <Filters isAdmin={isAdmin} isUser={isUser} handleFilter={handleFilter} lengths={filterLengths} />
                 </div>
-                <div className="p-1 table-responsive order-grid-height">
+                <div className="p-2 table-responsive orders-grid">
                     <OrdersGrid orders={filteredOrders} isAdmin={isAdmin} isUser={isUser} />
                 </div>
             </div>

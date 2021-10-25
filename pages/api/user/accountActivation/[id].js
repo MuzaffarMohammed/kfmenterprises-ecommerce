@@ -1,5 +1,6 @@
 import connectDB from '../../../../utils/connectDB'
 import Users from '../../../../models/userModel'
+import { CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
 
 connectDB()
 
@@ -31,7 +32,7 @@ const accountActivation = async (req, res) => {
                  `)
         
     } catch (err) {
-        console.log('Error occurred while accountActivation: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while accountActivation: '+err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }   
 }

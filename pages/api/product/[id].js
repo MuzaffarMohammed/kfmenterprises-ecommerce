@@ -2,11 +2,12 @@ import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { deleteData } from '../../../utils/fetchData'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
 /*
-    GET     - Protected
+    GET     - Public
     PUT      - Partial Protected
     DELETE    - Protected
 */
@@ -27,16 +28,18 @@ export default async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id, count } = req.query;
 
         const product = await Products.findById(id)
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
 
+        if (count) return res.json({ count: product.inStock })
+
         res.json({ product })
 
     } catch (err) {
-        console.log('Error occurred while getProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while getProduct: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -50,7 +53,7 @@ const updateProduct = async (req, res) => {
             return res.status(200).json({ msg: 'Product updateStockAndSold updated!' })
         } else {
             const result = await auth(req, res)
-            if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
+            if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
             if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
@@ -60,8 +63,8 @@ const updateProduct = async (req, res) => {
             res.json({ msg: 'Product updated successfully!' })
         }
     } catch (err) {
-        console.log('Error occurred while updateProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while updateProduct: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -69,7 +72,7 @@ const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
 
-        if (result.role !== 'admin') return res.status(400).json({ err: 'Unauthorized Access!' })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
 
         const { id } = req.query;
 
@@ -79,8 +82,8 @@ const deleteProduct = async (req, res) => {
         res.json({ msg: 'Product deleted successfully.' })
 
     } catch (err) {
-        console.log('Error occurred while deleteProduct: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while deleteProduct: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -92,7 +95,7 @@ const deleteImages = async (id, token, res) => {
         console.log('Public Ids : ', publicIds);
         deleteData(`uploads/delete`, token, { publicIds });
     } catch (err) {
-        console.log('Error occurred while deleteImages: ' + err);
-        return res.status(500).json({ err: err.message })
+        console.error('Error occurred while deleteImages: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

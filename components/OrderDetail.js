@@ -21,7 +21,7 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
                 orderDetail.map(order => (
 
                     <div key={order._id} style={{ margin: '20px auto' }} className="border_login row justify-content-around">
-                        <div className="row col-12 justify-content-center" style={{ background: 'black', color: 'white' }}>
+                        <div className="row col-12 justify-content-center" style={{ background: '#144271', color: 'white' }}>
                             <h4 className='primary my-3'>SHIPPING & PAYMENT</h4>
                         </div>
                         <div className=" col-xl-12">

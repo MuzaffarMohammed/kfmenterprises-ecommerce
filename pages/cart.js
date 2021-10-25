@@ -49,7 +49,7 @@ const Cart = () => {
           if (inStock > 0) {
             newArr.push({
               _id, title, images, totalPrice, inStock, sold,
-              quantity: item.quantity > inStock ? 1 : item.quantity
+              quantity: item.quantity > inStock ? inStock : item.quantity
             })
           }
         }
@@ -62,20 +62,25 @@ const Cart = () => {
 
   const handlePayment = async (e) => {
     e.preventDefault();
+    if (!auth.user) return dispatch({ type: 'NOTIFY', payload: { error: 'Please sign in to proceed further!' } })
+
     const numRegex = /^[0-9]+$/;
     //console.log('address: ', address+' mobile: '+mobile+ ' city : '+city+ ' countryState : '+countryState+ ' country: '+country);
     if (!address || !mobile || !city || !countryState || !country) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add all your details to proceed further.' } })
-    if (!(address.length >= 15)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add address like (Flat No./H No./Door No. , Street, Locality, Area) only.' } })
+    if (!(address.length >= 15)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add address like (Flat No./H No./Door No. , Street, Locality, Area) only.', delay: 12000 } })
     if (city == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a city.' } })
     if (countryState == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a State.' } })
     if (country == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a country.' } })
     if (!(numRegex.test(mobile)) || !(mobile.length >= 10)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please enter a valid mobile number.' } })
 
     let newCart = [];
+    let nonAvailProducts = [];
     for (const item of cart) {
       const res = await getData(`product/${item._id}`)
       if (res.product.inStock - item.quantity >= 0) {
         newCart.push(item)
+      } else {
+        nonAvailProducts.push(item.title);
       }
     }
 
@@ -83,7 +88,7 @@ const Cart = () => {
       setCallback(!callback)
       return dispatch({
         type: 'NOTIFY', payload: {
-          error: 'The product is out of stock or the quantity is insufficient.'
+          error: `This Product(s) - [${nonAvailProducts.join(',')}] quantity is insufficient or out of stock.`
         }
       })
     }
@@ -187,7 +192,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="container row mx-auto" onSubmit={handlePayment}>
+    <div className="container-fluid row justify-content-md-between" onSubmit={handlePayment}>
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
@@ -205,12 +210,13 @@ const Cart = () => {
         </table>
       </div>
 
-      <div className="shipping-card col-md-5 my-3 text-left text-uppercase text-secondary border_login">
+      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-uppercase text-secondary border_login">
         <form>
-          <h2>Shipping Details</h2>
+          <h4>Shipping Details</h4>
 
           <label htmlFor="address">Address</label>
           <textarea type="text" name="address" id="address"
+            maxLength="30"
             className="form-control mb-2" value={address}
             onChange={e => setAddress(e.target.value)} />
 
@@ -249,13 +255,13 @@ const Cart = () => {
           <label htmlFor="mobile">Mobile</label>
           <input type="text" name="mobile" id="mobile"
             className="form-control mb-2" value={mobile}
-            maxlength="10"
+            maxLength="10"
             onChange={e => setMobile(e.target.value)} />
         </form>
-        <h3>Total: <span className="text-danger">₹{total}</span></h3>
+        <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
         <Link href={auth.user ? '#!' : '/signin'}>
-          <a className="btn btn-dark my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
+          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
         </Link>
 
       </div>

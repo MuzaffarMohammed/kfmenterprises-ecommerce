@@ -121,28 +121,28 @@ const Profile = () => {
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
                         <input type="text" name="name" value={name} className="form-control"
-                            placeholder="Your name" onChange={handleChange} />
+                            placeholder="Your name" onChange={handleChange} maxLength='100'/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <input type="text" name="email" defaultValue={auth.user.email}
-                            className="form-control" disabled={true} />
+                            className="form-control" disabled={true} maxLength='100'/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">New Password</label>
                         <input type="password" name="password" value={password} className="form-control"
-                            placeholder="Your new password" onChange={handleChange} />
+                            placeholder="Your new password" onChange={handleChange} maxLength='64'/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="cf_password">Confirm New Password</label>
                         <input type="password" name="cf_password" value={cf_password} className="form-control"
-                            placeholder="Confirm new password" onChange={handleChange} />
+                            placeholder="Confirm new password" onChange={handleChange} maxLength='64'/>
                     </div>
 
-                    <button className="btn btn-info w-100 signBtn" disabled={notify.loading}
+                    <button className="btn btn-primary w-100 signBtn" disabled={notify.loading}
                         onClick={handleUpdateProfile}>
                         Update
                     </button>

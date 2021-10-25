@@ -56,23 +56,23 @@ const EditUser = () => {
                 <title>KFM Cart - Edit User</title>
             </Head>
 
-            <div>
-                <button className="btn btn-dark" onClick={() => router.back()}>
+            {/* <div>
+                <button className="btn btn-primary" onClick={() => router.back()}>
                     <i className="fas fa-long-arrow-alt-left" aria-hidden></i> Go Back
                 </button>
-            </div>
+            </div> */}
 
             <div className="col-md-4 mx-auto my-4">
                 <h2 className="text-uppercase text-secondary">Edit User</h2>
 
                 <div className="form-group">
                     <label htmlFor="name" className="d-block">Name</label>
-                    <input type="text" id="name" defaultValue={editUser.name} disabled />
+                    <input type="text" id="name" defaultValue={editUser.name} maxLength='100' disabled />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="email" className="d-block">Email</label>
-                    <input type="text" id="email" defaultValue={editUser.email} disabled />
+                    <input type="text" id="email" defaultValue={editUser.email} maxLength='100' disabled />
                 </div>
 
                 <div className="form-group">
@@ -84,7 +84,7 @@ const EditUser = () => {
                     </label>
                 </div>
 
-                <button className="btn btn-dark" onClick={handleSubmit}>Update</button>
+                <button className="btn btn-primary" onClick={handleSubmit}>Update</button>
 
             </div>
 

@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
 
 connectDB()
 
@@ -10,7 +11,7 @@ connectDB()
 */
 
 export default async (req, res) => {
-    switch(req.method){
+    switch (req.method) {
         case "PATCH":
             await uploadInfor(req, res)
             break;
@@ -22,16 +23,16 @@ export default async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-       const result = await auth(req, res)
-       if(result.role !== 'admin') 
-       return res.status(400).json({err: "Authentication is not valid"})
+        const result = await auth(req, res)
+        if (result.role !== 'admin')
+            return res.status(401).json({ err: ERROR_401 })
 
         const users = await Users.find().select('-password')
-        res.json({users})
+        res.json({ users })
 
     } catch (err) {
-        console.log('Error occurred while getUsers: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while getUsers: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
@@ -39,9 +40,9 @@ const getUsers = async (req, res) => {
 const uploadInfor = async (req, res) => {
     try {
         const result = await auth(req, res)
-        const {name, avatar} = req.body
+        const { name, avatar } = req.body
 
-        const newUser = await Users.findOneAndUpdate({_id: result.id}, {name, avatar})
+        const newUser = await Users.findOneAndUpdate({ _id: result.id }, { name, avatar })
 
         res.json({
             msg: "Update Success!",
@@ -54,7 +55,7 @@ const uploadInfor = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log('Error occurred while uploadInfor: '+err);
-        return res.status(500).json({err: err.message})
+        console.error('Error occurred while uploadInfor: ' + err);
+        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
