@@ -60,8 +60,8 @@ const Cart = () => {
     }
   }, [callback])
 
-  const handlePayment = async () => {
-
+  const handlePayment = async (e) => {
+    e.preventDefault();
     if (!auth.user) return dispatch({ type: 'NOTIFY', payload: { error: 'Please sign in to proceed further!' } })
 
     const numRegex = /^[0-9]+$/;
@@ -192,7 +192,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="container-fluid row justify-content-md-between">
+    <div className="container-fluid row justify-content-md-between" onSubmit={handlePayment}>
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>

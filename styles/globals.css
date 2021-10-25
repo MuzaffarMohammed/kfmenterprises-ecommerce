@@ -237,3 +237,15 @@ h1, h2, h3 {
 /* ----------- Orders ------------- */
 
 @import url("./orders.css");
+/* ----------- Order Details ------------- */
+
+@import url("./orderDetails.css");
+/* ----------- Order Info ------------- */
+
+@import url("./orderInfo.css");
+/* ----------- Shippin Details ------------- */
+
+@import url("./shippingDetails.css");
+/* ----------- Order Items Card------------- */
+
+@import url("./orderItems.css");

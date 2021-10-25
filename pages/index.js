@@ -86,6 +86,7 @@ const Home = (props) => {
         <ControlledCarousel />
         <HomePageCards />
 
+        <div className="bestSellCaroIndicators">
         <h2>BEST SELLING PRODUCTS</h2>
         <Slider {...settings}>
           {
@@ -96,6 +97,7 @@ const Home = (props) => {
             )) : <h2>No Products</h2>
           }
         </Slider>
+        </div>
       </div>
 
       <div className="container-fluid p-0">
