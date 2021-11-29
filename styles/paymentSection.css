@@ -1,0 +1,9 @@
+.payment-section {
+    margin-top: 20px;
+  }
+  
+  @media (max-width: 1024px) {
+    .payment-section {
+      margin-top: 5px;
+    }
+  }

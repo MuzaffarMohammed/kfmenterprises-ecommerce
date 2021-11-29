@@ -56,94 +56,74 @@ const OrderStatus = (props) => {
     }
 
     return (
-        <div className="col-xl-12 orderStatusFont">
-            {props.order.placed &&
-                <div className="row">
-                    <div className="col-xl-3 col-xs-3">
-                        <h6 className="orderStatusMobileTopMarg">Order Status</h6>
-                        <div className={` ${props.order.accepted ? 'bg-success' : 'bg-light'}
-                                d-flex justify-content-between align-items-center statusInfo_icon`} role="alert">
+        <div className="main_container">
+            <div className="card-body">
+                <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+
+                    <div className={props.order.accepted ? 'step completed' : 'step'}>
+                        <div className="step-icon-wrap">
+                            <div className="step-icon"><i className="pe-7s-cart"></i></div>
+                        </div>
+                        <h4 className="step-title">
                             {
                                 props.order.accepted ?
-                                    // `Order accepted on ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`
-                                    <img className="d-block carouselImg" src="/assets/images/icon/shopping-cart-white.png" alt="First slide" />
+                                    `Order Confirmed  ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`
                                     :
-                                    (props.auth.user.role === 'admin' ?
-                                        'Order Placed'
-                                        :
-                                        // 'Awaiting confirmation.'
-                                        <img className="d-block carouselImg" src="/assets/images/icon/shopping-cart-black.png" alt="First slide" />
-                                    )
+                                    (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
                             }
-                            {
-                                props.auth.user.role === 'admin' && !props.order.accepted &&
-                                <button className="btn btn-dark text-uppercase"
-                                    onClick={() => handleAccept(props.order)}>
-                                    Accept Order
-                                </button>
-                            }
-
-                        </div>
-                        <p style={{ fontSize: '14px' }}>{
-                            props.order.accepted ? `Accepted on ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Awaiting confirmation'
+                        </h4>
+                        {
+                            props.auth.user.role === 'admin' && !props.order.accepted &&
+                            <button className="btn btn-dark text-uppercase"
+                                style={{ marginLeft: '5px', marginTop: '10px', fontSize: '11px' }}
+                                onClick={() => handleAccept(props.order)}>
+                                Accept Order
+                            </button>
                         }
-                        </p>
                     </div>
 
-                    <div className="col-xl-3 col-xs-3">
-                        <h6>Delivery Status</h6>
-                        <div className={`alert ${props.order.delivered ? 'alert-success' : 'alert-warning'}
-                                         d-flex justify-content-between align-items-center statusInfo_icon`} role="alert">
-
-                            <div>
-                                {
-                                    props.order.delivered ? <img className="d-block carouselImg" src="/assets/images/icon/shipped-icon-white.png" alt="First slide" /> : <img className="d-block carouselImg" src="/assets/images/icon/shipped-icon-black.png" alt="First slide" />
-                                }
-                            </div>
-                            {
-                                props.auth.user.role === 'admin' && !props.order.delivered &&
-                                <button className="btn btn-dark text-uppercase"
-                                    style={{ marginLeft: '10px' }}
-                                    onClick={() => handleDelivered(props.order)} >
-                                    Mark as delivered
-                                </button>
-                            }
-
+                    <div className={props.order.accepted ? 'step completed' : 'step'}>
+                        <div className="step-icon-wrap">
+                            <div className="step-icon"><i className="pe-7s-config"></i></div>
                         </div>
-                        <p>
-                            {
-                                props.order.delivered ? `Delivered on ${new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'In Transit'
-                            }
-                        </p>
+                        <h4 className="step-title">Processing Order</h4>
                     </div>
 
-                    <div className="col-xl-3 col-xs-3">
-                        <h6>Payment</h6>
-
-
-                        {
-                            props.order.paymentId && <p>PaymentId: <em>{props.order.paymentId}</em></p>
-                        }
-
-                        <div className={`alert ${props.order.paid ? 'alert-success' : 'alert-danger'}
-                                        d-flex justify-content-between align-items-center statusInfo_icon`} role="alert">
-
-                            {
-                                props.payType === 'cod' ? props.order.paid ? <img className="d-block carouselImg" src="/assets/images/icon/cash-on-delivery-white.png" alt="First slide" /> : <img className="d-block carouselImg" src="/assets/images/icon/cash-on-delivery-black.png" alt="First slide" /> : 'Not Paid'
-                            }
-
+                    <div className={props.order.delivered ? 'step completed' : 'step'}>
+                        <div className="step-icon-wrap">
+                            <div className="step-icon"><i className="pe-7s-car"></i></div>
                         </div>
+                        <h4 className="step-title">
+                            {
+                                props.order.delivered ? 'Product Delivered' : 'In Transit'
+                            }
+                        </h4>
+                    </div>
+
+
+                    <div className={props.order.delivered ? 'step completed' : 'step'}>
+                        <div className="step-icon-wrap">
+                            <div className="step-icon"><i className="pe-7s-home"></i></div>
+                        </div>
+                        <h4 className="step-title">
+                            {
+                                props.order.delivered ? `Delivered on ${new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Yet Delivered'
+                            }
+                        </h4>
                         {
-                            props.order.paid ? `Paid on ${new Date(props.order.dateOfPayment).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Paid'
-                        }
-                        {
-                            props.order.method && <h6>Method: <em>{props.order.method}</em></h6>
+                            props.auth.user.role === 'admin' && !props.order.delivered &&
+                            <button className="btn btn-dark text-uppercase"
+                                style={{ marginLeft: '4px', marginTop: '10px', fontSize: '11px' }}
+                                disabled={props.order.accepted ? false : true}
+                                onClick={() => handleDelivered(props.order)} >
+                                Mark as delivered
+                            </button>
                         }
                     </div>
+
                 </div>
-            }
+            </div>
         </div>
-
     )
 }
 export default OrderStatus
