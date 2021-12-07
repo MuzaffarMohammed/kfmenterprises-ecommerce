@@ -66,7 +66,7 @@ const OrderStatus = (props) => {
                                 <div className="step-icon"><i className="pe-7s-cart"></i></div>
                             </div>
                             <div className="label-align">
-                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>
+                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-await-before'}>
                                     {
                                         props.order.accepted ?
                                             `Order Confirmed  ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`

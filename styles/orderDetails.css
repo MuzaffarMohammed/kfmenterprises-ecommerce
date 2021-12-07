@@ -113,6 +113,15 @@ body {
     z-index: 5
 }
 
+.steps .step .step-title-await-before {
+    margin-top: 16px;
+    margin-bottom: 0;
+    color: #dc3545;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center !important;
+}
+
 .steps .step .step-title-before {
     margin-top: 16px;
     margin-bottom: 0;
