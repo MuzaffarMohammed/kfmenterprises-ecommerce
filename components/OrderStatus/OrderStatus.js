@@ -61,66 +61,80 @@ const OrderStatus = (props) => {
                 <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
 
                     <div className={props.order.accepted ? 'step completed' : 'step'}>
-                        <div className="step-icon-wrap">
-                            <div className="step-icon"><i className="pe-7s-cart"></i></div>
+                        <div className="row">
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><i className="pe-7s-cart"></i></div>
+                            </div>
+                            <div className="label-align">
+                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>
+                                    {
+                                        props.order.accepted ?
+                                            `Order Confirmed  ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`
+                                            :
+                                            (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
+                                    }
+                                </h4>
+                                {
+                                    props.auth.user.role === 'admin' && !props.order.accepted &&
+                                    <button className="btn btn-dark text-uppercase order-handle-button"
+                                        onClick={() => handleAccept(props.order)}>
+                                        Accept Order
+                                    </button>
+                                }
+                            </div>
                         </div>
-                        <h4 className="step-title">
-                            {
-                                props.order.accepted ?
-                                    `Order Confirmed  ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`
-                                    :
-                                    (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
-                            }
-                        </h4>
-                        {
-                            props.auth.user.role === 'admin' && !props.order.accepted &&
-                            <button className="btn btn-dark text-uppercase"
-                                style={{ marginLeft: '5px', marginTop: '10px', fontSize: '11px' }}
-                                onClick={() => handleAccept(props.order)}>
-                                Accept Order
-                            </button>
-                        }
                     </div>
 
                     <div className={props.order.accepted ? 'step completed' : 'step'}>
-                        <div className="step-icon-wrap">
-                            <div className="step-icon"><i className="pe-7s-config"></i></div>
+                        <div className="row">
+                            <div className="step-icon-wrap ">
+                                <div className="step-icon"><i className="pe-7s-config"></i></div>
+                            </div>
+                            <div className="label-align">
+                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>Processing Order</h4>
+                            </div>
                         </div>
-                        <h4 className="step-title">Processing Order</h4>
                     </div>
 
                     <div className={props.order.delivered ? 'step completed' : 'step'}>
-                        <div className="step-icon-wrap">
-                            <div className="step-icon"><i className="pe-7s-car"></i></div>
-                        </div>
-                        <h4 className="step-title">
-                            {
-                                props.order.delivered ? 'Product Delivered' : 'In Transit'
-                            }
-                        </h4>
-                    </div>
+                        <div className="row">
+                            <div className="step-icon-wrap ">
+                                <div className="step-icon"><i className="pe-7s-car"></i></div>
+                            </div>
 
+                            <div className="label-align">
+                                <h4 className={props.order.delivered ? 'step-title-after' : 'step-title-before'}>
+                                    {
+                                        props.order.delivered ? 'Product Delivered' : 'In Transit'
+                                    }
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
 
                     <div className={props.order.delivered ? 'step completed' : 'step'}>
-                        <div className="step-icon-wrap">
-                            <div className="step-icon"><i className="pe-7s-home"></i></div>
-                        </div>
-                        <h4 className="step-title">
-                            {
-                                props.order.delivered ? `Delivered on ${new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Yet Delivered'
-                            }
-                        </h4>
-                        {
-                            props.auth.user.role === 'admin' && !props.order.delivered &&
-                            <button className="btn btn-dark text-uppercase"
-                                style={{ marginLeft: '4px', marginTop: '10px', fontSize: '11px' }}
-                                disabled={props.order.accepted ? false : true}
-                                onClick={() => handleDelivered(props.order)} >
-                                Mark as delivered
-                            </button>
-                        }
-                    </div>
+                        <div className="row">
+                            <div className="step-icon-wrap ">
+                                <div className="step-icon"><i className="pe-7s-home"></i></div>
+                            </div>
 
+                            <div className="label-align">
+                                <h4 className={props.order.delivered ? 'step-title-after' : 'step-title-before'}>
+                                    {
+                                        props.order.delivered ? `Delivered on ${new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Yet Delivered'
+                                    }
+                                </h4>
+                                {
+                                    props.auth.user.role === 'admin' && !props.order.delivered &&
+                                    <button className="btn btn-dark text-uppercase order-handle-button"
+                                        disabled={props.order.accepted ? false : true}
+                                        onClick={() => handleDelivered(props.order)} >
+                                        Mark as delivered
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
