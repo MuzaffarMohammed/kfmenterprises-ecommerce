@@ -3,6 +3,8 @@ import { updateItem } from '../../store/Actions'
 import { CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, ORDER_DELIVERED_MAIL } from '../../utils/constants'
 
 
+
+
 const OrderStatus = (props) => {
 
     const handleAccept = (order) => {
@@ -63,7 +65,7 @@ const OrderStatus = (props) => {
                     <div className={props.order.accepted ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap">
-                                <div className="step-icon"><i className="pe-7s-cart"></i></div>
+                                <div className="step-icon"> {props.order.accepted ? <img src="../assets/images/icon/shopping-cart-white-10925.svg" className="cartIcon" /> : <img src="../assets/images/icon/shopping-cart-10925.svg" className="cartIcon" />} </div>
                             </div>
                             <div className="label-align">
                                 <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-await-before'}>
@@ -88,7 +90,7 @@ const OrderStatus = (props) => {
                     <div className={props.order.accepted ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon"><i className="pe-7s-config"></i></div>
+                                <div className="step-icon">{props.order.accepted ? <img src="../assets/images/icon/settings-white-5671.svg" className="cartIcon" /> : <img src="../assets/images/icon/settings-5670.svg" className="cartIcon" />} </div>
                             </div>
                             <div className="label-align">
                                 <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>Processing Order</h4>
@@ -99,7 +101,7 @@ const OrderStatus = (props) => {
                     <div className={props.order.delivered ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon"><i className="pe-7s-car"></i></div>
+                                <div className="step-icon">{props.order.delivered ? <img src="../assets/images/icon/delivery.svg" className="cartIcon" /> : <img src="../assets/images/icon/delivery-white.svg" className="cartIcon" />}</div>
                             </div>
 
                             <div className="label-align">
@@ -115,7 +117,7 @@ const OrderStatus = (props) => {
                     <div className={props.order.delivered ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon"><i className="pe-7s-home"></i></div>
+                                <div className="step-icon">{props.order.delivered ? <img src="../assets/images/icon/home-white.svg" className="cartIcon" /> : <img src="../assets/images/icon/home.svg" className="cartIcon" />}</div>
                             </div>
 
                             <div className="label-align">
