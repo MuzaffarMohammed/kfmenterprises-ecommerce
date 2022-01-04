@@ -40,14 +40,15 @@ const ProductItem = ({ product, handleCheck }) => {
                 </Link>
                 <button className="btn btn-danger"
                     style={{ marginLeft: '5px', flex: 1 }}
-                    data-toggle="modal" data-target="#exampleModal"
+                    data-toggle="modal" data-target="#confirmModal"
                     onClick={() => dispatch({
                         type: 'ADD_MODAL',
-                        payload: [{
+                        payload: {
                             data: '', id: product._id,
                             title: product.title,
+                            content: 'Do you want to delete this item?',
                             type: 'DELETE_PRODUCT'
-                        }]
+                        }
                     })} >
                     Delete
                 </button>

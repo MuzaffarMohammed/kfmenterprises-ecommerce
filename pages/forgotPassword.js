@@ -32,7 +32,21 @@ const ForgotPassword = () => {
         hostName: os.hostname(),
         hostType: os.type()
       })
-    if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+    if (res.err) {
+      if (res.userNotActivated) {
+        $('#confirmModal').modal('show');
+        dispatch({
+          type: 'ADD_MODAL',
+          payload: {
+            title: 'Account Activation',
+            content: 'Do you want us to resend account activation URL again?',
+            data: { test: 'test' },
+            type: 'ACC_ACT_URL'
+          }
+        })
+      }else $('#confirmModal').modal('hide');
+      return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+    }
     if (res.success) return dispatch({ type: 'NOTIFY', payload: { success: "We have successfully sent a password reset mail to your verified email address. Please check your mail inbox.", delay: 10000 } })
   }
 
@@ -45,7 +59,6 @@ const ForgotPassword = () => {
         <h1>Find Your Account</h1>
         <p>Please enter your email address.</p>
         <div className="form-group">
-          {/* <label htmlFor="userName">Email Address</label> */}
           <input type="email" className="form-control" id="exampleAccountRecoveryEmail" aria-describedby="emailHelp" maxLength='100'
             name="accountRecoveryEmail" value={accountRecoveryEmail} onChange={handleChangeInput} placeholder="example@gmail.com" />
         </div>

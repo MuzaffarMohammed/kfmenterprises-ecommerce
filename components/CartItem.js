@@ -46,10 +46,16 @@ const CartItem = ({ item, dispatch, cart, isAdmin }) => {
                 </button>
 
                 <i className="product-delete far fa-trash-alt text-danger" aria-hidden="true"
-                    data-toggle="modal" data-target="#exampleModal"
+                    data-toggle="modal" data-target="#confirmModal"
                     onClick={() => dispatch({
                         type: 'ADD_MODAL',
-                        payload: [{ data: cart, id: item._id, title: item.title, type: 'ADD_CART' }]
+                        payload: {
+                            data: cart,
+                            id: item._id,
+                            title: item.title,
+                            content: 'Do you want to delete this item?',
+                            type: 'ADD_CART'
+                        }
                     })} >
                 </i>
             </td>

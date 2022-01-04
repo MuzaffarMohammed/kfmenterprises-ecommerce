@@ -32,6 +32,7 @@
 
 .product-delete {
     padding-left: 20px;
+    cursor: pointer;
 }
 
 .sorry_and_continue_msg {

@@ -119,7 +119,7 @@ const Profile = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="name">Name</label>
+                        <label htmlFor="name">User Name</label>
                         <input type="text" name="name" value={name} className="form-control"
                             placeholder="Your name" onChange={handleChange} maxLength='100'/>
                     </div>

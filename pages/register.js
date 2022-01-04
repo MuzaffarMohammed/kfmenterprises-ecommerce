@@ -50,7 +50,7 @@ const Register = () => {
       <form className="container-fluid mx-auto my-4 border_login" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
         <h1>Create Account</h1>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">User Name</label>
           <input type="text" className="form-control" id="name"
             name="name" value={name} onChange={handleChangeInput} maxLength='100' />
         </div>
@@ -59,7 +59,6 @@ const Register = () => {
           <label htmlFor="exampleInputEmail1">Email address</label>
           <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             name="email" value={email} onChange={handleChangeInput} maxLength='100' />
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
 
         <div className="form-group">
@@ -75,6 +74,7 @@ const Register = () => {
         </div>
 
         <button type="submit" className="btn btn-primary signBtn w-100">Register</button>
+        <small id="emailHelp" className="form-text text-muted">We never share your credentials with anyone else.</small>
 
         <p className="my-2">
           Already have an account? <Link href="/signin"><a style={{ color: 'crimson' }}>Login Now</a></Link>

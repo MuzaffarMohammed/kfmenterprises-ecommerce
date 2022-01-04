@@ -28,7 +28,7 @@ const forgotPassword = async (req, res) => {
 
         const user = await Users.findOne({ email });
         if (!user) return res.status(401).json({ err: 'This user does not exist.' });
-        if (!user.activated) return res.status(401).json({ err: 'Please activate your account to proceed further.' });
+        if (!user.activated) return res.status(401).json({ err: 'Please activate your account to proceed further.', userNotActivated: true });
         console.log('User Exist and activated : ', email)
 
         const resetToken = await generateNewToken(user._id, res);

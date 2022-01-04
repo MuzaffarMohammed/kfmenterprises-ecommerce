@@ -57,7 +57,7 @@ const Home = (props) => {
       }
     })
 
-    dispatch({ type: 'ADD_MODAL', payload: deleteArr })
+    dispatch({ type: 'ADD_MODAL', payload: { data: deleteArr, type: 'DELETE_PRODUCT', content: 'Do you want to delete this item?' } })
   }
 
   const handleLoadmore = () => {
@@ -87,16 +87,16 @@ const Home = (props) => {
         <HomePageCards />
 
         <div className="bestSellCaroIndicators">
-        <h2>BEST SELLING PRODUCTS</h2>
-        <Slider {...settings}>
-          {
-            bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
-              <div key={product._id} className="productsCarousel">
-                <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
-              </div>
-            )) : <h2>No Products</h2>
-          }
-        </Slider>
+          <h2>BEST SELLING PRODUCTS</h2>
+          <Slider {...settings}>
+            {
+              bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
+                <div key={product._id} className="productsCarousel">
+                  <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
+                </div>
+              )) : <h2>No Products</h2>
+            }
+          </Slider>
         </div>
       </div>
 
@@ -109,7 +109,7 @@ const Home = (props) => {
             <input type="checkbox" checked={isCheck} onChange={handleCheckALL}
               style={{ width: '25px', height: '25px', transform: 'translateY(8px)' }} />
             <button className="btn btn-danger ml-2"
-              data-toggle="modal" data-target="#exampleModal"
+              data-toggle="modal" data-target="#confirmModal"
               onClick={handleDeleteAll}>
               DELETE ALL
             </button>
