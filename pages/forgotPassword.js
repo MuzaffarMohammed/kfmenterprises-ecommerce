@@ -32,21 +32,7 @@ const ForgotPassword = () => {
         hostName: os.hostname(),
         hostType: os.type()
       })
-    if (res.err) {
-      if (res.userNotActivated) {
-        $('#confirmModal').modal('show');
-        dispatch({
-          type: 'ADD_MODAL',
-          payload: {
-            title: 'Account Activation',
-            content: 'Do you want us to resend account activation URL again?',
-            data: { test: 'test' },
-            type: 'ACC_ACT_URL'
-          }
-        })
-      }else $('#confirmModal').modal('hide');
-      return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-    }
+    if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
     if (res.success) return dispatch({ type: 'NOTIFY', payload: { success: "We have successfully sent a password reset mail to your verified email address. Please check your mail inbox.", delay: 10000 } })
   }
 
