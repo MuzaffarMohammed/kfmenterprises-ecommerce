@@ -23,7 +23,7 @@ function validateEmail(email) {
 }
 
 const validateUserName = (user) =>{
-    const userRegex = /^[a-zA-Z0-9@._]+$/;
+    const userRegex = /^[a-zA-Z0-9@._ ]+$/;
     return userRegex.test(user);
 }
 

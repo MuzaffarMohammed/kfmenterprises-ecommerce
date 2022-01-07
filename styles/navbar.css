@@ -32,3 +32,11 @@ nav {
     color: white;
     font-size: 12px
 }
+
+@media (max-width: 768px) {
+    .activateBtn {
+        margin-top: 10px;
+        font-size: x-small;
+        font-weight: 700;
+    } 
+}

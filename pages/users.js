@@ -20,7 +20,7 @@ const Users = () => {
                         <th></th>
                         <th>ID</th>
                         <th>Avatar</th>
-                        <th>Name</th>
+                        <th>User Name</th>
                         <th>Email</th>
                         <th>Admin</th>
                         {/* <th>Action</th> */}
@@ -62,7 +62,7 @@ const Users = () => {
                                     {
                                         auth.user.root && auth.user.email !== user.email
                                         ? <i className="fas fa-trash-alt text-danger ml-2" title="Remove"
-                                        data-toggle="modal" data-target="#exampleModal"
+                                        data-toggle="modal" data-target="#confirmModal"
                                         onClick={() => dispatch({
                                             type: 'ADD_MODAL',
                                             payload: [{ data: users, id: user._id, title: user.name, type: 'ADD_USERS' }]

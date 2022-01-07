@@ -45,7 +45,6 @@ const ForgotPassword = () => {
         <h1>Find Your Account</h1>
         <p>Please enter your email address.</p>
         <div className="form-group">
-          {/* <label htmlFor="userName">Email Address</label> */}
           <input type="email" className="form-control" id="exampleAccountRecoveryEmail" aria-describedby="emailHelp" maxLength='100'
             name="accountRecoveryEmail" value={accountRecoveryEmail} onChange={handleChangeInput} placeholder="example@gmail.com" />
         </div>
