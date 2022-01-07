@@ -81,7 +81,7 @@ const Signin = () => {
         <small id="userNameHelp" className="form-text text-muted pt-1">Note: We'll never share your credentials with anyone else.</small>
 
         <p className="my-2">
-          You don't have an account? <Link href="/register"><a style={{ color: '#2196f3' }}>Register Now</a></Link>
+          You don't have an account? <Link href="/register"><a style={{ color: '#2196f3' }}>Create Your Account</a></Link>
         </p>
         <p className="my-2">
           <Link href="/forgotPassword"><a style={{ color: '#2196f3' }}>Forgot Password?</a></Link>
