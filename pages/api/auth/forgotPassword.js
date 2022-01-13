@@ -71,7 +71,8 @@ const mailResetPasswordLink = async (userId, userName, email, resetToken, hostNa
         const resMail = await postData(
             'mail',
             {
-                forgotPasswordUrl: process.env.NEXT_PUBLIC_BASE_URL + `/resetPassword?rt=${encodeURIComponent(resetToken)}&id=${userId}`,
+                baseUrl: process.env.NEXT_PUBLIC_BASE_URL ,
+                forgotPasswordUrl: `/resetPassword?rt=${encodeURIComponent(resetToken)}&id=${userId}`,
                 email,
                 mailType: PASSWORD_RESET_MAIL,
                 subject: 'Password Reset Request',

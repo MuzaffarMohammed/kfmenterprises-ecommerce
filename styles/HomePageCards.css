@@ -27,12 +27,13 @@
 
 /* Style the counter cards */
 .column .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.9);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.9); */
   height:110px;
   margin: 50px 15px 0px;
   padding: 16px;
   text-align: center;
   background: linear-gradient(to right, #092f56, #000000);
+  opacity: 75%;
 }
 
 .column .card h3{color: white; margin-top: 15px;}
