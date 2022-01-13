@@ -10,7 +10,7 @@ connectDB()
 export default async (req, res) => {
     try {
         const rf_token = req.cookies.refreshtoken;
-        if (!rf_token) return res.status(400).json({ err: 'Please login now!' });
+        if (!rf_token) return res.status(400).json({ err: 'Please sign in!' });
 
         const result = jwt.verify(rf_token, process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET);
         if (!result) return res.status(401).json({ err: ERROR_401 });

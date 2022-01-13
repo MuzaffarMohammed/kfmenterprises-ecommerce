@@ -44,7 +44,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     onClick={() => dispatch({
                         type: 'ADD_MODAL',
                         payload: {
-                            data: '', id: product._id,
+                            data: [{ id: product._id }],
                             title: product.title,
                             content: 'Do you want to delete this item?',
                             type: 'DELETE_PRODUCT'

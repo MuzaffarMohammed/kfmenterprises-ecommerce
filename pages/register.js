@@ -77,7 +77,7 @@ const Register = () => {
         <small id="emailHelp" className="form-text text-muted">We never share your credentials with anyone else.</small>
 
         <p className="my-2">
-          Already have an account? <Link href="/signin"><a style={{ color: 'crimson' }}>Login Now</a></Link>
+          Already have an account? <Link href="/signin"><a style={{ color: 'crimson' }}>Sign in</a></Link>
         </p>
       </form>
     </div>

@@ -32,7 +32,7 @@ const Modal = () => {
     }
 
     const deleteProduct = (delArr) => {
-        for (const item in delArr) {
+        delArr.forEach(item => {
             dispatch({ type: 'NOTIFY', payload: { loading: true } })
             deleteData(`product/${item.id}`, auth.token)
                 .then(res => {
@@ -40,7 +40,7 @@ const Modal = () => {
                     dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
                     return router.push('/')
                 })
-        }
+        });
     }
 
     const handleSubmit = () => {
