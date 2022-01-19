@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
     cart: Array,
     total: Number,
     paymentId: String,
+    paymentOrderId:String,
     method: String,
     delivered: {
         type: Boolean,

@@ -19,3 +19,8 @@ export const isLoggedIn = (auth, dispatch, router) => {
         router.push("/signin")
     }
 }
+
+export const convertINRPaise = (rupee) => {
+    if (!rupee) return;
+    return rupee * 100;
+}

@@ -1,9 +1,14 @@
 .payment-section {
-    margin-top: 20px;
+  margin-top: 20px;
+}
+
+.payment-loading-icon {
+  color: #144271;
+  font-size: 40px;
+}
+
+@media (max-width: 1024px) {
+  .payment-section {
+    margin-top: 5px;
   }
-  
-  @media (max-width: 1024px) {
-    .payment-section {
-      margin-top: 5px;
-    }
-  }
+}

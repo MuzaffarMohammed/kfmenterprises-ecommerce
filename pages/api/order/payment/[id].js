@@ -1,7 +1,8 @@
 import connectDB from '../../../../utils/connectDB'
-import Orders from '../../../../models/orderModel'
 import auth from '../../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
+import { saveAndGenerateRazorPayOrder } from './razorpay'
+import Orders from '../../../../models/orderModel';
 
 connectDB()
 
@@ -10,31 +11,24 @@ connectDB()
 */
 
 export default async (req, res) => {
-    switch(req.method){
+    switch (req.method) {
         case "PATCH":
-            await paymentOrder(req, res)
+            await orderPayment(req, res)
             break;
     }
 }
 
-const paymentOrder = async(req, res) => {
+const orderPayment = async (req, res) => {
     try {
         const result = await auth(req, res)
-        
-        if(result.role === 'user'){
-            const {id} = req.query
-            const { paymentId } = req.body
-    
-            await Orders.findOneAndUpdate({_id: id}, {
-                paid: true, dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), paymentId,
-                method: 'Paypal'
-            })
-    
-            res.json({msg: 'Payment success!'})
-        }
-        
+        if (result.role === 'user') {
+            const { id: orderId } = req.query
+            const rPayOrderId = await saveAndGenerateRazorPayOrder(orderId);
+            res.json({ msg: 'Payment success!', rPayOrderId })
+        } else throw "Payment Order generation problem";
     } catch (err) {
-        console.error('Error occurred while paymentOrder: '+err);
+        console.error('Error occurred while paymentOrder: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
+
