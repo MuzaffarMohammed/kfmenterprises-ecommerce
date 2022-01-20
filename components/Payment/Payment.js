@@ -33,21 +33,18 @@ const Payment = (props) => {
     const onlinePay = (order) => {
         try {
             props.dispatch({ type: 'NOTIFY', payload: { loading: true, isPay: true, msg: 'Securily redirecting to payment page, please wait.' } })
-            console.log(order)
             patchData(`order/payment/${order._id}`, {}, props.auth.token)
                 .then(res => {
                     isLoading(false);
                     if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } });
-
-                    console.log('rPayOrderId : ', res.rPayOrderId);
-
-                    let payOptions = razorPayOptions;
-
-                    payOptions = {
-                        ...payOptions,
+                    const payOptions = {
+                        ...razorPayOptions,
+                        callback_url: process.env.NEXT_PUBLIC_HOSTNAME + `/order/${order._id}`,
                         amount: order.total,
                         order_id: res.rPayOrderId,
-                        handler: (res) => { onPaySuccess(res) },
+                        handler: (res) => {
+                            onPaySuccess(res, order._id, res.rPayOrderId)
+                        },
                         prefill: {
                             name: order.user.mail,
                             email: order.user.email,
@@ -62,20 +59,24 @@ const Payment = (props) => {
                     rzp1.on('payment.failed', function (res) {
                         console.log("Razor pay payment failed: ", res.error);
                     });
-
                     rzp1.open();
-
                 });
-
-
         } catch (err) {
             console.log(err)
             props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
     }
 
-    const onPaySuccess = (res) => {
-        console.log("Payment Success : ", res)
+    const onPaySuccess = (res, orderId) => {
+        const data = {
+            orderId,
+            payPaymentId: res.razorpay_payment_id,
+            paySignature: res.razorpay_signature
+        }
+        postData('order/payment/verify', data, props.auth.token).then(res => {
+            console.log("Res : ", res);
+            props.dispatch({ type: 'NOTIFY', payload: { msg: res && res.verified ? 'Payment Successful' : CONTACT_ADMIN_ERR_MSG } });
+        })
     }
 
     const codPay = (order) => {

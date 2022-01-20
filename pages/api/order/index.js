@@ -3,6 +3,7 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import { parseToIndiaTime } from '../../../utils/util'
 
 connectDB()
 
@@ -95,7 +96,7 @@ const updateOrderPlaced = async (req, res) => {
                 msg: 'Order placed successfully!',
                 result: {
                     placed: true,
-                    dateOfPlaced: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    dateOfPlaced: parseToIndiaTime(new Date()),
                     method: method
                 }
             })

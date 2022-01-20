@@ -24,3 +24,7 @@ export const convertINRPaise = (rupee) => {
     if (!rupee) return;
     return rupee * 100;
 }
+
+export const parseToIndiaTime = (date) =>{
+    return date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+}
