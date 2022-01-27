@@ -24,7 +24,7 @@ const Payment = (props) => {
             e.preventDefault();
             if (props.auth && props.auth.user && !props.auth.user.activated) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
             if (payType === 'online') return onlinePay(order)
-            if (payType === 'cod') return codPay(order)
+            if (payType === 'cod') return placeOrderAndNotifyUser(order, 'COD')
         } catch (err) {
             props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
@@ -39,12 +39,9 @@ const Payment = (props) => {
                     if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } });
                     const payOptions = {
                         ...razorPayOptions,
-                        callback_url: process.env.NEXT_PUBLIC_HOSTNAME + `/order/${order._id}`,
                         amount: order.total,
                         order_id: res.rPayOrderId,
-                        handler: (res) => {
-                            onPaySuccess(res, order._id, res.rPayOrderId)
-                        },
+                        handler: (res) => onPaySuccess(res, order),
                         prefill: {
                             name: order.user.mail,
                             email: order.user.email,
@@ -67,23 +64,26 @@ const Payment = (props) => {
         }
     }
 
-    const onPaySuccess = (res, orderId) => {
+    const onPaySuccess = (res, order) => {
         const data = {
-            orderId,
+            orderId: order._id,
             payPaymentId: res.razorpay_payment_id,
             paySignature: res.razorpay_signature
         }
         postData('order/payment/verify', data, props.auth.token).then(res => {
             console.log("Res : ", res);
-            props.dispatch({ type: 'NOTIFY', payload: { msg: res && res.verified ? 'Payment Successful' : CONTACT_ADMIN_ERR_MSG } });
+            if (res && res.verified) {
+                placeOrderAndNotifyUser(order, res.method);
+            } else {
+                props.dispatch({ type: 'NOTIFY', payload: { error: res && res.error ? res.error : CONTACT_ADMIN_ERR_MSG } });
+            }
         })
     }
 
-    const codPay = (order) => {
+    const placeOrderAndNotifyUser = (order, payMethod) => {
         try {
-
             // DB call to update orderPlaced = true
-            patchData('order', { method: COD, id: order._id }, props.auth.token).then(res => {
+            patchData('order', { method: payMethod, id: order._id }, props.auth.token).then(res => {
                 // On success response
                 if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
 
@@ -95,7 +95,7 @@ const Payment = (props) => {
             })
             // Emptying the cart after order placed.
             props.dispatch({ type: 'ADD_CART', payload: [] })
-            props.dispatch({ type: 'NOTIFY', payload: { success: 'Order placed! You will be notified once order is accepted.' } })
+            //props.dispatch({ type: 'NOTIFY', payload: { success: 'Order placed! You will be notified once order is accepted.' } })
             // Sending order mail to customer and admin.
             notifyUserAndAdminAboutOrder(order);
             // Redirecting to Thank you for shopping page.
@@ -152,13 +152,14 @@ const Payment = (props) => {
     if (!props.auth.user) return null;
     return (
         <div className="col-xl-5 mobileTopMarg orderStatusFont">{
-            !props.order.placed && !props.order.paid && props.auth.user.role !== 'admin' &&
+           !props.order.paid && props.auth.user.role !== 'admin' &&
             <div className='border_login payment-section' style={{ marginLeft: '0px' }}>
                 <h5> Select a payment method</h5>
                 <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
                     onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
-                    <option value="cod">Cash on delivery</option>
+                    <option value="select">Select</option>
                     <option value="online">Online Payment</option>
+                    <option value="cod">Cash on delivery</option>
                 </select>
                 <h6 className="mt-4">Delivery Chargers:
                     <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'red' }}> ₹95 </span>

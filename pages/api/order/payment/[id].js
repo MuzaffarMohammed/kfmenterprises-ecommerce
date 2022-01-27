@@ -23,7 +23,7 @@ const orderPayment = async (req, res) => {
         const result = await auth(req, res)
         if (result.role === 'user') {
             const { id: orderId } = req.query
-            const rPayOrderId = await saveAndGenerateRazorPayOrder(orderId);
+            const rPayOrderId = await saveAndGenerateRazorPayOrder(res, orderId);
             res.json({ msg: 'Payment success!', rPayOrderId })
         } else throw "Payment Order generation problem";
     } catch (err) {

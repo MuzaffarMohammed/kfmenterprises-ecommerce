@@ -89,7 +89,7 @@ const updateOrderPlaced = async (req, res) => {
         const result = await auth(req, res)
         if (result.role === 'user') {
             const { id, method } = req.body
-            const data = { placed: true, dateOfPlaced: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), method: method }
+            const data = { placed: true, dateOfPlaced: parseToIndiaTime(new Date()), method: method }
             await Orders.findOneAndUpdate({ _id: id }, data)
 
             res.json({

@@ -4,6 +4,7 @@ import { CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
 import Orders from '../../../../models/orderModel';
 import crypto from 'crypto';
 import { parseToIndiaTime } from '../../../../utils/util';
+import { getPayOrderStatus, getPayPaymentStatus } from './razorpay';
 
 connectDB()
 
@@ -16,25 +17,28 @@ export default async (req, res) => {
 }
 
 const verifyPayment = async (req, res) => {
-    let verified = false;
     try {
         const result = await auth(req, res);
         if (result.role !== 'admin') {
             const { orderId, payPaymentId, paySignature } = req.body;
             const order = await Orders.findOne({ _id: orderId });
             if (order) {
-                console.log("paymentOrderId : ", order.paymentOrderId, "  orderId : ", orderId);
                 var expectedSignature = crypto.createHmac('sha256', process.env.NEXT_PUBLIC_RAZORPAY_KEY_SECRET)
                     .update(order.paymentOrderId + "|" + payPaymentId)
                     .digest('hex');
-                verified = expectedSignature === paySignature;
+                const verified = expectedSignature === paySignature;
                 if (verified) {
                     const dateOfPayment = parseToIndiaTime(new Date());
-                    await Orders.findOneAndUpdate({ _id: orderId }, { paid: true, dateOfPayment, method: 'Online' })
+                    const payOrderStatus = await getPayOrderStatus(order.paymentOrderId);
+                    const pay = await getPayPaymentStatus(payPaymentId);
+                    if (payOrderStatus === 'paid' && pay.payPaymentStatus === 'captured') {
+                        await Orders.findOneAndUpdate({ _id: orderId }, { paid: true, dateOfPayment, method: pay.payPaymentType })
+                        return res.json({ verified: true, method: pay.payPaymentType });
+                    } else res.status(500).json({ err: 'Payment failure! Please try again.' })
                 }
             }
         }
-        res.json({ verified });
+        res.json({ verified : false });
     } catch (err) {
         console.error('Error occurred while verifyPayment: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
