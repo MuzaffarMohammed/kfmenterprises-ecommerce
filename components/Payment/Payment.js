@@ -1,43 +1,89 @@
 import { useEffect, useState } from 'react'
-import {  ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, COD} from '../../utils/constants.js'
+import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, COD } from '../../utils/constants.js'
 import { useRouter } from 'next/router'
 import { patchData, postData } from '../../utils/fetchData'
 import { updateItem } from '../../store/Actions'
-
-
-
+import { razorPayOptions } from '../../utils/payUtil.js'
 
 const Payment = (props) => {
 
     const [payBtnText, setPayBtnText] = useState('Click to finish');
     const [payType, setPayType] = useState('');
     const router = useRouter()
-    
-    
+
     useEffect(() => {
-        props.dispatch({ type: 'NOTIFY', payload: { loading: false } })
-        setPayType('cod');
+        isLoading(false);
     }, [])
 
-    
+    const isLoading = (loading) => {
+        props.dispatch({ type: 'NOTIFY', payload: { loading } })
+    }
 
     const handlePayment = (e, order) => {
         try {
             e.preventDefault();
-            if (props.auth && props.auth.user && !props.auth.user.activated) return  props.dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
-            if (payType === 'online') return  props.dispatch({ type: 'NOTIFY', payload: { error: 'Online payment is not available at this moment! Please try after sometime.' } })
-            if (props.payType === 'cod') return codPay(order)
-            
+            if (props.auth && props.auth.user && !props.auth.user.activated) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
+            if (payType === 'online') return onlinePay(order)
+            if (payType === 'cod') return placeOrderAndNotifyUser(order, 'COD')
         } catch (err) {
             props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
     }
 
-    const codPay = (order) => {
+    const onlinePay = (order) => {
         try {
-           
+            props.dispatch({ type: 'NOTIFY', payload: { loading: true, isPay: true, msg: 'Securily redirecting to payment page, please wait.' } })
+            patchData(`order/payment/${order._id}`, {}, props.auth.token)
+                .then(res => {
+                    isLoading(false);
+                    if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } });
+                    const payOptions = {
+                        ...razorPayOptions,
+                        amount: order.total,
+                        order_id: res.rPayOrderId,
+                        handler: (res) => onPaySuccess(res, order),
+                        prefill: {
+                            name: order.user.mail,
+                            email: order.user.email,
+                            contact: order.mobile
+                        },
+                        notes: {
+                            address: order.address
+                        }
+                    };
+
+                    var rzp1 = new Razorpay(payOptions);
+                    rzp1.on('payment.failed', function (res) {
+                        console.log("Razor pay payment failed: ", res.error);
+                    });
+                    rzp1.open();
+                });
+        } catch (err) {
+            console.log(err)
+            props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
+        }
+    }
+
+    const onPaySuccess = (res, order) => {
+        const data = {
+            orderId: order._id,
+            payPaymentId: res.razorpay_payment_id,
+            paySignature: res.razorpay_signature
+        }
+        postData('order/payment/verify', data, props.auth.token).then(res => {
+            console.log("Res : ", res);
+            if (res && res.verified) {
+                placeOrderAndNotifyUser(order, res.method);
+            } else {
+                props.dispatch({ type: 'NOTIFY', payload: { error: res && res.error ? res.error : CONTACT_ADMIN_ERR_MSG } });
+            }
+        })
+    }
+
+    const placeOrderAndNotifyUser = (order, payMethod) => {
+        try {
             // DB call to update orderPlaced = true
-            patchData('order', { method: COD, id: order._id }, props.auth.token).then(res => {
+            patchData('order', { method: payMethod, id: order._id }, props.auth.token).then(res => {
                 // On success response
                 if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
 
@@ -49,7 +95,7 @@ const Payment = (props) => {
             })
             // Emptying the cart after order placed.
             props.dispatch({ type: 'ADD_CART', payload: [] })
-            props.dispatch({ type: 'NOTIFY', payload: { success: 'Order placed! You will be notified once order is accepted.' } })
+            //props.dispatch({ type: 'NOTIFY', payload: { success: 'Order placed! You will be notified once order is accepted.' } })
             // Sending order mail to customer and admin.
             notifyUserAndAdminAboutOrder(order);
             // Redirecting to Thank you for shopping page.
@@ -93,8 +139,6 @@ const Payment = (props) => {
         }
     }
 
-    
-
     const handlePayTypeChange = (e) => {
         const { name, value } = e.target;
         setPayType(value)
@@ -104,24 +148,27 @@ const Payment = (props) => {
             setPayBtnText('Click to finish')
         }
     }
-    
+
     if (!props.auth.user) return null;
     return (
         <div className="col-xl-5 mobileTopMarg orderStatusFont">{
-            !props.order.placed && !props.order.paid && props.auth.user.role !== 'admin' &&
+           !props.order.paid && props.auth.user.role !== 'admin' &&
             <div className='border_login payment-section' style={{ marginLeft: '0px' }}>
                 <h5> Select a payment method</h5>
                 <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
                     onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
-                    <option value="cod">Cash on delivery</option>
+                    <option value="select">Select</option>
                     <option value="online">Online Payment</option>
+                    <option value="cod">Cash on delivery</option>
                 </select>
                 <h6 className="mt-4">Delivery Chargers:
                     <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'red' }}> ₹95 </span>
                     <span style={{ marginLeft: '5px', color: 'green' }}>  ₹0.00 Free </span>
                 </h6>
                 <h5 className="my-4 text-uppercase">Total: ₹{props.order.total}.00</h5>
-                <button className="btn btn-primary text-uppercase"
+                <button
+                    id="rzp-button1"
+                    className="btn btn-primary text-uppercase"
                     style={{ width: '100%' }}
                     onClick={(e) => { handlePayment(e, props.order) }}>
                     {payBtnText}

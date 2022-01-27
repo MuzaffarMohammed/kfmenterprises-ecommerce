@@ -20,7 +20,7 @@ export default async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        await auth(req, res);
+        //await auth(req, res); // removed because session timeout issue occur.
         const refreshTokenId = await blacklistRefreshToken(req.cookies.refreshtoken, res);
         if (refreshTokenId) await Tokens.updateMany({ refreshTokenId }, { $set: { isBlackListed: true } });
         res.status(200).json({ msg: 'Logged out successfully!' });

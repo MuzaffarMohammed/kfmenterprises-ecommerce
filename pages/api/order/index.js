@@ -3,6 +3,7 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import { parseToIndiaTime } from '../../../utils/util'
 
 connectDB()
 
@@ -88,14 +89,14 @@ const updateOrderPlaced = async (req, res) => {
         const result = await auth(req, res)
         if (result.role === 'user') {
             const { id, method } = req.body
-            const data = { placed: true, dateOfPlaced: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }), method: method }
+            const data = { placed: true, dateOfPlaced: parseToIndiaTime(new Date()), method: method }
             await Orders.findOneAndUpdate({ _id: id }, data)
 
             res.json({
                 msg: 'Order placed successfully!',
                 result: {
                     placed: true,
-                    dateOfPlaced: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    dateOfPlaced: parseToIndiaTime(new Date()),
                     method: method
                 }
             })

@@ -15,20 +15,24 @@ export default function OrdersGrid(props) {
                         </Link>
                     </td>
                     <td className="p-2">
-                        {order.placed ? 
-                        order.dateOfPlaced && moment(order.dateOfPlaced).format("LT, ll")
-                        :order.createdAt && moment(order.createdAt).format("LT, ll")}
+                        {order.placed ?
+                            order.dateOfPlaced && moment(order.dateOfPlaced).format("LT, ll")
+                            : order.createdAt && moment(order.createdAt).format("LT, ll")}
                     </td>
                     <td className="p-2">₹{order.total}</td>
-                    {props.isAdmin && (
-                        <td className="p-2">
-                            {
-                                order.paid
-                                    ? <i className="fas fa-check text-success"></i>
-                                    : <i className="fas fa-times text-danger"></i>
-                            }
-                        </td>
-                    )}
+
+                    <td className="p-2">
+                        {
+                            order.paid
+                                ? <label className="text-success italic-text"> Paid</label>
+                                : (
+                                    <Link href={`/order/${order._id}`} style={{ cursor: 'pointer' }}>
+                                        <button className="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Go to payment page">Pay Now </button>
+                                    </Link>
+                                )
+                        }
+                    </td>
+
                     <td className="p-2">
                         {
                             order.delivered
@@ -53,7 +57,7 @@ export default function OrdersGrid(props) {
                         <td className="p-2">Order ID</td>
                         <td className="p-2">Time & Date</td>
                         <td className="p-2">Total Pay</td>
-                        {props.isAdmin && (<td className="p-2">Payment Status</td>)}
+                        <td className="p-2">Pay Status</td>
                         <td className="p-2">Delivery Status</td>
                     </tr>
                 </thead>
