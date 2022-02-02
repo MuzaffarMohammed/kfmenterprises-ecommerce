@@ -1,6 +1,7 @@
 import { patchData, postData } from '../../utils/fetchData'
 import { updateItem } from '../../store/Actions'
 import { CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, ORDER_DELIVERED_MAIL } from '../../utils/constants'
+import { parseToIndiaTime } from '../../utils/util'
 
 
 
@@ -71,7 +72,7 @@ const OrderStatus = (props) => {
                                 <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-await-before'}>
                                     {
                                         props.order.accepted ?
-                                            `Order Confirmed  ${new Date(props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`
+                                            `Order Confirmed on ${parseToIndiaTime(new Date())}`
                                             :
                                             (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
                                     }
@@ -123,7 +124,7 @@ const OrderStatus = (props) => {
                             <div className="label-align">
                                 <h4 className={props.order.delivered ? 'step-title-after' : 'step-title-before'}>
                                     {
-                                        props.order.delivered ? `Delivered on ${new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}` : 'Not Yet Delivered'
+                                        props.order.delivered ? `Delivered on ${parseToIndiaTime(new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept))}` : 'Not Yet Delivered'
                                     }
                                 </h4>
                                 {

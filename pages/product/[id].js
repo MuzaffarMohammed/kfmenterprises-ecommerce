@@ -33,7 +33,7 @@ const DetailProduct = (props) => {
                     className="d-block img-thumbnail rounded mt-4 w-100 prodDetailImg" />
                 <div className="prodDetialmultiImgs row mx-0 mt-1" style={{ cursor: 'pointer' }} >
                     {product.images.map((img, index) => (
-                        <img key={index} src={img.url} alt={img.url}
+                        <img key={index} src={img.url}
                             className={`img-thumbnail rounded ${isActive(index)}`}
                             style={{ height: '100%', width: '20%' }}
                             onClick={() => setTab(index)} />
@@ -54,11 +54,11 @@ const DetailProduct = (props) => {
                 </div>
 
                 <div className="my-2">
-                    <h6>Description</h6>
+                    <h5>Description</h5>
                     {product.description}
                 </div>
                 <div className="my-2">
-                    <h6>About this item</h6>
+                    <h5>About this item</h5>
                     {product.content}
                 </div>
 

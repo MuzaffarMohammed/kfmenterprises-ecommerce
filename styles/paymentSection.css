@@ -1,5 +1,10 @@
 .payment-section {
+  font-size: 14px;
   margin-top: 20px;
+}
+
+.payment-section h5 {
+  font-weight: bolder;
 }
 
 .payment-loading-icon {

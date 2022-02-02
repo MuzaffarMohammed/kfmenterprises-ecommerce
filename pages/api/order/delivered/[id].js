@@ -40,7 +40,7 @@ const deliveredOrder = async (req, res) => {
             })
         } else {
             await Orders.findOneAndUpdate({ _id: id }, {
-                paid: true, dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                paid: true, dateOfPayment: parseToIndiaTime(new Date()),
                 method: COD, delivered: true
             })
 
@@ -48,7 +48,7 @@ const deliveredOrder = async (req, res) => {
                 msg: 'Updated success!',
                 result: {
                     paid: true,
-                    dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    dateOfPayment: parseToIndiaTime(new Date()),
                     method: COD,
                     delivered: true
                 }

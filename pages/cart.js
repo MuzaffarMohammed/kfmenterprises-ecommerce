@@ -216,7 +216,7 @@ const Cart = () => {
 
           <label htmlFor="address">Address</label>
           <textarea type="text" name="address" id="address"
-            maxLength="30"
+            maxLength="50"
             className="form-control mb-2" value={address}
             onChange={e => setAddress(e.target.value)} />
 

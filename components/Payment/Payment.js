@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { patchData, postData } from '../../utils/fetchData'
 import { updateItem } from '../../store/Actions'
 import { razorPayOptions } from '../../utils/payUtil.js'
+import { parseToIndiaTime } from '../../utils/util.js'
 
 const Payment = (props) => {
 
@@ -32,7 +33,7 @@ const Payment = (props) => {
 
     const onlinePay = (order) => {
         try {
-            props.dispatch({ type: 'NOTIFY', payload: { loading: true, isPay: true, msg: 'Securily redirecting to payment page, please wait.' } })
+            props.dispatch({ type: 'NOTIFY', payload: { loading: true, isPay: true, msg: 'Securely redirecting to payment page, please wait.' } })
             patchData(`order/payment/${order._id}`, {}, props.auth.token)
                 .then(res => {
                     isLoading(false);
@@ -54,12 +55,16 @@ const Payment = (props) => {
 
                     var rzp1 = new Razorpay(payOptions);
                     rzp1.on('payment.failed', function (res) {
-                        console.log("Razor pay payment failed: ", res.error);
+                        isLoading(false);
+                        throw res.error;
                     });
                     rzp1.open();
-                });
+                }).catch(err => {
+                    isLoading(false);
+                    throw err;
+                })
         } catch (err) {
-            console.log(err)
+            console.log(err);
             props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
     }
@@ -115,7 +120,7 @@ const Payment = (props) => {
                 address: order.address,
                 mobile: order.mobile,
                 orderId: order._id,
-                orderDate: new Date(order.createdAt).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                orderDate: parseToIndiaTime(new Date(order.createdAt)),
                 id: props.auth.user.id,
                 mailType: ORDER_MAIL,
                 subject: 'Order placed!',
@@ -151,20 +156,23 @@ const Payment = (props) => {
 
     if (!props.auth.user) return null;
     return (
-        <div className="col-xl-5 mobileTopMarg orderStatusFont">{
-           !props.order.paid && props.auth.user.role !== 'admin' &&
+        <div className="col-xl-4 mobileTopMarg orderStatusFont">{
+            !props.order.paid && props.auth.user.role !== 'admin' &&
             <div className='border_login payment-section' style={{ marginLeft: '0px' }}>
-                <h5> Select a payment method</h5>
-                <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
-                    onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
-                    <option value="select">Select</option>
-                    <option value="online">Online Payment</option>
-                    <option value="cod">Cash on delivery</option>
-                </select>
-                <h6 className="mt-4">Delivery Chargers:
+                <h5> 4. Select a payment method</h5>
+                <div className='d-flex'>
+                    <label className='mt-3' style={{ width: '100px' }}>Pay Mode: </label>
+                    <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
+                        onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
+                        <option value="select">Select</option>
+                        <option value="online">Online Payment</option>
+                        <option value="cod">Cash on delivery</option>
+                    </select>
+                </div>
+                <label className="mt-3">Delivery Chargers:
                     <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'red' }}> ₹95 </span>
                     <span style={{ marginLeft: '5px', color: 'green' }}>  ₹0.00 Free </span>
-                </h6>
+                </label>
                 <h5 className="my-4 text-uppercase">Total: ₹{props.order.total}.00</h5>
                 <button
                     id="rzp-button1"
