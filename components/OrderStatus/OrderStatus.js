@@ -94,7 +94,7 @@ const OrderStatus = (props) => {
                                 <div className="step-icon">{props.order.accepted ? <img src="../assets/images/icon/settings-white-5671.svg" className="cartIcon" /> : <img src="../assets/images/icon/settings-5670.svg" className="cartIcon" />} </div>
                             </div>
                             <div className="label-align">
-                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>Processing Order</h4>
+                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>{props.order.delivered ? 'Order Processed' : 'Processing Order'}</h4>
                             </div>
                         </div>
                     </div>
