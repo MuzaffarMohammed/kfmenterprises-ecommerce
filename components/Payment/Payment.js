@@ -156,33 +156,36 @@ const Payment = (props) => {
 
     if (!props.auth.user) return null;
     return (
-        <div className="col-xl-4 mobileTopMarg orderStatusFont">{
-            !props.order.paid && props.auth.user.role !== 'admin' &&
-            <div className='border_login payment-section' style={{ marginLeft: '0px' }}>
-                <h5> 4. Select a payment method</h5>
-                <div className='d-flex'>
-                    <label className='mt-3' style={{ width: '100px' }}>Pay Mode: </label>
-                    <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
-                        onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
-                        <option value="select">Select</option>
-                        <option value="online">Online Payment</option>
-                        <option value="cod">Cash on delivery</option>
-                    </select>
-                </div>
-                <label className="mt-3">Delivery Chargers:
-                    <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'red' }}> ₹95 </span>
-                    <span style={{ marginLeft: '5px', color: 'green' }}>  ₹0.00 Free </span>
-                </label>
-                <h5 className="my-4 text-uppercase">Total: ₹{props.order.total}.00</h5>
-                <button
-                    id="rzp-button1"
-                    className="btn btn-primary text-uppercase"
-                    style={{ width: '100%' }}
-                    onClick={(e) => { handlePayment(e, props.order) }}>
-                    {payBtnText}
-                </button>
+        <>
+            <div className="row order-step-header">
+                <h6>Select a payment method</h6>
             </div>
-        }</div>
+            <div className='d-flex'>
+                <label className='mt-3' style={{ width: '100px' }}>Pay Mode: </label>
+                <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
+                    onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
+                    <option value="select">Select</option>
+                    <option value="online">Online Payment</option>
+                    <option value="cod">Cash on delivery</option>
+                </select>
+            </div>
+            <div className="row mt-3 justify-content-between">
+                <label>Delivery Chargers</label>
+                <span style={{ color: 'green' }}>Free </span>
+            </div>
+            <div className="row mt-1 justify-content-between">
+                <label>Final Amount</label>
+                <h5 className="text-uppercase">₹{props.order.total}.00</h5>
+            </div>
+            <button
+                id="rzp-button1"
+                className="btn btn-primary text-uppercase"
+                style={{ width: '100%' }}
+                onClick={(e) => { handlePayment(e, props.order) }}>
+                {payBtnText}
+            </button>
+        </>
     )
+
 }
 export default Payment
