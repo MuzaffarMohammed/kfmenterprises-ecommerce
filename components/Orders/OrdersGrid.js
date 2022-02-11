@@ -50,9 +50,8 @@ export default function OrdersGrid(props) {
 
     return (
         <>
-            <table className="table-bordered table-hover w-100"
-                style={{ minWidth: '600px' }}>
-                <thead className="font-weight-bold" style={{ background: '#144271', color: 'white', fontSize: '0.9rem' }}>
+            <table className="table-bordered table-hover w-100" style={{ minWidth: '600px' }}>
+                <thead className="font-weight-bold app-bg-color" style={{ color: 'white', fontSize: '0.9rem' }}>
                     <tr>
                         <td className="p-2">Order ID</td>
                         <td className="p-2">Time & Date</td>

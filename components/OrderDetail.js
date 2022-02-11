@@ -13,24 +13,30 @@ const OrderDetail = ({ orderDetail, state, dispatch }) => {
         dispatch({ type: 'NOTIFY', payload: { loading: false } })
         setPayType('cod');
     }, [])
-   
+
     if (!auth.user) return null;
     return (
         <>
             {
                 orderDetail.map(order => (
-
-                    <div key={order._id} style={{ margin: '10px auto' }} className="border_login row justify-content-around">
-                        <div className="row col-12 justify-content-center" style={{ background: '#144271', color: 'white' }}>
-                            <h4 className='primary my-3'>SHIPPING & PAYMENT</h4>
+                    <div key={order._id} className="row">
+                        <div className="row col-12 justify-content-center">
+                        <h3 className="text-uppercase">Order & Payment</h3>
                         </div>
-                        <div className=" col-xl-12">
-                            <div className="mt-4 row justify-content-md-between">
-                                <OrderInfo order={order} orders={orders} auth={auth} state={state} payType={payType} dispatch={dispatch} />
-                                <ShippingDetails order={order} />
-                                <OrderItems order={order} auth={auth} />                
-                                <Payment order={order} orders={orders} auth={auth} payType={payType} dispatch={dispatch}/>
-                            </div>
+                        <div className="row justify-content-center">
+                                <div className='col-xl-7 order-Info-card shadow-card'>
+                                    <OrderInfo order={order} orders={orders} auth={auth} state={state} payType={payType} dispatch={dispatch} />
+                                </div>
+                                <div className="col-xl-4 ml-xl-4 shipping-card shadow-card">
+                                    <ShippingDetails order={order} />
+                                </div>
+                                <div className="col-xl-7 items-card shadow-card">
+                                    <OrderItems order={order} auth={auth} />
+                                </div>
+                                <div className='col-xl-4 ml-xl-4 payment-card shadow-card'>
+                                    <Payment order={order} orders={orders} auth={auth} payType={payType} dispatch={dispatch} />
+                                </div>
+                           
                         </div>
                     </div>
                 ))

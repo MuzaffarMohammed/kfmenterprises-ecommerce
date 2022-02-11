@@ -1,21 +1,14 @@
-.shippingDetailsCard {
-    margin-top: 0px;
-    margin-left: 0px !important;
-    font-size: 14px
+.shipping-card {
+    font-size: 14px;
 }
 
-.shippingDetailsCard h5 {
+.shipping-card h5 {
     font-weight: bolder;
 }
 
-@media(max-width:330px) {
-    .shippingDetailsFont {
-        font-size: 14px;
-    }
-}
-
 @media(max-width:1024px) {
-    .shippingDetailsCard {
+    .shipping-card {
         margin-top: 20px;
+        margin-left: 0px !important;
     }
 }

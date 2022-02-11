@@ -1,13 +1,11 @@
-.orderInfoCardTopMargin {
+.order-Info-card {
+    font-size: 14px;
     margin-top: 0px !important;
     min-height: 271px;
 }
 
-.orderInfoCardTopMargin h5 {
+.order-Info-card h5 {
     font-weight: bolder;
 }
 
-.orderInfoFontSize {
-    font-size: 14px;
-    font-weight: 500;
-}
+

@@ -42,7 +42,7 @@ const ContactUs = () => {
           <title>KFM Cart - Contact Us</title>
         </Head>
 
-        <form className="container mx-auto my-4 border_login contform" onSubmit={handleSubmit}>
+        <form className="container mx-auto my-4 shadow-card contform" onSubmit={handleSubmit}>
           <h2>LET’S GET IN TOUCH</h2>
           <div className="row">
           <div className="col-xl-5 contact">

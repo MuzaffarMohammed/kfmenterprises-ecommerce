@@ -65,7 +65,7 @@ const Signin = () => {
         <title>KFM Cart - Sign in</title>
       </Head>
 
-      <form className="container-fluid mx-auto my-4 border_login" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
+      <form className="container-fluid mx-auto my-4 shadow-card" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
         <h1>Sign in</h1>
         <div className="form-group">
           <label htmlFor="userName">User Name</label>

@@ -57,7 +57,7 @@ const ResetPassword = (props) => {
                 <title>KFM Cart - Account recovery</title>
             </Head>
 
-            <form className="container-fluid mx-auto my-4 border_login" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
+            <form className="container-fluid mx-auto my-4 shadow-card" style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
                 <h1>Reset Password</h1>
                 <p>Please enter your new password.</p>
                 <section>

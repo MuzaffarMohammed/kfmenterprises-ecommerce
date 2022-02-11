@@ -1,9 +1,9 @@
-.orderItemsCard {
+.items-card {
     margin-left: 0px !important;
     margin-top: 20px;
     font-size: 14px;
 }
 
-.orderItemsCard h5 {
+.items-card h5 {
     font-weight: bolder;
 }

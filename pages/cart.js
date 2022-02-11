@@ -196,7 +196,7 @@ const Cart = () => {
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
-      <h2 className="container text-uppercase mt-3" >Shopping Cart</h2>
+      <h2 className="container text-uppercase mt-3" >My Cart</h2>
       <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
 
         <table className="table my-3">
@@ -210,7 +210,7 @@ const Cart = () => {
         </table>
       </div>
 
-      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-uppercase text-secondary border_login">
+      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-uppercase text-secondary shadow-card">
         <form>
           <h4>Shipping Details</h4>
 

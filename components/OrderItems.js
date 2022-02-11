@@ -2,11 +2,13 @@ import Link from 'next/link'
 
 const OrderItems = (props) => {
     return (
-        <div className="container border_login col-xl-7 orderItemsCard">
-            <h5>3. Items</h5>
+        <>
+            <div className="row order-step-header">
+                <h6>Items</h6>
+            </div>
             {
                 props.order.cart.map(item => (
-                    <div className="row border-bottom mx-0 p-4 justify-content-between
+                    <div className="row border-bottom mx-0 pt-4 pb-1 justify-content-between
                                         align-items-center orderInfoFontSize" key={item._id}>
                         <img src={item.images[0].url}
                             style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
@@ -28,9 +30,9 @@ const OrderItems = (props) => {
                 ))
             }
             <div className="row justify-content-end">
-                <h5 className="my-4 text-uppercase">Total= ₹{props.order.total}.00</h5>
+                <h6 className=" item-price my-4 text-uppercase">₹{props.order.total}.00</h6>
             </div>
-        </div>
+        </>
     )
 }
 export default OrderItems
