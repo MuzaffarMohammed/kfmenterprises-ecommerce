@@ -24,7 +24,7 @@ const CartItem = ({ item, dispatch, cart, isAdmin }) => {
                     </Link>
                 </h5>
 
-                <p className="item-total">₹{`${item.totalPrice} x ${item.quantity} = ${item.quantity * item.totalPrice}`}</p>
+                <p className="item-price">₹{`${item.totalPrice} x ${item.quantity} = ${item.quantity * item.totalPrice}`}</p>
                 {
                     item.inStock > 0
                         ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock : ""}</p>
