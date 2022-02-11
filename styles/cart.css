@@ -46,7 +46,7 @@
     text-align: center;
 }
 
-.item-total{
+.item-price{
     font-weight: 600;
 }
 
@@ -60,7 +60,7 @@
     .cartitem-border {
         margin-left: 0px;
     }
-    .item-total{
+    .item-price{
         font-size: 12px;
         font-weight: bold;
     }
