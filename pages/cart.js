@@ -6,22 +6,20 @@ import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem'
 import { getData, postData, deleteData, putData } from '../utils/fetchData'
 import { deleteItem } from '../store/Actions'
-import { CITIES_ARR, STATES_ARR, COUNTRIES_ARR, ONLINE } from '../utils/constants'
+import { CITIES_ARR, STATES_ARR, COUNTRIES_ARR, ONLINE, SIGN_IN } from '../utils/constants'
+import SignInCard from '../components/SignIn/SIgnInCard'
+import { isLoggedIn } from '../components/SignIn/SignInCardFunctionalComponent'
 
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
   const { cart, auth, orders } = state
-
   const [total, setTotal] = useState(0)
-
   const [city, setCity] = useState('')
   const [countryState, setCountryState] = useState('Telangana') // Need to change when more states get added
   const [country, setCountry] = useState('India')
-
   const [address, setAddress] = useState('')
   const [mobile, setMobile] = useState('')
-
   const [callback, setCallback] = useState(false)
   const router = useRouter()
 
@@ -31,10 +29,8 @@ const Cart = () => {
       const res = cart.reduce((prev, item) => {
         return prev + (item.totalPrice * item.quantity)
       }, 0)
-
       setTotal(res)
     }
-
     getTotal()
   }, [cart])
 
@@ -55,15 +51,13 @@ const Cart = () => {
         }
         dispatch({ type: 'ADD_CART', payload: newArr })
       }
-
-      updateCart()
+      updateCart();
     }
   }, [callback])
 
   const handlePayment = async (e) => {
     e.preventDefault();
-    if (!auth.user) return dispatch({ type: 'NOTIFY', payload: { error: 'Please sign in to proceed further!' } })
-
+    if (!isLoggedIn(auth, dispatch)) return;
     const numRegex = /^[0-9]+$/;
     //console.log('address: ', address+' mobile: '+mobile+ ' city : '+city+ ' countryState : '+countryState+ ' country: '+country);
     if (!address || !mobile || !city || !countryState || !country) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add all your details to proceed further.' } })
