@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { useRouter } from 'next/router'
 import OrderDetail from '../../components/OrderDetail'
-import SignInCard from '../../components/SignIn/SIgnInCard'
+import SignInCard from '../../components/SignIn/SignInCard'
 
 
 const DetailOrder = () => {

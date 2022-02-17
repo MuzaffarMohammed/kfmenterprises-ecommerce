@@ -1,5 +1,5 @@
 import { SIGN_IN } from "../../utils/constants";
-import SignInCard from "./SIgnInCard";
+import SignInCard from "./SignInCard";
 
 export const isLoggedIn = (auth, dispatch) => {
     if (!auth || !auth.user) {
