@@ -52,7 +52,6 @@ const ForgotPassword = () => {
         <p className="my-2">
           You don't have an account? <Link href="/register"><a style={{ color: '#2196f3' }}>Create Your Account</a></Link>
         </p>
-
       </form>
     </div>
   )

@@ -25,6 +25,10 @@ export const convertINRPaise = (rupee) => {
     return rupee * 100;
 }
 
-export const parseToIndiaTime = (date) =>{
+export const parseToIndiaTime = (date) => {
     return date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+}
+
+export const isLoading = (loading, dispatch) => {
+    dispatch({ type: 'NOTIFY', payload: { loading } })
 }

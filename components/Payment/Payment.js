@@ -24,6 +24,7 @@ const Payment = (props) => {
         try {
             e.preventDefault();
             if (props.auth && props.auth.user && !props.auth.user.activated) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
+            if(!payType) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please select a Pay Mode.' } })
             if (payType === 'online') return onlinePay(order)
             if (payType === 'cod') return placeOrderAndNotifyUser(order, 'COD')
         } catch (err) {

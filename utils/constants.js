@@ -10,6 +10,7 @@ export const ONLINE = 'Online';
 export const CITIES_ARR = ['-Select-', 'Hyderabad', 'Secunderabad'];
 export const STATES_ARR = ['Telangana'];
 export const COUNTRIES_ARR = ['India'];
+export const SIGN_IN = 'SIGN_IN';
 
 // Error msgs
 export const ERROR_401 = 'Unauthorized Access!';
