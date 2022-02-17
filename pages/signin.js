@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useContext, useEffect } from 'react'
 import { DataContext } from '../store/GlobalState'
 import { useRouter } from 'next/router'
-import SignInCard from '../components/SignIn/SIgnInCard'
+import SignInCard from '../components/SignIn/SignInCard'
 
 const Signin = () => {
 

@@ -7,7 +7,6 @@ import CartItem from '../components/CartItem'
 import { getData, postData, deleteData, putData } from '../utils/fetchData'
 import { deleteItem } from '../store/Actions'
 import { CITIES_ARR, STATES_ARR, COUNTRIES_ARR, ONLINE, SIGN_IN } from '../utils/constants'
-import SignInCard from '../components/SignIn/SIgnInCard'
 import { isLoggedIn } from '../components/SignIn/SignInCardFunctionalComponent'
 
 
