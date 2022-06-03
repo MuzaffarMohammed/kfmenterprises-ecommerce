@@ -4,7 +4,7 @@ import Tokens from '../../../models/tokenModel'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import { createAccessToken, createRefreshToken } from '../../../utils/generateToken'
-import { CONTACT_ADMIN_ERR_MSG } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, INVALID_LOGIN } from '../../../utils/constants'
 import moment from 'moment'
 
 connectDB()
@@ -22,10 +22,10 @@ const login = async (req, res) => {
         const { userName: email, password } = req.body
         let user = await Users.findOne({ email })
         if (!user) user = await Users.findOne({ name: email })
-        if (!user) return res.status(401).json({ err: 'Login failed; Invalid user name or password.' })
+        if (!user) return res.status(401).json({ err: INVALID_LOGIN })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(401).json({ err: 'Login failed; Invalid user name or password.' })
+        if (!isMatch) return res.status(401).json({ err: INVALID_LOGIN })
 
         const access_token = createAccessToken({ id: user._id })
 

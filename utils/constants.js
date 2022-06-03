@@ -16,6 +16,7 @@ export const SIGN_IN = 'SIGN_IN';
 export const ERROR_401 = 'Unauthorized Access!';
 export const CONTACT_ADMIN_ERR_MSG = 'Something went wrong! Please try again later or contact KFM administration.';
 export const PLEASE_LOG_IN = 'Please Login!';
+export const INVALID_LOGIN = 'Login failed! Invalid User Name or Password.';
 
 //Filters.js
 
