@@ -64,12 +64,12 @@ export default function SignInCard(props) {
                     <div className="form-group">
                         <label htmlFor="userName">User Name</label>
                         <input type="text" className="form-control" id="userName" aria-describedby="userNameHelp"
-                            name="userName" value={userName} onChange={handleChangeInput} maxLength='100' />
+                            name="userName" value={userName} onChange={handleChangeInput} maxLength='100' autocomplete="off"/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
                         <input type="password" className="form-control" id="exampleInputPassword1"
-                            name="password" value={password} onChange={handleChangeInput} maxLength='64' />
+                            name="password" value={password} onChange={handleChangeInput} maxLength='64' autocomplete="off"/>
                     </div>
                     <button type="submit" className="btn btn-primary signBtn w-100">Sign in</button>
                     <small id="userNameHelp" className="form-text text-muted pt-1">Note: We'll never share your credentials with anyone else.</small>
