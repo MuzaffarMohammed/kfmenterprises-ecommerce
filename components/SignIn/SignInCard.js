@@ -30,7 +30,7 @@ export default function SignInCard(props) {
             if (!userData.password) return dispatch({ type: 'NOTIFY', payload: { error: "Please enter a 'Password'." } })
 
             const res = await postData('auth/login', userData)
-            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+            if (res.err) throw res.err;
             dispatch({ type: 'NOTIFY', payload: { success: res.msg, delay: 1000 } })
             dispatch({ type: 'AUTH', payload: { token: res.access_token, user: res.user } })
 
@@ -51,7 +51,7 @@ export default function SignInCard(props) {
             $('#confirmModal').modal('hide');
         } catch (err) {
             setIsLoading(false);
-            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+            return dispatch({ type: 'NOTIFY', payload: { error: err } })
         }
     }
 
