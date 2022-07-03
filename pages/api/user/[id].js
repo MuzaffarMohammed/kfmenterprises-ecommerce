@@ -41,7 +41,7 @@ const getUserData = async (req, res) => {
                     break;
             }
         }
-    } catch (error) {
+    } catch (err) {
         console.error('Error occurred while getUserData: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
