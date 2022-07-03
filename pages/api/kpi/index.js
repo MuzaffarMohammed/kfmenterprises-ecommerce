@@ -62,70 +62,70 @@ const getKpis = async (req, res) => {
 
 
 
-        // kpiData = {
-        //     cards: [
-        //         { id: 'pir1', name: 'Profit in Rupees', data: '155cr' },
-        //         { id: 'pir2', name: 'Total Orders', data: 45 },
-        //         { id: 'pir3', name: 'Profit in Rupees', data: '455cr' },
-        //         { id: 'pir4', name: 'Profit in Rupees Rupees Rupees', data: '155cr' },
-        //         { id: 'pir5', name: 'Total Orders', data: 45 },
-        //         { id: 'pir6', name: 'Profit in Rupees', data: '455cr' }
-        //     ],
-        //     charts: [
-        //         {
-        //             id: 'su',
-        //             name: 'Stock Utilization', data: {
-        //                 type: "gauge",
-        //                 columns: [
-        //                     ['Used Stock', 68]
-        //                 ]
-        //             }
-        //         },
-        //         {
-        //             id: 'mws',
-        //             name: 'Monthly Sell Vs Demand',
-        //             data: {
-        //                 type: "bar",
-        //                 columns: [
-        //                     ['Iventory Available Stock', 10, 60, 70, 50],
-        //                     ['Demand', 5, 40, 80, 40]
-        //                 ]
-        //             }
-        //         },
-        //         {
-        //             id: 'ds',
-        //             name: 'Demand Spike', data: {
-        //                 type: "line",
-        //                 columns: [
-        //                     ['Stock', 10, 60, 70, 50],
-        //                     ['Demand', 5, 40, 80, 40]
-        //                 ]
-        //             }
-        //         }
-        //         ,
-        //         {
-        //             id: 'ds2',
-        //             name: 'Demand Spike', data: {
-        //                 type: "line",
-        //                 columns: [
-        //                     ['Stock', 10, 60, 70, 50],
-        //                     ['Demand', 5, 40, 80, 40]
-        //                 ]
-        //             }
-        //         }
-        //         ,
-        //         {
-        //             id: 'ds3',
-        //             name: 'Demand Spike', data: {
-        //                 type: "line",
-        //                 columns: [
-        //                     ['Stock', 10, 60, 70, 50],
-        //                     ['Demand', 5, 40, 80, 40]
-        //                 ]
-        //             }
-        //         }
-        //     ]
-        // }
+        kpiData = {
+            cards: [
+                { id: 'pir1', name: 'Profit in Rupees', data: '155cr' },
+                { id: 'pir2', name: 'Total Orders', data: 45 },
+                { id: 'pir3', name: 'Profit in Rupees', data: '455cr' },
+                { id: 'pir4', name: 'Profit in Rupees Rupees Rupees', data: '155cr' },
+                { id: 'pir5', name: 'Total Orders', data: 45 },
+                { id: 'pir6', name: 'Profit in Rupees', data: '455cr' }
+            ],
+            charts: [
+                {
+                    id: 'su',
+                    name: 'Stock Utilization', data: {
+                        type: "gauge",
+                        columns: [
+                            ['Used Stock', 68]
+                        ]
+                    }
+                },
+                {
+                    id: 'mws',
+                    name: 'Monthly Sell Vs Demand',
+                    data: {
+                        type: "bar",
+                        columns: [
+                            ['Iventory Available Stock', 10, 60, 70, 50],
+                            ['Demand', 5, 40, 80, 40]
+                        ]
+                    }
+                },
+                {
+                    id: 'ds',
+                    name: 'Demand Spike', data: {
+                        type: "line",
+                        columns: [
+                            ['Stock', 10, 60, 70, 50],
+                            ['Demand', 5, 40, 80, 40]
+                        ]
+                    }
+                }
+                ,
+                {
+                    id: 'ds2',
+                    name: 'Demand Spike', data: {
+                        type: "line",
+                        columns: [
+                            ['Stock', 10, 60, 70, 50],
+                            ['Demand', 5, 40, 80, 40]
+                        ]
+                    }
+                }
+                ,
+                {
+                    id: 'ds3',
+                    name: 'Demand Spike', data: {
+                        type: "line",
+                        columns: [
+                            ['Stock', 10, 60, 70, 50],
+                            ['Demand', 5, 40, 80, 40]
+                        ]
+                    }
+                }
+            ]
+        }
 
         res.json({ kpiData });
     } catch (err) {
