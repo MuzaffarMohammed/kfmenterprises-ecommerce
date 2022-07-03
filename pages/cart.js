@@ -6,19 +6,16 @@ import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem'
 import { getData, postData, deleteData, putData } from '../utils/fetchData'
 import { deleteItem } from '../store/Actions'
-import { CITIES_ARR, STATES_ARR, COUNTRIES_ARR, ONLINE, SIGN_IN } from '../utils/constants'
-import { isLoggedIn } from '../components/SignIn/SignInCardFunctionalComponent'
+import { ONLINE } from '../utils/constants'
+import { isLoggedInPopup } from '../components/SignIn/SignInCardFunctionalComponent'
+import Address from '../components/Cart/Address'
+import { getAddressObj, validateAddress } from '../components/Cart/util'
 
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { cart, auth, orders } = state
+  const { cart, auth, orders, address } = state
   const [total, setTotal] = useState(0)
-  const [city, setCity] = useState('')
-  const [countryState, setCountryState] = useState('Telangana') // Need to change when more states get added
-  const [country, setCountry] = useState('India')
-  const [address, setAddress] = useState('')
-  const [mobile, setMobile] = useState('')
   const [callback, setCallback] = useState(false)
   const router = useRouter()
 
@@ -40,12 +37,14 @@ const Cart = () => {
       const updateCart = async () => {
         for (const item of cartLocal) {
           const res = await getData(`product/${item._id}`)
-          const { _id, title, images, totalPrice, inStock, sold } = res.product
-          if (inStock > 0) {
-            newArr.push({
-              _id, title, images, totalPrice, inStock, sold,
-              quantity: item.quantity > inStock ? inStock : item.quantity
-            })
+          if (!res.err) {
+            const { _id, title, images, totalPrice, inStock, sold } = res.product
+            if (inStock > 0) {
+              newArr.push({
+                _id, title, images, totalPrice, inStock, sold,
+                quantity: item.quantity > inStock ? inStock : item.quantity
+              })
+            }
           }
         }
         dispatch({ type: 'ADD_CART', payload: newArr })
@@ -56,15 +55,11 @@ const Cart = () => {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-    if (!isLoggedIn(auth, dispatch)) return;
-    const numRegex = /^[0-9]+$/;
-    //console.log('address: ', address+' mobile: '+mobile+ ' city : '+city+ ' countryState : '+countryState+ ' country: '+country);
-    if (!address || !mobile || !city || !countryState || !country) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add all your details to proceed further.' } })
-    if (!(address.length >= 15)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add address like (Flat No./H No./Door No. , Street, Locality, Area) only.', delay: 12000 } })
-    if (city == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a city.' } })
-    if (countryState == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a State.' } })
-    if (country == "-Select-") return dispatch({ type: 'NOTIFY', payload: { error: 'Please select a country.' } })
-    if (!(numRegex.test(mobile)) || !(mobile.length >= 10)) return dispatch({ type: 'NOTIFY', payload: { error: 'Please enter a valid mobile number.' } })
+    if (!isLoggedInPopup(auth, dispatch)) return;
+    var shippingAddress = address;
+    if (shippingAddress && shippingAddress.new && shippingAddress.new === '-1') shippingAddress = getAddressObj(document.getElementById('addressForm'));
+    const validateAddressMsg = validateAddress(shippingAddress);
+    if (validateAddressMsg) return dispatch({ type: 'NOTIFY', payload: { error: validateAddressMsg } });
 
     let newCart = [];
     let nonAvailProducts = [];
@@ -86,10 +81,8 @@ const Cart = () => {
       })
     }
 
-    const finalAddr = formatAddress();
-
     dispatch({ type: 'NOTIFY', payload: { loading: true } })
-    postData('order', { address: finalAddr, mobile, cart, total }, auth.token)
+    postData('order', { address: shippingAddress, cart, total }, auth.token)
       .then(res => {
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         const newOrder = {
@@ -142,37 +135,6 @@ const Cart = () => {
     })
   }
 
-  const formatAddress = () => {
-    var addressCheck = address.toLowerCase();
-    var finaladdr = addressCheck;
-
-    var addrCityCheck = addressCheck.includes("hyderabad");
-    var addrStateCheck = addressCheck.includes("telangana");
-    var addrCountryCheck = addressCheck.includes("india");
-    if (addrCityCheck || addrStateCheck || addrCountryCheck) {
-      if (!addrCountryCheck) {
-        finaladdr += ", " + country.toLowerCase()
-        if (!addrCityCheck) {
-          var index = finaladdr.indexOf(countryState.toLowerCase());
-          finaladdr = [finaladdr.slice(0, index), ", " + city + ", ", finaladdr.slice(index)].join('');
-        }
-      } else {
-        if (!addrStateCheck) {
-          var index = finaladdr.indexOf(country.toLowerCase());
-          finaladdr = [finaladdr.slice(0, index), ", " + countryState + ", ", finaladdr.slice(index)].join('');
-        }
-        if (!addrCityCheck) {
-          var index = finaladdr.indexOf(countryState.toLowerCase());
-          finaladdr = [finaladdr.slice(0, index), ", " + city + ", ", finaladdr.slice(index)].join('');
-        }
-      }
-    } else {
-      finaladdr = finaladdr + ", " + city + ", " + countryState + ", " + country
-    }
-    finaladdr = finaladdr.replaceAll(', , ,', ',').replace(', ,', ', ');
-    return finaladdr;
-  }
-
   if (cart.length === 0) {
     return (
       <div className='text-alingn-center'>
@@ -185,13 +147,12 @@ const Cart = () => {
   }
 
   return (
-    <div className="container-fluid row justify-content-md-between" onSubmit={handlePayment}>
+    <div className="container-fluid row justify-content-md-between">
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
       <h2 className="container text-uppercase mt-3" >My Cart</h2>
       <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
-
         <table className="table my-3">
           <tbody>
             {
@@ -203,58 +164,13 @@ const Cart = () => {
         </table>
       </div>
 
-      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-uppercase text-secondary shadow-card">
-        <form>
-          <h4>Shipping Details</h4>
-
-          <label htmlFor="address">Address</label>
-          <textarea type="text" name="address" id="address"
-            maxLength="50"
-            className="form-control mb-2" value={address}
-            onChange={e => setAddress(e.target.value)} />
-
-          <div className="row">
-            <div className="col-xl-4">
-              <label htmlFor="cities">City</label>
-              <select className="form-control mb-2 custom-select text-capitalize" onChange={e => setCity(e.target.value)}>
-                {
-                  CITIES_ARR.map(city => (
-                    <option value={city} key={city}>{city}</option>
-                  ))}
-              </select>
-            </div>
-            <div className="col-xl-4 pl-md-1">
-              <label htmlFor="state">State</label>
-              <select className="form-control mb-2 custom-select text-capitalize" onChange={e => setCountryState(e.target.value)}>
-                {
-                  STATES_ARR.map(countryState => (
-                    <option value={countryState} key={countryState}>{countryState}</option>
-                  ))
-                }
-              </select>
-            </div>
-            <div className="col-xl-4 pl-md-1">
-              <label htmlFor="country">Country</label>
-              <select className="form-control mb-2 custom-select text-capitalize" onChange={e => setCountry(e.target.value)}>
-                {
-                  COUNTRIES_ARR.map((country) => (
-                    <option value={country} key={country}>{country}</option>
-                  ))
-                }
-              </select>
-            </div>
-          </div>
-
-          <label htmlFor="mobile">Mobile</label>
-          <input type="text" name="mobile" id="mobile"
-            className="form-control mb-2" value={mobile}
-            maxLength="10"
-            onChange={e => setMobile(e.target.value)} />
-        </form>
+      <div className="shipping-card col-md-4 my-3 mx-md-3 text-left text-secondary shadow-card">
+        <h5>Select a Delivery Address</h5>
+        <Address />
         <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
         <Link href={auth.user ? '#!' : '/signin'}>
-          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed to pay</a>
+          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed To Pay</a>
         </Link>
 
       </div>

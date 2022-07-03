@@ -132,7 +132,7 @@ const OrderStatus = (props) => {
                                     <button className="btn btn-dark text-uppercase order-handle-button"
                                         disabled={props.order.accepted ? false : true}
                                         onClick={() => handleDelivered(props.order)} >
-                                        Mark as delivered
+                                        Mark As Delivered
                                     </button>
                                 }
                             </div>

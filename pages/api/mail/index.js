@@ -103,7 +103,7 @@ const sendMail = async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error occurred in Mail System transporter : ', error)
-                throw error;
+                return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG });
             }
             console.log('Message sent: %s', info.accepted);   
             return info;

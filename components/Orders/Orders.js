@@ -4,6 +4,7 @@ import OrdersGrid from './OrdersGrid';
 import Filters from './Filters'
 import { applyFilter, getAllFiltersLengths } from './filtersUtil';
 import { getData } from '../../utils/fetchData';
+import { isLoading } from '../../utils/util';
 
 export default function Orders() {
     const { state, dispatch } = useContext(DataContext);
@@ -15,8 +16,10 @@ export default function Orders() {
 
 
     useEffect(() => {
+        isLoading(true, dispatch)
         getData('order', auth.token)
             .then(res => {
+                isLoading(false, dispatch)
                 if (res.err) setFilteredOrders([]);
                 else {
                     const lengths = getAllFiltersLengths(res.orders);
@@ -24,22 +27,18 @@ export default function Orders() {
                     setFilteredOrders(res.orders);
                 }
             })
-    }, [])
-
-    useEffect(() => {
-        if (orders) {
-
-        }
-    }, [orders])
+    }, [auth])
 
     const handleFilter = (filterType) => {
         const filteredOrdersList = applyFilter(filterType, orders);
         setFilteredOrders(filteredOrdersList);
     }
 
+    if (!auth.user) return null;
+
     return (
-        <div className="col-md-8 mgtop">
-            <h3 className="text-uppercase">Orders</h3>
+        <div className="justify-content-between">
+            <h2 className="container text-uppercase mt-3" >Orders</h2>
             <div className="my-3">
                 <div className="p-1">
                     <Filters isAdmin={isAdmin} isUser={isUser} handleFilter={handleFilter} lengths={filterLengths} />

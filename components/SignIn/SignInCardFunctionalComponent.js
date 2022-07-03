@@ -1,14 +1,14 @@
 import { SIGN_IN } from "../../utils/constants";
 import SignInCard from "./SignInCard";
 
-export const isLoggedIn = (auth, dispatch) => {
+export const isLoggedInPopup = (auth, dispatch, cb) => {
     if (!auth || !auth.user) {
       $('#confirmModal').modal('show');
       dispatch({
         type: 'ADD_MODAL',
         payload: {
-          title: 'Please Sign in',
-          content: <SignInCard isPopUp={true}/>,
+          title: 'Please Sign In',
+          content: <SignInCard isPopUp={true} executeSignInCallback={cb}/>,
           data: {},
           type: SIGN_IN
         }

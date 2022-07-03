@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema({
     activated: {
         type: Boolean,
         default: false
-    }
+    },
+    addresses:Array
 }, {
     timestamps: true
 })
