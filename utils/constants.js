@@ -27,3 +27,11 @@ export const DELIVERED = 'Delivered';
 export const ACCEPTED = 'Accepted';
 export const IN_TRANSIT = 'In Transit';
 export const YET_TO_DISPATCH = 'Yet To Dispatch';
+
+
+// User Data type
+
+export const ADDRESS_GET = "ADDRESS_GET";
+export const ADDRESS_NEW = "ADDRESS_NEW";
+export const ADDRESS_DEL = "ADDRESS_DEL";
+export const ADDRESS_EDIT = "ADDRESS_EDIT";

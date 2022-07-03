@@ -35,7 +35,7 @@ const login = async (req, res) => {
         saveRefreshToken(refreshTokenId, user._id, refresh_token);
 
         res.json({
-            msg: "Login success!",
+            msg: "Login successful.",
             refresh_token,
             access_token,
             user: {

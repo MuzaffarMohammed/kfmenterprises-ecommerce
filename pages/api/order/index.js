@@ -49,14 +49,14 @@ const createOrder = async (req, res) => {
     console.log('Creating Order ....')
     try {
         const result = await auth(req, res)
-        const { address, mobile, cart, total } = req.body
+        const { address, cart, total } = req.body
 
         for (let i = 0; i < cart.length; i++) {
             await sold(cart, i);
         }
 
         const newOrder = new Orders({
-            user: result.id, address, mobile, cart, total
+            user: result.id, address, cart, total
         })
 
         await newOrder.save()

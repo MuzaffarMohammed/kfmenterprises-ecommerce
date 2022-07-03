@@ -3,7 +3,7 @@ import { DataContext } from '../store/GlobalState'
 import { deleteItem } from '../store/Actions'
 import { deleteData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
-import { SIGN_IN } from '../utils/constants'
+import { ADDRESS_EDIT, SIGN_IN } from '../utils/constants'
 
 
 const Modal = () => {
@@ -76,7 +76,7 @@ const Modal = () => {
                         {modal.content}
                     </div>
                     {
-                        modal.type !== SIGN_IN && (
+                        modal.type !== SIGN_IN || modal.type !== ADDRESS_EDIT && (
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleSubmit}>Yes</button>
                                 <button type="button" className="btn btn-primary" data-dismiss="modal">Cancel</button>

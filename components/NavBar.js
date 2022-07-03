@@ -65,6 +65,9 @@ function NavBar() {
                     <Link href="/profile">
                         <a className="dropdown-item">Profile</a>
                     </Link>
+                    <Link href="/orders">
+                        <a className="dropdown-item">Orders</a>
+                    </Link>
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
@@ -102,7 +105,7 @@ function NavBar() {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 {accountActivated === false &&
-                    <button onClick={() => { triggerAccountActivationMail() }} className="btn btn-warning activateBtn">ACTIVATE YOUR ACCOUNT</button>
+                    <button onClick={() => { triggerAccountActivationMail() }} className="btn btn-warning activateBtn">Activate Your Account</button>
                 }
 
                 <ul className="navbar-nav p-1">

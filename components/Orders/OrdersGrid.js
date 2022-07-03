@@ -27,7 +27,7 @@ export default function OrdersGrid(props) {
                                 ? <label className="text-success italic-text"> Paid</label>
                                 : (
                                     <Link href={`/order/${order._id}`} style={{ cursor: 'pointer' }}>
-                                        <button className="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Go to payment page">Pay Now </button>
+                                        <button className="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Go to payment page">Pay Now</button>
                                     </Link>
                                 )
                         }
