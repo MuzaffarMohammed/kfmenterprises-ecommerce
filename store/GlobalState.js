@@ -58,6 +58,7 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         if (auth.token) {
+            console.log('Getting order...')
             getData('order', auth.token)
                 .then(res => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })

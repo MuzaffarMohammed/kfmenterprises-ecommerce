@@ -109,6 +109,15 @@ function NavBar() {
                 }
 
                 <ul className="navbar-nav p-1">
+                    {isAdmin &&
+                        <li className="nav-item" >
+                            <Link href="/dashboard">
+                                <a className={"nav-link" + isActive('/dashboard')}>
+                                    <i className="fas fa-th" aria-hidden="true" ></i> Dashboard
+                                </a>
+                            </Link>
+                        </li>
+                    }
                     <li className="nav-item" >
                         <Link href="/">
                             <a className={"nav-link" + isActive('/')}>

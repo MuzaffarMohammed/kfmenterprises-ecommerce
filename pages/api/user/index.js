@@ -27,7 +27,7 @@ const getUsers = async (req, res) => {
         if (result.role !== 'admin')
             return res.status(401).json({ err: ERROR_401 })
 
-        const users = await Users.find().select('-password')
+        const users = await Users.find({ activated: true });
         res.json({ users })
 
     } catch (err) {

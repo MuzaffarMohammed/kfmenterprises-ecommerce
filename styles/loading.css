@@ -9,6 +9,7 @@
     background: rgb(212, 218, 221);
     opacity: .9;
   }
+
   .spinner{
     z-index: 100;
     width:60px;

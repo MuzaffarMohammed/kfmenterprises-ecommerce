@@ -2,7 +2,7 @@ import { ACCEPTED, ALL, DELIVERED, IN_TRANSIT, REJECTED, TODAY, YET_TO_DISPATCH 
 
 export default function Filters(props) {
     return (
-        <div className="float-right">
+        <div>
             <button onClick={() => { props.handleFilter(ALL) }} className="btn btn-dark btn-sm m-1 " data-toggle="tooltip" data-placement="bottom" title="All Orders">All Orders <span className="badge badge-light">{props.lengths || props.lengths === 0 ? props.lengths['ALL'] : ''}</span></button>
             <button onClick={() => { props.handleFilter(TODAY) }} className="btn btn-primary btn-sm m-1 " data-toggle="tooltip" data-placement="bottom" title="Today's Orders">Today <span className="badge badge-light">{props.lengths || props.lengths === 0 ? props.lengths['TODAY'] : ''}</span></button>
             {props.isAdmin && (
