@@ -19,7 +19,8 @@ const KPISchema = new mongoose.Schema({
     columns:{
         type: Array,
         required: true
-    }
+    },
+    singleAnalysis: Boolean
 }, {
     timestamps: true
 })

@@ -16,7 +16,8 @@ connectDB()
 export default async (req, res) => {
     switch (req.method) {
         case "POST":
-            await createOrder(req, res)
+            if (req.body.type === 'GET') await getOrders(req, res)
+            else await createOrder(req, res)
             break;
         case "GET":
             await getOrders(req, res)
@@ -32,10 +33,14 @@ const getOrders = async (req, res) => {
         const result = await auth(req, res)
 
         let orders;
+        const { dateRange } = req.body;
+
+        let filter = {};
+        if (dateRange) filter = { ...filter, createdAt: { $gte: dateRange[0].startDate, $lt: dateRange[0].endDate } }
         if (result.role !== 'admin') {
-            orders = await Orders.find({ user: result.id }).populate("user", "-password").sort({ createdAt: -1 })
+            orders = await Orders.find({ user: result.id, ...filter }).populate("user", "-password").sort({ createdAt: -1 })
         } else {
-            orders = await Orders.find().populate("user", "-password").sort({ createdAt: -1 })
+            orders = await Orders.find(filter).populate("user", "-password").sort({ createdAt: -1 })
         }
 
         res.json({ orders })

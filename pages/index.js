@@ -23,21 +23,10 @@ const Home = (props) => {
   const { state, dispatch } = useContext(DataContext)
   const { auth } = state
   const isAdmin = auth && auth.user && auth.user.role === 'admin';
-  const [kpis, setKpis] = useState({})
-
-  const getKpiData = () => {
-    if (isAdmin) {
-      getData('kpi', auth.token)
-        .then(res => {
-          setKpis(res.kpiData);
-        })
-    }
-  }
 
   useEffect(() => {
     setProducts(props.products)
     setBsProducts(props.bestSellingProds)
-    getKpiData();
   }, [props.products, props.bestSellingProds])
 
   useEffect(() => {
@@ -78,28 +67,24 @@ const Home = (props) => {
       <Head>
         <title>KFM Cart - Home</title>
       </Head>
-      {
-        !isAdmin
-          ?
-          <div className="carousel image img-fluid">
-            <ControlledCarousel />
-            <HomePageCards />
-            <div className="bestSellCaroIndicators">
-              <h2>BEST SELLING PRODUCTS</h2>
-              <Slider {...settings}>
-                {
-                  bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
-                    <div key={product._id} className="productsCarousel">
-                      <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
-                    </div>
-                  )) : <h2>No Products</h2>
-                }
-              </Slider>
-            </div>
-          </div>
-          :
-          <AdminHomePage kpis={kpis} products={products} handleCheckALL={handleCheckALL} isAdmin={isAdmin} dispatch={dispatch} isCheck={isCheck} />
-      }
+
+      <div className="carousel image img-fluid">
+        <ControlledCarousel />
+        <HomePageCards />
+        <div className="bestSellCaroIndicators">
+          <h2>BEST SELLING PRODUCTS</h2>
+          <Slider {...settings}>
+            {
+              bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
+                <div key={product._id} className="productsCarousel">
+                  <ProductItem key={product._id} product={product} handleCheck={handleCheck} />
+                </div>
+              )) : <h2>No Products</h2>
+            }
+          </Slider>
+        </div>
+      </div>
+      {isAdmin && <AdminHomePage products={products} handleCheckALL={handleCheckALL} isAdmin={isAdmin} dispatch={dispatch} isCheck={isCheck} />}
       <div className="container-fluid p-0">
         <Filter state={state} />
       </div>
@@ -129,7 +114,6 @@ export async function getServerSideProps({ query }) {
   const category = query.category || 'all'
   const sort = query.sort || ''
   const search = query.search || 'all'
-  const token = query.tk || ''
 
   const res = await getData(
     `product?limit=${page * 6}&category=${category}&sort=${sort}&title=${search}`
@@ -138,8 +122,6 @@ export async function getServerSideProps({ query }) {
   const bestSellingProds = await getData(
     `product?limit=5&category=all&sort=-sold&title=`
   )
-
-  //const kpis = await getData('kpi', token)
 
   // server side rendering
   return {

@@ -10,6 +10,7 @@ export const ONLINE = 'Online';
 export const CITIES_ARR = ['-Select-', 'Hyderabad', 'Secunderabad'];
 export const STATES_ARR = ['Telangana'];
 export const COUNTRIES_ARR = ['India'];
+export const TIME_SERIES_ARR = ['WEEK', 'MONTH', 'YEAR'];
 export const SIGN_IN = 'SIGN_IN';
 
 // Error msgs
@@ -35,3 +36,14 @@ export const ADDRESS_GET = "ADDRESS_GET";
 export const ADDRESS_NEW = "ADDRESS_NEW";
 export const ADDRESS_DEL = "ADDRESS_DEL";
 export const ADDRESS_EDIT = "ADDRESS_EDIT";
+
+// Kpi names
+export const TOTAL_PRODUCTS = "Total Products";
+export const TOTAL_ORDERS = "Total Orders";
+export const TOTAL_SALES = "Total Sales";
+export const SALES_BY_RANGE = "Sales";
+export const TIME_SERIES = "Time Series";
+export const REGISTERED_CUSTOMERS = "Registered Customers";
+
+export const DATE_FORMAT = "dd-MM-YYY";
+export const TICK_FORMAT = "%d-%m-%Y";

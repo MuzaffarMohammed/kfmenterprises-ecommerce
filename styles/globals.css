@@ -301,3 +301,11 @@ h1, h2, h3, h5 {
 /* ----------- Admin Dashboard ------------- */
 
 @import url("./dashboard.css");
+
+/* ----------- Error and 404 pages ------------- */
+
+@import url("./error.css");
+
+/* ----------- Date Range Selector ------------- */
+
+@import url("./dateRangeSelector.css");
