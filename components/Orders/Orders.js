@@ -19,7 +19,6 @@ export default function Orders() {
     const [filterLengths, setFilterLengths] = useState({})
     const [filteredOrders, setFilteredOrders] = useState(orders);
     const query = router.query;
-    console.log('query.st', new Date(query.st))
     const [dateRange, setDateRange] = useState([
         {
             startDate: query.st ? new Date(`${query.st} 00:00:00`) : sub(new Date(), { months: 6 }),
@@ -28,7 +27,6 @@ export default function Orders() {
         }
     ])
 
-    console.log('dateRange', dateRange)
     const getOrders = () => {
         isLoading(true, dispatch)
         postData('order', { dateRange, type: 'GET' }, auth.token)

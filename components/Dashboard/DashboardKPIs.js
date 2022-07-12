@@ -3,7 +3,7 @@ import c3 from "c3";
 import 'c3/c3.css';
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
-import { REGISTERED_CUSTOMERS, TICK_FORMAT, TOTAL_ORDERS } from "../../utils/constants";
+import { REGISTERED_CUSTOMERS, TICK_FORMAT, TOTAL_ORDERS, TOTAL_PRODUCTS } from "../../utils/constants";
 import DateRangeSelector from "../Custom_Components/DateRangeSelector";
 import { postData } from "../../utils/fetchData";
 import isEmpty from 'lodash/isEmpty';
@@ -38,6 +38,9 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
 
     const handleOnClickCard = (kpiName) => {
         switch (kpiName) {
+            case TOTAL_PRODUCTS:
+                router.push('/products');
+                break;
             case TOTAL_ORDERS:
                 router.push('/orders');
                 break;

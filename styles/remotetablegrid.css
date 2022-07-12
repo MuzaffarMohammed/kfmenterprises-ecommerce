@@ -1,0 +1,5 @@
+.react-bootstrap-table thead {
+
+    background: var(--app-color);
+    color: white;
+}
