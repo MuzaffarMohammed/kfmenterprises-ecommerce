@@ -8,6 +8,7 @@
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build"
   },
+  
   "dependencies": {
     "bcrypt": "^5.0.0",
     "bootstrap": "*",

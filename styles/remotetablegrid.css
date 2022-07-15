@@ -14,3 +14,37 @@
     padding-left: 6px;
     font-size: 14px;
 }
+
+.react-bootstrap-table-pagination {
+    margin-top: -10px;
+}
+
+.react-bootstrap-table-pagination #pageDropDown {
+    margin: 5px;
+    padding: 4px;
+    font-size: 11px;
+}
+
+.react-bootstrap-table-pagination-list {
+    padding: 4px;
+    font-size: 11px;
+}
+
+.react-bootstrap-table-page-btns-ul {
+    float: left !important
+}
+
+.react-bootstrap-table-page-btns-ul a {
+    padding: 6px;
+}
+
+.react-bootstrap-table-page-btns-ul .page-item.active .page-link {
+    background-color: var(--app-color);
+    border-color: var(--app-color);
+}
+
+@media (min-width: 900px) {
+    .react-bootstrap-table-page-btns-ul {
+        float: right !important
+    }
+}
