@@ -11,7 +11,7 @@ function Notifications() {
     }
 
     useEffect(() => {
-       // setNotifications([]);
+        // setNotifications([]);
     }, [])
 
 
@@ -52,13 +52,13 @@ function Notifications() {
                         <i className="fas fa-bell" aria-hidden="true" >
                             {notifications && notifications.length > 0 ?
                                 <>
-                                    <span className="position-absolute notification-count-badge">
+                                    <span className="count-badge count-badge-notification">
                                         {notifications.length}
                                     </span>
-                                    <span className="menu-text" style={{ paddingLeft: '20px' }}>Notifications</span>
+                                    <span className="navbar-menu-text" style={{ paddingLeft: notifications.length > 9 ? '25px' : '20px' }}>Notifications</span>
                                 </>
                                 :
-                                <span className="menu-text">Notifications</span>
+                                <span className="navbar-menu-text">Notifications</span>
                             }
                         </i>
                     </>
