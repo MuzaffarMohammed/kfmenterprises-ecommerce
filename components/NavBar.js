@@ -6,6 +6,7 @@ import { postData, putData } from '../utils/fetchData'
 import Cookie from 'js-cookie'
 import { ACC_ACT_MAIL } from '../utils/constants.js'
 import isEmpty from 'lodash/isEmpty';
+import Notifications from './Notifications/Notifications'
 
 function NavBar() {
     const router = useRouter()
@@ -14,13 +15,7 @@ function NavBar() {
     const [accountActivated, setAccountActivated] = useState(auth && auth.user && auth.user.activated)
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
 
-    const isActive = (r) => {
-        if (r === router.pathname) {
-            return " active"
-        } else {
-            return ""
-        }
-    }
+    const isActive = (r) => { return r === router.pathname ? " active" : "" }
 
     const handleLogout = async () => {
         const res = await putData(`auth/logout`, {}, auth.token)
@@ -58,11 +53,8 @@ function NavBar() {
         return (
             <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src={auth.user.avatar} alt={auth.user.avatar}
-                        style={{
-                            borderRadius: '50%', width: '30px', height: '30px',
-                            transform: 'translateY(-3px)', marginRight: '3px'
-                        }} /> {auth.user.name}
+                    <img className="my-account" src={auth.user.avatar} alt={auth.user.avatar} />
+                    {auth.user.name}
                 </a>
 
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -128,6 +120,9 @@ function NavBar() {
                                 <i className="fas fa-home" aria-hidden="true" ></i> Home
                             </a>
                         </Link>
+                    </li>
+                    <li className="nav-item" >
+                        <Notifications />
                     </li>
                     <li className="nav-item" style={{ display: `${isAdmin ? 'none' : 'block'}` }}>
                         <Link href="/cart">

@@ -26,10 +26,21 @@
     font-size: 12px
 }
 
+.my-account {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
 @media (max-width: 768px) {
     .activateBtn {
         margin-top: 10px;
         font-size: x-small;
         font-weight: 700;
-    } 
+    }
+
+    .my-account {
+        margin-top: 5px;
+    }
 }
