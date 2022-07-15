@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { getData } from "../../utils/fetchData";
-import { isLoading } from "../../utils/util";
 import RemoteTableGrid from "../Custom_Components/RemoteTableGrid";
+import Loading from "../Loading";
 import { productColumns } from "./util";
 
 export const Products = () => {
@@ -17,12 +17,13 @@ export const Products = () => {
     const [columns, setColumns] = useState(productColumns);
     const [totalCount, setTotalCount] = useState(0);
     const [sortColumn, setSortColumn] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const getProducts = (page, sizePerPage) => {
-        isLoading(true, dispatch)
+        setIsLoading(true)
         getData(`product?limit=${sizePerPage}&page=${page}&category=all&title=all`, auth.token)
             .then(res => {
-                isLoading(false, dispatch);
+                setIsLoading(false)
                 if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                 if (res.products) {
                     setProducts(res.products);
@@ -55,6 +56,7 @@ export const Products = () => {
         <div className="justify-content-between">
             <h2 className="container text-uppercase mt-3" >Products</h2>
             <div className="my-3 shadow-card">
+                {isLoading && <Loading />}
                 <RemoteTableGrid
                     keyField='id'
                     columns={columns}
