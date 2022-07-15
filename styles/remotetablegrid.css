@@ -3,3 +3,14 @@
     background: var(--app-color);
     color: white;
 }
+
+.react-bootstrap-table th {
+    padding: 2px;
+    padding-left: 6px;
+}
+
+.react-bootstrap-table td {
+    padding: 2px;
+    padding-left: 6px;
+    font-size: 14px;
+}
