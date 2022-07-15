@@ -105,6 +105,13 @@ function NavBar() {
                 }
 
                 <ul className="navbar-nav p-1">
+                    <li className="nav-item" >
+                        <Link href="/">
+                            <a className={"nav-link" + isActive('/')}>
+                                <i className="fas fa-home" aria-hidden="true" ></i> Home
+                            </a>
+                        </Link>
+                    </li>
                     {isAdmin &&
                         <li className="nav-item" >
                             <Link href="/dashboard">
@@ -114,26 +121,26 @@ function NavBar() {
                             </Link>
                         </li>
                     }
-                    <li className="nav-item" >
-                        <Link href="/">
-                            <a className={"nav-link" + isActive('/')}>
-                                <i className="fas fa-home" aria-hidden="true" ></i> Home
+                    <li className="nav-item" style={{ display: `${isAdmin ? 'none' : 'block'}` }}>
+                        <Link href="/cart">
+                            <a className={"nav-link" + isActive('/cart')}>
+                                <i className="fas fa-shopping-cart" aria-hidden="true" >
+                                    {cart && cart.length > 0 ?
+                                        <>
+                                            <span className="count-badge count-badge-cart">
+                                                {cart.length}
+                                            </span>
+                                            <span className="navbar-menu-text" style={{ paddingLeft: cart.length > 9 ? '25px' : '20px' }}>Cart</span>
+                                        </>
+                                        :
+                                        <span className="navbar-menu-text">Cart</span>
+                                    }
+                                </i>
                             </a>
                         </Link>
                     </li>
                     <li className="nav-item" >
                         <Notifications />
-                    </li>
-                    <li className="nav-item" style={{ display: `${isAdmin ? 'none' : 'block'}` }}>
-                        <Link href="/cart">
-                            <a className={"nav-link" + isActive('/cart')}>
-                                <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
-                                    <span className="position-absolute cart-count-badge">
-                                        {cart.length}
-                                    </span>
-                                </i> Cart
-                            </a>
-                        </Link>
                     </li>
                     {
                         isEmpty(auth)
