@@ -56,7 +56,7 @@ export const Products = () => {
         <div className="justify-content-between">
             <h2 className="container text-uppercase mt-3" >Products</h2>
             <div className="my-3 shadow-card">
-                {isLoading && <Loading />}
+                {/* {isLoading && <Loading />} */}
                 <RemoteTableGrid
                     keyField='id'
                     columns={columns}
