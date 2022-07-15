@@ -1,0 +1,36 @@
+.menu-btn .btn {
+    background: none !important;
+    border: 0 !important;
+    padding-left: 0px;
+}
+
+.menu-btn .btn:focus {
+    box-shadow: none !important;
+}
+
+.menu-text {
+    padding-left: 5px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+}
+
+.notification-count-badge {
+    padding: 3px 6px;
+    background: rgb(168 200 235 / 45%);
+    border-radius: 70%;
+    color: white;
+    font-size: 12px;
+    margin-top: -12px;
+    margin-left: -2px;
+}
+
+
+.menu-item{
+    width: 300px;
+}
+
+@media (min-width: 900px) {
+    .menu-btn .btn {
+        padding: 9px;
+    }
+}
