@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 export const RemoteTableGrid = ({ keyField, columns, data, page, sizePerPage, totalSize, sort, handleTableChange }) => {
-    const [classes, setClasses] = useState(typeof window !== 'undefined' && window.innerWidth <= 900 ? ['table-responsive'] : [])
+    const [classes, setClasses] = useState(typeof window !== 'undefined' && window.innerWidth <= 900 ? 'table-responsive' : '')
     return (
         <BootstrapTable
             remote
