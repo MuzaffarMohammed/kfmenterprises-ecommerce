@@ -1,10 +1,10 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import PropTypes from 'prop-types';
 
-function Menu({ title, menuItems }) {
+function Menu({ title, menuItems, handleMenuClick }) {
     return (
-        <Dropdown className='menu-btn'>
-            <Dropdown.Toggle>{title}</Dropdown.Toggle>
+        <Dropdown className='menu-btn' onClick={() => { handleMenuClick() }}>
+            <Dropdown.Toggle >{title}</Dropdown.Toggle>
             <Dropdown.Menu>
                 {menuItems}
             </Dropdown.Menu>

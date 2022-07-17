@@ -1,7 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoriesModel'
 import auth from '../../../middleware/auth'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 
 connectDB()
 
@@ -24,7 +24,7 @@ export default async (req, res) => {
 const createCategory = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
         const { name } = req.body
         if (!name) return res.status(400).json({ err: "Name can not be left blank." })

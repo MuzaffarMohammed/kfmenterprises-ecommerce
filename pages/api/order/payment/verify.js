@@ -3,7 +3,7 @@ import auth from '../../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG } from '../../../../utils/constants'
 import Orders from '../../../../models/orderModel';
 import crypto from 'crypto';
-import { parseToIndiaTime } from '../../../../utils/util';
+import { formatDateTime } from '../../../../utils/util';
 import { getPayOrderStatus, getPayPaymentStatus } from './razorpay';
 
 connectDB()
@@ -28,7 +28,7 @@ const verifyPayment = async (req, res) => {
                     .digest('hex');
                 const verified = expectedSignature === paySignature;
                 if (verified) {
-                    const dateOfPayment = parseToIndiaTime(new Date());
+                    const dateOfPayment = formatDateTime(new Date());
                     const payOrderStatus = await getPayOrderStatus(order.paymentOrderId);
                     const pay = await getPayPaymentStatus(payPaymentId);
                     if (payOrderStatus === 'paid' && pay.payPaymentStatus === 'captured') {

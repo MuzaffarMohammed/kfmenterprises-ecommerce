@@ -1,9 +1,9 @@
 import { getCurrencyFormattedValue, getDates } from '../../../utils/util'
-import { DATE_FORMAT, REGISTERED_CUSTOMERS, SALES_BY_RANGE, TICK_FORMAT, TIME_SERIES, TOTAL_ORDERS, TOTAL_PRODUCTS, TOTAL_SALES } from '../../../utils/constants';
+import { DATE_FORMAT, REGISTERED_CUSTOMERS, RISK_INDEX, SALES_BY_RANGE, TICK_FORMAT, TOTAL_ORDERS, TOTAL_PRODUCTS, TOTAL_SALES } from '../../../utils/constants';
 import { format } from 'date-fns'
 import isEmpty from 'lodash/isEmpty';
 
-export const getParameterValue = (name, orders, products, users, dateRange) => {
+export const getParameterValue = (name, orders, products, users, notifications, dateRange) => {
     switch (name) {
         case TOTAL_PRODUCTS:
             return products && products.length;
@@ -14,6 +14,8 @@ export const getParameterValue = (name, orders, products, users, dateRange) => {
             return getCurrencyFormattedValue(totalSales);
         case REGISTERED_CUSTOMERS:
             return users.length;
+        case RISK_INDEX:
+            return notifications.length;
         case SALES_BY_RANGE:
             return getSalesArr(orders, dateRange);
         default:
@@ -47,7 +49,7 @@ export const getTimeSeriesSalesData = (orders, dateRange, kpi) => {
     let columns = [];
     let kpiData = {};
     kpi.data.columns.forEach(column => {
-        const data = getParameterValue(column, orders, null, null, dateRange);
+        const data = getParameterValue(column, orders, null, null, null, dateRange);
         if (!isEmpty(data)) {
 
             let colData = [kpi.data.columns[1], ...data['dates']];

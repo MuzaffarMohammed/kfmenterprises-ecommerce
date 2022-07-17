@@ -58,11 +58,17 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         if (auth.token) {
-            getData('order', auth.token)
-                .then(res => {
-                    if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+            // getData('order', auth.token)
+            //     .then(res => {
+            //         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
 
-                    dispatch({ type: 'ADD_ORDERS', payload: res.orders })
+            //         dispatch({ type: 'ADD_ORDERS', payload: res.orders })
+            //     })
+
+            getData('notifications', auth.token)
+                .then(res => {
+                    if (res.err) return;
+                    dispatch({ type: 'NOTIFICATIONS', payload: res.notifications })
                 })
 
             if (auth.user.role === 'admin') {

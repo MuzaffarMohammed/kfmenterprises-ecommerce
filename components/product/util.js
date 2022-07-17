@@ -1,3 +1,11 @@
+import { formatDateTime } from "../../utils/util";
+
+// const dateFormatter = cell => {
+//     console.log('cell.label', cell.label)
+//     if (cell && !cell.label) return;
+//     return formatDateTime(cell.label);
+// }
+
 export const productColumns = [
     {
         dataField: "title",
@@ -22,6 +30,7 @@ export const productColumns = [
     {
         dataField: "createdAt",
         text: "Creation Date",
-        sort: true
+        sort: true,
+        //formatter: dateFormatter
     }
 ];

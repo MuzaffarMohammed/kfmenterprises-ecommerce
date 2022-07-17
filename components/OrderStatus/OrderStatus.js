@@ -1,12 +1,15 @@
 import { patchData, postData } from '../../utils/fetchData'
-import { updateItem } from '../../store/Actions'
 import { CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, ORDER_DELIVERED_MAIL } from '../../utils/constants'
-import { parseToIndiaTime } from '../../utils/util'
+import { formatDateTime } from '../../utils/util'
+import { useState } from 'react';
 
 
 
 
 const OrderStatus = (props) => {
+
+
+    const [order, setorder] = useState(props.order);
 
     const handleAccept = (order) => {
         //Upating the db with accept response from th admin.
@@ -15,8 +18,9 @@ const OrderStatus = (props) => {
             patchData(`order/accept/${order._id}`, null, props.auth.token)
                 .then(res => {
                     if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-                    const { accepted, dateOfAccept } = res.result
-                    props.dispatch(updateItem(props.orders, order._id, { ...order, accepted, dateOfAccept }, 'ADD_ORDERS'))
+                    const { accepted, dateOfAccept } = res.result;
+
+                    setorder({ ...order, accepted, dateOfAccept });
                     return props.dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
                 })
             const userData = {
@@ -24,7 +28,7 @@ const OrderStatus = (props) => {
                 email: order.user.email,
                 mailType: ORDER_CONFIRMATION_MAIL,
                 subject: `Order ID: ${order._id} accepted by seller`,
-                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order/${order._id}`,
+                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
             }
             postData('mail', userData, props.auth.token)
         } catch (err) {
@@ -38,13 +42,8 @@ const OrderStatus = (props) => {
         patchData(`order/delivered/${order._id}`, null, props.auth.token)
             .then(res => {
                 if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-
-                const { paid, dateOfPayment, method, delivered } = res.result
-
-                props.dispatch(updateItem(props.orders, order._id, {
-                    ...order, paid, dateOfPayment, method, delivered
-                }, 'ADD_ORDERS'))
-
+                const { delivered, paid, dateOfPayment } = res.result;
+                setorder({ ...order, delivered, paid, dateOfPayment });
                 return props.dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
             })
         const userData = {
@@ -53,7 +52,7 @@ const OrderStatus = (props) => {
             subject: 'Order Delivered.',
             email: order.user.email,
             orderId: order._id,
-            orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order/${order._id}`,
+            orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
         }
         postData('mail', userData, props.auth.token)
     }
@@ -63,24 +62,24 @@ const OrderStatus = (props) => {
             <div className="card-body">
                 <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
 
-                    <div className={props.order.accepted ? 'step completed' : 'step'}>
+                    <div className={order.accepted ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap">
-                                <div className="step-icon"> {props.order.accepted ? <img src="../assets/images/icon/shopping-cart-white-10925.svg" className="cartIcon" /> : <img src="../assets/images/icon/shopping-cart-10925.svg" className="cartIcon" />} </div>
+                                <div className="step-icon"> {order.accepted ? <img src="../assets/images/icon/shopping-cart-white-10925.svg" className="cartIcon" /> : <img src="../assets/images/icon/shopping-cart-10925.svg" className="cartIcon" />} </div>
                             </div>
                             <div className="label-align">
-                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-await-before'}>
+                                <h4 className={order.accepted ? 'step-title-after' : 'step-title-await-before'}>
                                     {
-                                        props.order.accepted ?
-                                            `Order Confirmed on ${parseToIndiaTime(new Date())}`
+                                        order.accepted ?
+                                            `Order Confirmed on ${formatDateTime(new Date())}`
                                             :
                                             (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
                                     }
                                 </h4>
                                 {
-                                    props.auth.user.role === 'admin' && !props.order.accepted &&
+                                    props.auth.user.role === 'admin' && !order.accepted &&
                                     <button className="btn btn-dark text-uppercase order-handle-button"
-                                        onClick={() => handleAccept(props.order)}>
+                                        onClick={() => handleAccept(order)}>
                                         Accept Order
                                     </button>
                                 }
@@ -88,50 +87,50 @@ const OrderStatus = (props) => {
                         </div>
                     </div>
 
-                    <div className={props.order.accepted ? 'step completed' : 'step'}>
+                    <div className={order.accepted ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon">{props.order.accepted ? <img src="../assets/images/icon/settings-white-5671.svg" className="cartIcon" /> : <img src="../assets/images/icon/settings-5670.svg" className="cartIcon" />} </div>
+                                <div className="step-icon">{order.accepted ? <img src="../assets/images/icon/settings-white-5671.svg" className="cartIcon" /> : <img src="../assets/images/icon/settings-5670.svg" className="cartIcon" />} </div>
                             </div>
                             <div className="label-align">
-                                <h4 className={props.order.accepted ? 'step-title-after' : 'step-title-before'}>{props.order.delivered ? 'Order Processed' : 'Processing Order'}</h4>
+                                <h4 className={order.accepted ? 'step-title-after' : 'step-title-before'}>{order.delivered ? 'Order Processed' : 'Processing Order'}</h4>
                             </div>
                         </div>
                     </div>
 
-                    <div className={props.order.delivered ? 'step completed' : 'step'}>
+                    <div className={order.delivered ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon">{props.order.delivered ? <img src="../assets/images/icon/delivery.svg" className="cartIcon" /> : <img src="../assets/images/icon/delivery-white.svg" className="cartIcon" />}</div>
+                                <div className="step-icon">{order.delivered ? <img src="../assets/images/icon/delivery.svg" className="cartIcon" /> : <img src="../assets/images/icon/delivery-white.svg" className="cartIcon" />}</div>
                             </div>
 
                             <div className="label-align">
-                                <h4 className={props.order.delivered ? 'step-title-after' : 'step-title-before'}>
+                                <h4 className={order.delivered ? 'step-title-after' : 'step-title-before'}>
                                     {
-                                        props.order.delivered ? 'Product Delivered' : 'In Transit'
+                                        order.delivered ? 'Product Delivered' : 'In Transit'
                                     }
                                 </h4>
                             </div>
                         </div>
                     </div>
 
-                    <div className={props.order.delivered ? 'step completed' : 'step'}>
+                    <div className={order.delivered ? 'step completed' : 'step'}>
                         <div className="row">
                             <div className="step-icon-wrap ">
-                                <div className="step-icon">{props.order.delivered ? <img src="../assets/images/icon/home-white.svg" className="cartIcon" /> : <img src="../assets/images/icon/home.svg" className="cartIcon" />}</div>
+                                <div className="step-icon">{order.delivered ? <img src="../assets/images/icon/home-white.svg" className="cartIcon" /> : <img src="../assets/images/icon/home.svg" className="cartIcon" />}</div>
                             </div>
 
                             <div className="label-align">
-                                <h4 className={props.order.delivered ? 'step-title-after' : 'step-title-before'}>
+                                <h4 className={order.delivered ? 'step-title-after' : 'step-title-before'}>
                                     {
-                                        props.order.delivered ? `Delivered on ${parseToIndiaTime(new Date(props.payType === 'cod' ? props.order.dateOfPayment : props.order.dateOfAccept))}` : 'Not Yet Delivered'
+                                        order.delivered ? `Delivered on ${formatDateTime(new Date(props.payType === 'cod' ? order.dateOfPayment : order.dateOfAccept))}` : 'Not Yet Delivered'
                                     }
                                 </h4>
                                 {
-                                    props.auth.user.role === 'admin' && !props.order.delivered &&
+                                    props.auth.user.role === 'admin' && !order.delivered &&
                                     <button className="btn btn-dark text-uppercase order-handle-button"
-                                        disabled={props.order.accepted ? false : true}
-                                        onClick={() => handleDelivered(props.order)} >
+                                        disabled={order.accepted ? false : true}
+                                        onClick={() => handleDelivered(order)} >
                                         Mark As Delivered
                                     </button>
                                 }

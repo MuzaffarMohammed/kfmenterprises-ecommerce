@@ -21,7 +21,6 @@ export const getAddressObj = (form, isDefault, oldFullName) => {
 
 export const validateAddress = (address) => {
   const numRegex = /^[0-9]+$/;
-  console.log('address: ', address);
   if (!address) return 'Please select a address to proceed further.';
   if (!address.fullName || !address.address || !address.phoneNumber || !address.city || !address.countryState || !address.country || !address.pincode) return 'Please add all your details to proceed further.';
   if (address.fullName && address.fullName.length < 4) return 'Please enter a valid Full Name to proceed further.';
