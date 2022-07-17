@@ -1,36 +1,49 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Menu from '../Custom_Components/Menu'
 import Dropdown from 'react-bootstrap/Dropdown';
+import { postData } from '../../utils/fetchData';
+import { DataContext } from '../../store/GlobalState';
+import { getAction, formatDateTime } from '../../utils/util';
+import { deleteItem } from '../../store/Actions';
+import { isEmpty } from 'lodash';
 
 function Notifications() {
-    const [notifications, setNotifications] = useState([{ number: 1, name: 'New order request, please accept the order, customer is awaiting your response or else order will be dismissed!', time: '2:30pm 15-07-2022', color: 'primary' }, { number: 2, name: 'Product out of stock!', time: '12:00pm 15-07-2022', color: 'danger' }, { number: 3, name: 'Product delivered!', time: '09:54pm 14-07-2022', color: 'success' }])
+    const { state, dispatch } = useContext(DataContext);
+    const { auth, notifications } = state;
+    const [notificationsArr, setnotificationsArr] = useState()
+    const [notificationLength, setNotificationLength] = useState();
 
-    const handleMenuItemClick = (number) => {
-        console.log('Menu clicked : ', number)
-    }
 
     useEffect(() => {
-        // setNotifications([]);
-    }, [])
+        if (!isEmpty(notifications)) {
+            setnotificationsArr(notifications);
+            setNotificationLength(notifications.length)
+        }
+    }, [notifications])
 
+
+    const handleMenuItemClick = (notification) => {
+        postData('notifications', { _id: notification._id, checked: true }, auth.token);
+        dispatch(deleteItem(notifications, notification._id, 'NOTIFICATIONS'));
+    }
+    const handleMenuClick = () => setNotificationLength(0);
 
     const NotificationList = () => {
         return (
             <>
-                {notifications && notifications.length > 0 ?
-                    notifications.map((item, i) => (
+                {notificationsArr && notificationsArr.length > 0 ?
+                    notificationsArr.map((item, i) => (
                         <div className="menu-item" key={i}>
-                            <Dropdown.Item href={item.href} onClick={() => { handleMenuItemClick(item.number) }}>
+                            <Dropdown.Item href={getAction(item.action)} onClick={() => { handleMenuItemClick(item) }}>
                                 <div style={{ whiteSpace: 'break-spaces' }}>
-                                    {item.time &&
+                                    {item.createdAt &&
                                         <span style={{ fontSize: 'x-small', fontWeight: 'bold' }}>
-                                            {item.time}
+                                            {formatDateTime(item.createdAt)}
                                         </span>
                                     }
-                                    {item.name &&
-                                        <div className={`text-${item.color}`}>
-                                            {item.name}
+                                    {item.notification &&
+                                        <div className={`text-${item.severity}`}>
+                                            {item.notification}
                                         </div>
                                     }
                                 </div>
@@ -50,12 +63,12 @@ function Notifications() {
                 {
                     <>
                         <i className="fas fa-bell" aria-hidden="true" >
-                            {notifications && notifications.length > 0 ?
+                            {notificationLength > 0 ?
                                 <>
                                     <span className="count-badge count-badge-notification">
-                                        {notifications.length}
+                                        {notificationLength}
                                     </span>
-                                    <span className="navbar-menu-text" style={{ paddingLeft: notifications.length > 9 ? '25px' : '20px' }}>Notifications</span>
+                                    <span className="navbar-menu-text" style={{ paddingLeft: notificationLength > 9 ? '25px' : '20px' }}>Notifications</span>
                                 </>
                                 :
                                 <span className="navbar-menu-text">Notifications</span>
@@ -63,6 +76,7 @@ function Notifications() {
                         </i>
                     </>
                 }
+                handleMenuClick={handleMenuClick}
                 menuItems={<NotificationList />}
             />
         </>

@@ -43,6 +43,11 @@ const reducers = (state, action) => {
                 ...state,
                 address: action.payload
             };
+        case ACTIONS.NOTIFICATIONS:
+            return {
+                ...state,
+                notifications: action.payload
+            };
         default:
             return state;
     }

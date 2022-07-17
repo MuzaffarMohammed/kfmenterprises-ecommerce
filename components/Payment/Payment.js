@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { patchData, postData } from '../../utils/fetchData'
 import { updateItem } from '../../store/Actions'
 import { razorPayOptions } from '../../utils/payUtil.js'
-import { parseToIndiaTime } from '../../utils/util.js'
+import { formatDateTime } from '../../utils/util.js'
 
 const Payment = (props) => {
 
@@ -24,7 +24,7 @@ const Payment = (props) => {
         try {
             e.preventDefault();
             if (props.auth && props.auth.user && !props.auth.user.activated) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please activate your account to proceed further.' } })
-            if(!payType) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please select a Pay Mode.' } })
+            if (!payType) return props.dispatch({ type: 'NOTIFY', payload: { error: 'Please select a Pay Mode.' } })
             if (payType === 'online') return onlinePay(order)
             if (payType === 'cod') return placeOrderAndNotifyUser(order, 'COD')
         } catch (err) {
@@ -92,12 +92,6 @@ const Payment = (props) => {
             patchData('order', { method: payMethod, id: order._id }, props.auth.token).then(res => {
                 // On success response
                 if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
-
-                const { placed, dateOfPlaced, method } = res.result
-                // Updating state
-                props.dispatch(updateItem(props.orders, order._id, {
-                    ...order, placed, dateOfPlaced, method
-                }, 'ADD_ORDERS'))
             })
             // Emptying the cart after order placed.
             props.dispatch({ type: 'ADD_CART', payload: [] })
@@ -121,17 +115,17 @@ const Payment = (props) => {
                 address: order.address,
                 mobile: order.mobile,
                 orderId: order._id,
-                orderDate: parseToIndiaTime(new Date(order.createdAt)),
+                orderDate: formatDateTime(new Date(order.createdAt)),
                 id: props.auth.user.id,
                 mailType: ORDER_MAIL,
                 subject: 'Order placed!',
-                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order/${order._id}`,
+                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
             }
             // Order placed summary mail to user
             postData('mail', userData, props.auth.token)
             // Order placed notification mail to Admin
             const adminData = {
-                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order/${order._id}`,
+                orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
                 userName: props.auth.user.name,
                 email: process.env.NEXT_PUBLIC_ADMIN_ID,
                 address: order.address,

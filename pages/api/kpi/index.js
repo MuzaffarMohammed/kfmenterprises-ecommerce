@@ -3,10 +3,12 @@ import Kpis from '../../../models/kpiModel'
 import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import Users from '../../../models/userModel'
+import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, DANGER, ERROR_403, WARNING } from '../../../utils/constants'
 import { getParameterValue, getTimeSeriesSalesData } from './util'
 import isEmpty from 'lodash/isEmpty';
+import { notAdminRole } from '../../../utils/util'
 
 connectDB()
 
@@ -29,9 +31,9 @@ export default async (req, res) => {
 const getSingleKpi = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
-        const {dateRange, kpi} = req.body;
-        const orders = await Orders.find({ delivered: true, createdAt: { $gte: dateRange[0].startDate, $lt: dateRange[0].endDate } }, { total: 1, delivered: 1, createdAt: 1 });
+        if (result.role !== 'admin') return res.status(403).json({ err: ERROR_403 })
+        const { dateRange, kpi } = req.body;
+        const orders = await Orders.find({ delivered: true, createdAt: { $gte: dateRange[0].startDate, $lt: dateRange[0].endDate } }, { total: 1, delivered: 1, createdAt: 1 });        
         const kpiData = getTimeSeriesSalesData(orders, dateRange, kpi);
         res.json({ kpiData });
     } catch (err) {
@@ -42,26 +44,29 @@ const getSingleKpi = async (req, res) => {
 
 const getKpis = async (req, res) => {
     try {
-        const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
+        const { role } = await auth(req, res)
+        if (notAdminRole(role)) return res.status(401).json({ err: ERROR_403 })
 
         const kpisArr = await Kpis.find();
         const users = await Users.find({ activated: true }, { name: 1 });
         const orders = await Orders.find({}, { total: 1, delivered: 1, updatedAt: 1 });//all orders with only total, delivered, updatedAt field data.
         const products = await Products.find({}, { sold: 1, title: 1 }).sort({ sold: -1 });// All products order by sold = desc
+        const notifications = await Notifications.find({ role: role, severity: [DANGER, WARNING] })
+        
         let kpiData = { cards: [], charts: [] };
         if (kpisArr) {
             kpisArr.forEach(kpi => {
                 if (kpi.type === 'card') {
-                    const data = getParameterValue(kpi.id, orders, products, users);
-                    if (data && kpiData.cards.length <= 6) {
-                        kpiData.cards.push({ id: kpi.id, name: kpi.name, data: data });// Maximum of six cards should be shown for better UI.
+                    const data = getParameterValue(kpi.id, orders, products, users, notifications);
+                    
+                    if (kpiData.cards.length <= 6) {
+                        kpiData.cards.push({ id: kpi.id, name: kpi.name, data: data ? data : 0 });// Maximum of six cards should be shown for better UI.
                     }
                 } else {
                     let columns = [];
                     if (!kpi.singleAnalysis) {
                         kpi.columns.forEach(column => {
-                            const data = getParameterValue(column, orders, products);
+                            const data = getParameterValue(column, orders, products, users, notifications);
                             if (data) {
                                 let colData = [column, ...data];
                                 columns.push(colData);

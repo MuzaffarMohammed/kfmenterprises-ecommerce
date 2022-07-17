@@ -9,7 +9,8 @@ const connectDB = () => {
         useCreateIndex: true,
         useFindAndModify: false,
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 20 * 1000
     }, err => {
         if(err) throw err;
         console.log('Connected to mongodb.')

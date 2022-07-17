@@ -3,7 +3,7 @@ export const razorPayOptions = {
     "currency": process.env.NEXT_PUBLIC_RAZORPAY_CURRENCY,
     "name": process.env.NEXT_PUBLIC_APP_NAME,
     "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
+    "image": "/assets/images/icon/KFM_Logo_Small_Black.svg",
     "theme": {
         "color": "#144271"
     }

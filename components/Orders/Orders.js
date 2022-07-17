@@ -13,36 +13,36 @@ import { useRouter } from 'next/router';
 export default function Orders() {
     const { state, dispatch } = useContext(DataContext);
     const router = useRouter()
-    const { auth, orders } = state;
+    const { auth } = state;
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
     const isUser = auth && auth.user && auth.user.role === 'user';
     const [filterLengths, setFilterLengths] = useState({})
-    const [filteredOrders, setFilteredOrders] = useState(orders);
+    const [orders, setOrders] = useState([])
+    const [filteredOrders, setFilteredOrders] = useState([]);
     const query = router.query;
     const [dateRange, setDateRange] = useState([
         {
             startDate: query.st ? new Date(`${query.st} 00:00:00`) : sub(new Date(), { months: 6 }),
-            endDate: query.st ? new Date(`${query.st} 23:59:00`)  : new Date(),
+            endDate: query.st ? new Date(`${query.st} 23:59:00`) : new Date(),
             key: 'selection'
         }
     ])
 
-    const getOrders = () => {
-        isLoading(true, dispatch)
-        postData('order', { dateRange, type: 'GET' }, auth.token)
-            .then(res => {
-                isLoading(false, dispatch)
-                if (res.err) setFilteredOrders([]);
-                else {
-                    const lengths = getAllFiltersLengths(res.orders);
-                    setFilterLengths(lengths);
-                    setFilteredOrders(res.orders);
-                }
-            })
-    }
     useEffect(() => {
         if (!isEmpty(auth) && auth.token && !isEmpty(dateRange)) {
-            getOrders();
+            isLoading(true, dispatch)
+            postData('order', { dateRange, type: 'GET' }, auth.token)
+                .then(res => {
+                    isLoading(false, dispatch)
+                    if (res.err) setFilteredOrders([]);
+                    else {
+                        // dispatch({ type: 'ADD_ORDERS', payload: res.orders })
+                        const lengths = getAllFiltersLengths(res.orders);
+                        setFilterLengths(lengths);
+                        setOrders(res.orders);
+                        setFilteredOrders(res.orders);
+                    }
+                })
         }
     }, [auth.token, dateRange])
 
@@ -63,9 +63,10 @@ export default function Orders() {
                         <Filters isAdmin={isAdmin} isUser={isUser} handleFilter={handleFilter} lengths={filterLengths} />
                     </div>
                     <div className="float-left">
-                        <DateRangeSelector handleSelect={(range) => { 
-                           console.log('range', range)
-                           setDateRange(range) }
+                        <DateRangeSelector handleSelect={(range) => {
+                            console.log('range', range)
+                            setDateRange(range)
+                        }
                         }
                             dateFormat='MMM dd, yyyy'
                             defaultRange={dateRange}

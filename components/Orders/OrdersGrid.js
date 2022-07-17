@@ -1,23 +1,25 @@
 
 import moment from 'moment';
 import Link from 'next/link';
-import { classNameOnHover, inTransitOrder } from './filtersUtil';
+import { formatDateTime } from '../../utils/util';
+import { classNameOnHover } from './filtersUtil';
 
 export default function OrdersGrid(props) {
 
+
     const Orders = () => {
         return (
-            props.orders.map(order => (
+            props.orders && props.orders.map(order => (
                 <tr key={order._id} className={classNameOnHover(order)}>
                     <td className="p-2">
-                        <Link href={`/order/${order._id}`} style={{ cursor: 'pointer' }}>
+                        <Link href={`/order?id=${order._id}`} style={{ cursor: 'pointer' }}>
                             <a>{order._id}</a>
                         </Link>
                     </td>
                     <td className="p-2">
                         {order.placed ?
-                            order.dateOfPlaced && moment(order.dateOfPlaced).format("LT, ll")
-                            : order.createdAt && moment(order.createdAt).format("LT, ll")}
+                            order.dateOfPlaced && formatDateTime(order.dateOfPlaced)
+                            : order.createdAt && formatDateTime(order.createdAt)}
                     </td>
                     <td className="p-2">₹{order.total}</td>
 
@@ -26,8 +28,8 @@ export default function OrdersGrid(props) {
                             order.paid
                                 ? <label className="text-success italic-text"> Paid</label>
                                 : (
-                                    <Link href={`/order/${order._id}`} style={{ cursor: 'pointer' }}>
-                                        <button className="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Go to payment page">Pay Now</button>
+                                    <Link href={`/order?id=${order._id}`} style={{ cursor: 'pointer' }}>
+                                        <button className="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Go to payment page">{props.isAdmin ? 'Accept Order' : 'Pay Now'}</button>
                                     </Link>
                                 )
                         }
@@ -56,14 +58,14 @@ export default function OrdersGrid(props) {
                         <td className="p-2">Order ID</td>
                         <td className="p-2">Time & Date</td>
                         <td className="p-2">Total Pay</td>
-                        <td className="p-2">Pay Status</td>
+                        <td className="p-2">Status</td>
                         <td className="p-2">Delivery Status</td>
                     </tr>
                 </thead>
-                <tbody>{props.orders.length > 0 && (Orders())}</tbody>
+                <tbody>{(props.orders && props.orders.length > 0) && (Orders())}</tbody>
             </table>
             {
-                props.orders.length === 0 && (
+                props.orders && props.orders.length === 0 && (
                     <div className="no-data-card"><label className='italic-text'>Whoops! No orders to display.</label></div>
                 )
             }

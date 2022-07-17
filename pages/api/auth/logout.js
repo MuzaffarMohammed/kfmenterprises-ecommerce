@@ -2,7 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Tokens from '../../../models/tokenModel'
 import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import auth from '../../../middleware/auth'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 
 connectDB()
 
@@ -32,12 +32,12 @@ const logout = async (req, res) => {
 
 const blacklistRefreshToken = async (refreshToken, res) => {
     try {
-        if (!refreshToken) return res.status(401).json({ err: ERROR_401 })
+        if (!refreshToken) return res.status(401).json({ err: ERROR_403 })
         const result = jwt.verify(refreshToken, process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET);
         return result.refreshTokenId;
     } catch (err) {
         console.error('Error occurred while blacklistRefreshToken: ' + err);
         if (err instanceof TokenExpiredError) return;
-        return res.status(401).json({ err: ERROR_401 });
+        return res.status(401).json({ err: ERROR_403 });
     }
 }

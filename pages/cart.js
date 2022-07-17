@@ -91,7 +91,7 @@ const Cart = () => {
         }
         dispatch({ type: 'ADD_ORDERS', payload: [newOrder, ...orders] })
         //scheduleAutoCancelOrder(newOrder);
-        return router.push(`/order/${res.newOrder._id}`)
+        return router.push(`/order?id=${res.newOrder._id}`)
       })
   }
 

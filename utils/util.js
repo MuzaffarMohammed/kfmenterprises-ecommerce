@@ -1,7 +1,8 @@
-import { DATE_FORMAT, ERROR_401, PLEASE_LOG_IN } from "./constants";
+import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, PLEASE_LOG_IN, USER_ROLE } from "./constants";
 import isEmpty from 'lodash/isEmpty';
 import add from 'date-fns/add'
 import { format } from 'date-fns'
+import moment from "moment";
 
 export const renameFile = (originalFile, newName) => {
     return new File([originalFile], newName, {
@@ -12,7 +13,7 @@ export const renameFile = (originalFile, newName) => {
 
 export const isAdmin = (auth, dispatch) => {
     if (auth && auth.user && auth.user.role !== 'admin')
-        return dispatch({ type: 'NOTIFY', payload: { error: ERROR_401 } })
+        return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
 }
 
 export const isLoggedIn = (auth, dispatch, router) => {
@@ -27,8 +28,20 @@ export const convertINRPaise = (rupee) => {
     return rupee * 100;
 }
 
-export const parseToIndiaTime = (date) => {
-    return date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+export const formatDateTime = (date) => {
+    const timeZone = process.env.NEXT_PUBLIC_TZ || process.env.TZ;
+    return moment(date).format("LT, ll");
+}
+
+export const formatDateTimeInsideData = (data, field) => {
+    data.map((item, i) => {
+        const formattedDateTime = formatDateTime(data[i][field]);
+        item = {
+            ...data[i],
+            [field]: formattedDateTime
+        }
+    });
+    return data;
 }
 
 export const isLoading = (loading, dispatch) => {
@@ -58,7 +71,22 @@ export const getDates = (startDate, stopDate) => {
     var stopDate = new Date(stopDate);
     while (currentDate <= stopDate) {
         dateArray.push(format(currentDate, DATE_FORMAT))
-        currentDate = add(currentDate, {days:1});
+        currentDate = add(currentDate, { days: 1 });
     }
     return dateArray;
 }
+
+
+export const getAction = (action) => {
+    if (isEmpty(action) || !action.type) return '';
+    switch (action.type) {
+        case ORDER_DETAIL:
+            return `order?id=${action.data && action.data.orderId}`
+        default:
+            return "";
+    }
+}
+
+export const notUserRole = (role) => { return role !== USER_ROLE };
+export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
+export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE }
