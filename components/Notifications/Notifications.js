@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Menu from '../Custom_Components/Menu'
 import Dropdown from 'react-bootstrap/Dropdown';
-import { postData } from '../../utils/fetchData';
+import { getData, postData } from '../../utils/fetchData';
 import { DataContext } from '../../store/GlobalState';
 import { getAction, formatDateTime } from '../../utils/util';
 import { deleteItem } from '../../store/Actions';
 import { isEmpty } from 'lodash';
+import { handleUIError } from '../../middleware/error';
 
 function Notifications() {
     const { state, dispatch } = useContext(DataContext);
@@ -13,14 +14,21 @@ function Notifications() {
     const [notificationsArr, setnotificationsArr] = useState()
     const [notificationLength, setNotificationLength] = useState();
 
-
     useEffect(() => {
-        if (!isEmpty(notifications)) {
-            setnotificationsArr(notifications);
-            setNotificationLength(notifications.length)
+        if (!isEmpty(auth.token)) {
+            setInterval(() => {
+                getData('notifications', auth.token)
+                    .then(res => {
+                        if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
+                        if (res.notifications) {
+                            setnotificationsArr(res.notifications);
+                            setNotificationLength(res.notifications.length)
+                            dispatch({ type: 'NOTIFICATIONS', payload: res.notifications })
+                        }
+                    })
+            }, 8000);
         }
-    }, [notifications])
-
+    }, [auth.token])
 
     const handleMenuItemClick = (notification) => {
         postData('notifications', { _id: notification._id, checked: true }, auth.token);

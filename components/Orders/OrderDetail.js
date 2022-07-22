@@ -8,6 +8,7 @@ import { getData } from '../../utils/fetchData'
 import { isEmpty } from 'lodash'
 import { DataContext } from '../../store/GlobalState'
 import { useRouter } from 'next/router'
+import { SIGNING_MSG } from '../../utils/constants'
 
 const OrderDetail = () => {
     const { state, dispatch } = useContext(DataContext)
@@ -32,7 +33,7 @@ const OrderDetail = () => {
         }
     }, [auth.token, router.query.id])
 
-    if (isEmpty(auth) || isEmpty(auth.token)) return <SignInCard />;
+    if (isEmpty(auth) || isEmpty(auth.token)) return <SignInCard loadingMsg = {SIGNING_MSG} delay/>;
 
     return (
         <>

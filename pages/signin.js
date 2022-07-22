@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react'
 import { DataContext } from '../store/GlobalState'
 import { useRouter } from 'next/router'
 import SignInCard from '../components/SignIn/SignInCard'
+import { PROCESSING_MSG } from '../utils/constants'
 
 const Signin = () => {
 
@@ -19,7 +20,7 @@ const Signin = () => {
       <Head>
         <title>KFM Cart - Sign in</title>
       </Head>
-      <SignInCard />
+      <SignInCard loadingMsg = {PROCESSING_MSG}/>
     </div>
   )
 }

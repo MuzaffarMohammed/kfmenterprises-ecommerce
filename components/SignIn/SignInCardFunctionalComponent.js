@@ -1,4 +1,4 @@
-import { SIGN_IN } from "../../utils/constants";
+import { SIGNING_MSG, SIGN_IN } from "../../utils/constants";
 import SignInCard from "./SignInCard";
 
 export const isLoggedInPopup = (auth, dispatch, cb) => {
@@ -8,7 +8,7 @@ export const isLoggedInPopup = (auth, dispatch, cb) => {
         type: 'ADD_MODAL',
         payload: {
           title: 'Please Sign In',
-          content: <SignInCard isPopUp={true} executeSignInCallback={cb}/>,
+          content: <SignInCard loadingMsg = {SIGNING_MSG} isPopUp={true} executeSignInCallback={cb}/>,
           data: {},
           type: SIGN_IN
         }

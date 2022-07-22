@@ -3,6 +3,7 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
+import {handleServerError} from '../../../middleware/error'
 import { CONTACT_ADMIN_ERR_MSG, NORMAL, ADMIN_ROLE, USER_ROLE, ORDER_DETAIL } from '../../../utils/constants'
 import { notUserRole, formatDateTime } from '../../../utils/util'
 
@@ -64,9 +65,9 @@ const createOrder = async (req, res) => {
         for (let i = 0; i < cart.length; i++) { await sold(cart, i) }
 
         const newOrder = await new Orders({ user: result.id, address, cart, total }).save();
-        notifyAdminForNewOrder(newOrder._id, result.id);
+
         res.json({
-            msg: 'Order placed! You will be notified once order is accepted.',
+            msg: 'Order created.',
             newOrder
         });
 
@@ -95,26 +96,23 @@ const updateOrderPlaced = async (req, res) => {
         const { id, method } = req.body
         const data = { placed: true, dateOfPlaced: formatDateTime(new Date()), method: method }
         await Orders.findOneAndUpdate({ _id: id }, data)
-
+        notifyAdminForNewOrder(id, result.id);
         res.json({
-            msg: 'Order placed successfully!',
+            msg: 'Order placed successfully! You will be notified once order is accepted.',
             result: {
                 placed: true,
                 dateOfPlaced: formatDateTime(new Date()),
                 method: method
             }
         })
-    } catch (err) {
-        console.error('Error occurred while updateOrderPlaced: ' + err);
-        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
-    }
+    } catch (err) { handleServerError('updateOrderPlaced', err, 500, res) }
 }
 
 const notifyAdminForNewOrder = (orderId, userId) => {
     try {
         new Notifications(
             {
-                notification: `A new order placed. Please acknowledge it immediately.`,
+                notification: `New order request!<br>Order ID -${orderId}<br>Please acknowledge it immediately.`,
                 severity: NORMAL,
                 action: { type: ORDER_DETAIL, data: { orderId } },
                 user: userId,

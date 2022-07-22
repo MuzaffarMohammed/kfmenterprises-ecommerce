@@ -1,8 +1,9 @@
-import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, PLEASE_LOG_IN, USER_ROLE } from "./constants";
+import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, PLEASE_LOG_IN, SIGNING_MSG, TOKEN_EXPIRED_ERROR, USER_ROLE } from "./constants";
 import isEmpty from 'lodash/isEmpty';
 import add from 'date-fns/add'
 import { format } from 'date-fns'
 import moment from "moment";
+import SignInCard from "../components/SignIn/SignInCard";
 
 export const renameFile = (originalFile, newName) => {
     return new File([originalFile], newName, {
@@ -16,11 +17,8 @@ export const isAdmin = (auth, dispatch) => {
         return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
 }
 
-export const isLoggedIn = (auth, dispatch, router) => {
-    if (isEmpty(auth)) {
-        dispatch({ type: 'NOTIFY', payload: { error: PLEASE_LOG_IN } })
-        router.push("/signin")
-    }
+export const isLoggedIn = (auth) => {
+    return (isEmpty(auth) || isEmpty(auth.token))
 }
 
 export const convertINRPaise = (rupee) => {
@@ -28,9 +26,9 @@ export const convertINRPaise = (rupee) => {
     return rupee * 100;
 }
 
-export const formatDateTime = (date) => {
+export const formatDateTime = (date, format) => {
     const timeZone = process.env.NEXT_PUBLIC_TZ || process.env.TZ;
-    return moment(date).format("LT, ll");
+    return moment(date).format(format ? format : "LT, ll");
 }
 
 export const formatDateTimeInsideData = (data, field) => {
@@ -89,4 +87,4 @@ export const getAction = (action) => {
 
 export const notUserRole = (role) => { return role !== USER_ROLE };
 export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
-export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE }
+export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE };
