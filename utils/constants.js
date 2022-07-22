@@ -15,12 +15,15 @@ export const SIGN_IN = 'SIGN_IN';
 
 // Error msgs
 export const ERROR_403 = 'Unauthorized Access!';
+export const ERRCODE_408 = 408;
+export const TOKEN_EXPIRED_ERROR = "TokenExpiredError";
 export const CONTACT_ADMIN_ERR_MSG = 'Something went wrong! Please try again later or contact KFM administration.';
-export const PLEASE_LOG_IN = 'Please Login!';
+export const PLEASE_LOG_IN = 'Please sign in to proceed further.';
 export const INVALID_LOGIN = 'Login failed! Invalid User Name or Password.';
+export const PROCESSING_MSG = 'Processing, please wait...';
+export const SIGNING_MSG = 'Signing in, please wait...';
 
 //Filters.js
-
 export const ALL = 'All Orders';
 export const TODAY = 'Today';
 export const REJECTED = 'Rejected';
@@ -58,8 +61,6 @@ export const WARNING = "warning";
 
 // Notifications Actions
 export const ORDER_DETAIL = "ORDER_DETAIL";
-
-
 
 // Roles
 export const ADMIN_ROLE = "admin";

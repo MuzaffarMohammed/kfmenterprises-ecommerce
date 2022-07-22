@@ -61,12 +61,12 @@ function NavBar() {
                     <Link href="/profile">
                         <a className="dropdown-item">Profile</a>
                     </Link>
-                    <Link href="/orders">
-                        <a className="dropdown-item">Orders</a>
-                    </Link>
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
+                     <Link href="/orders">
+                        <a className="dropdown-item">Orders</a>
+                    </Link>
                     <div className="dropdown-divider"></div>
                     <button className="dropdown-item" onClick={handleLogout}>Logout</button>
                 </div>

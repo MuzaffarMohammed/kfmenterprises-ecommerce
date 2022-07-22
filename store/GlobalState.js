@@ -48,7 +48,7 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         const __next__cart01 = JSON.parse(localStorage.getItem('__next__cart01'))
-
+      
         if (__next__cart01) dispatch({ type: 'ADD_CART', payload: __next__cart01 })
     }, [])
 
@@ -58,26 +58,12 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         if (auth.token) {
-            // getData('order', auth.token)
-            //     .then(res => {
-            //         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-
-            //         dispatch({ type: 'ADD_ORDERS', payload: res.orders })
-            //     })
-
-            getData('notifications', auth.token)
-                .then(res => {
-                    if (res.err) return;
-                    dispatch({ type: 'NOTIFICATIONS', payload: res.notifications })
-                })
-
             if (auth.user.role === 'admin') {
                 getData('user', auth.token)
                     .then(res => {
                         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-
                         dispatch({ type: 'ADD_USERS', payload: res.users })
-                    })
+                })
             }
         } else {
             dispatch({ type: 'ADD_ORDERS', payload: [] })
