@@ -2,7 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Orders from '../../../models/orderModel'
 import auth from '../../../middleware/auth'
 import { ERROR_403 } from '../../../utils/constants'
-import { isUserRole, notAdminNotUserRole } from '../../../utils/util'
+import { notAdminNotUserRole } from '../../../utils/util'
 import { handleServerError } from '../../../middleware/error'
 
 connectDB()

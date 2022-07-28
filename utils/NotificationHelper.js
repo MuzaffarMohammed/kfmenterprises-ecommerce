@@ -24,7 +24,7 @@ export const applyFilter = (selectedTypes, notificationsArr) => {
 }
 
 export const getFilterbtns = (notifications) => {
-    const btns = [
+    return btns = [
         {
             type: 'All',
             name: 'All',
@@ -49,8 +49,7 @@ export const getFilterbtns = (notifications) => {
             description: 'All severe notifications',
             count: filterNotificationsByType(DANGER, notifications).length
         }
-    ]
-    return btns;
+    ];
 }
 
 const filterNotificationsByType = (type, notifications) => notifications ? notifications.filter(item => item.type === type) : [];
