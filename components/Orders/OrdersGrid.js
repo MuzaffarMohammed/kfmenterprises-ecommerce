@@ -42,7 +42,7 @@ export default function OrdersGrid(props) {
                                 :
                                 order.accepted
                                     ? <label className='italic-text' style={{ color: '#faa200' }}>In Transit</label>
-                                    : <label className='italic-text'>Not Yet Dispatch</label>
+                                    : <label className='italic-text'>Awaiting Confirmation</label>
                         }
                     </td>
                 </tr>

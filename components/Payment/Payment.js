@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG, COD } from '../../utils/constants.js'
+import { ORDER_MAIL, ORDER_ADMIN_MAIL, CONTACT_ADMIN_ERR_MSG } from '../../utils/constants.js'
 import { useRouter } from 'next/router'
 import { patchData, postData } from '../../utils/fetchData'
-import { updateItem } from '../../store/Actions'
 import { razorPayOptions } from '../../utils/payUtil.js'
 import { formatDateTime } from '../../utils/util.js'
 

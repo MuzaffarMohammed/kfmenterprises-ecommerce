@@ -1,93 +1,84 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Menu from '../Custom_Components/Menu'
-import Dropdown from 'react-bootstrap/Dropdown';
-import { getData, postData } from '../../utils/fetchData';
 import { DataContext } from '../../store/GlobalState';
-import { getAction, formatDateTime } from '../../utils/util';
-import { deleteItem } from '../../store/Actions';
 import { isEmpty } from 'lodash';
-import { handleUIError } from '../../middleware/error';
+import { applyFilter, getFilterbtns, getNotifications, updateCheckedNotifications } from '../../utils/NotificationHelper';
+import { formatDateTime, getAction } from '../../utils/util';
+import FilterBtns from '../Custom_Components/FilterBtns';
+import { useRouter } from 'next/router';
 
 function Notifications() {
     const { state, dispatch } = useContext(DataContext);
     const { auth, notifications } = state;
-    const [notificationsArr, setnotificationsArr] = useState()
-    const [notificationLength, setNotificationLength] = useState();
+    const router = useRouter()
+    const query = router.query;
+    const [notificationsArr, setNotificationsArr] = useState()
+    const [filteredNotifications, setFilteredNotifications] = useState()
+    const [filterBtns, setFilterBtns] = useState([])
+    const [selectedTypes, setSelectedTypes] = useState([])
+    const isAdmin = auth && auth.user && auth.user.role === 'admin';
+    const isUser = auth && auth.user && auth.user.role === 'user';
+
 
     useEffect(() => {
         if (!isEmpty(auth.token)) {
-            setInterval(() => {
-                getData('notifications', auth.token)
-                    .then(res => {
-                        if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
-                        if (res.notifications) {
-                            setnotificationsArr(res.notifications);
-                            setNotificationLength(res.notifications.length)
-                            dispatch({ type: 'NOTIFICATIONS', payload: res.notifications })
-                        }
-                    })
-            }, 8000);
+            getNotifications(auth, dispatch);
         }
     }, [auth.token])
 
-    const handleMenuItemClick = (notification) => {
-        postData('notifications', { _id: notification._id, checked: true }, auth.token);
-        dispatch(deleteItem(notifications, notification._id, 'NOTIFICATIONS'));
-    }
-    const handleMenuClick = () => setNotificationLength(0);
+    useEffect(() => {
+        if (notifications) {
+            setNotificationsArr(!isEmpty(notifications) ? notifications : [])
+            const types = isEmpty(query.type) ? (isEmpty(selectedTypes) ? ['All'] : selectedTypes) : (query.type === 'wd' && isEmpty(selectedTypes) ? ['warning', 'danger'] : selectedTypes);
+            setSelectedTypes(types);
+            const filteredNList = applyFilter(types, notifications, isAdmin, isUser);
+            setFilteredNotifications(filteredNList)
+            const filterButtons = getFilterbtns(notifications);
+            setFilterBtns(filterButtons)
+        }
+    }, [notifications, query.type])
 
-    const NotificationList = () => {
-        return (
-            <>
-                {notificationsArr && notificationsArr.length > 0 ?
-                    notificationsArr.map((item, i) => (
-                        <div className="menu-item" key={i}>
-                            <Dropdown.Item href={getAction(item.action)} onClick={() => { handleMenuItemClick(item) }}>
-                                <div style={{ whiteSpace: 'break-spaces' }}>
-                                    {item.createdAt &&
-                                        <span style={{ fontSize: 'x-small', fontWeight: 'bold' }}>
-                                            {formatDateTime(item.createdAt)}
-                                        </span>
-                                    }
-                                    {item.notification &&
-                                        <div className={`text-${item.severity}`}>
+    const handleFilter = (filterType) => {
+        setSelectedTypes([filterType]);
+        const filteredNList = applyFilter([filterType], notificationsArr, isAdmin, isUser);
+        setFilteredNotifications(filteredNList);
+    }
+
+    return (
+        <div className="justify-content-between">
+            <h2 className="container text-uppercase mt-3" >Notifications</h2>
+            <div className="my-3">
+                <div className='row  my-3 justify-content-center'>
+                    <FilterBtns filterBtns={filterBtns} handleFilter={handleFilter} />
+                </div>
+                {
+                    (filteredNotifications && filteredNotifications.length > 0)
+                        ? filteredNotifications.map((item, i) => (
+                            <div key={i}>
+                                {item.createdAt &&
+                                    <span style={{ fontSize: 'x-small', fontWeight: 'bold' }}>
+                                        {formatDateTime(item.createdAt)}
+                                    </span>
+                                }
+                                <div className='mb-4 shadow-card notification-card' style={{ whiteSpace: 'break-spaces' }}>
+                                    <a className={`text-${item.type}`} href={getAction(item.action)} onClick={() => { updateCheckedNotifications(item._id, notifications, auth, dispatch) }}>
+                                        <div>
                                             {item.notification}
                                         </div>
-                                    }
+                                    </a>
                                 </div>
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
+                            </div>
+                        ))
+                        :
+                        <div>
+                            <div className='mb-4 shadow-card notification-card' style={{ whiteSpace: 'break-spaces' }}>
+                                <div className='row justify-content-center italic-text'>
+                                    Whoops! No notifications to display.
+                                </div>
+                            </div>
                         </div>
-                    ))
-                    :
-                    <div style={{ fontSize: 'small', padding: '6px', textAlign: 'center', color: 'grey' }}>{'No new notifications yet.'}</div>
                 }
-            </>
-        )
-    }
-    return (
-        <>
-            <Menu title=
-                {
-                    <>
-                        <i className="fas fa-bell" aria-hidden="true" >
-                            {notificationLength > 0 ?
-                                <>
-                                    <span className="count-badge count-badge-notification">
-                                        {notificationLength}
-                                    </span>
-                                    <span className="navbar-menu-text" style={{ paddingLeft: notificationLength > 9 ? '25px' : '20px' }}>Notifications</span>
-                                </>
-                                :
-                                <span className="navbar-menu-text">Notifications</span>
-                            }
-                        </i>
-                    </>
-                }
-                handleMenuClick={handleMenuClick}
-                menuItems={<NotificationList />}
-            />
-        </>
+            </div>
+        </div>
     )
 }
 

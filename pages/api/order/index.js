@@ -3,7 +3,7 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
-import {handleServerError} from '../../../middleware/error'
+import { handleServerError } from '../../../middleware/error'
 import { CONTACT_ADMIN_ERR_MSG, NORMAL, ADMIN_ROLE, USER_ROLE, ORDER_DETAIL } from '../../../utils/constants'
 import { notUserRole, formatDateTime } from '../../../utils/util'
 
@@ -32,7 +32,7 @@ export default async (req, res) => {
 
 const getOrders = async (req, res) => {
     try {
-        const result = await auth(req, res)
+        const { role, id } = await auth(req, res)
 
         let orders;
         const { dateRange } = req.body;
@@ -40,10 +40,10 @@ const getOrders = async (req, res) => {
         let filter = {};
         if (dateRange) filter = { ...filter, createdAt: { $gte: dateRange[0].startDate, $lt: dateRange[0].endDate } }
 
-        if (result.role === USER_ROLE) {
-            orders = await Orders.find({ user: result.id, ...filter }).populate({ path: "user", select: "name email -_id" }).sort({ createdAt: -1 })
-        } else if (result.role === ADMIN_ROLE) {
-            orders = await Orders.find(filter).populate("user", "-password").sort({ createdAt: -1 })
+        if (role === USER_ROLE) {
+            orders = await Orders.find({ user: id, ...filter }).populate({ path: "user", select: "name email -_id" }).sort({ createdAt: -1 })
+        } else if (role === ADMIN_ROLE) {
+            orders = await Orders.find({ ...filter, placed: true }).populate("user", "-password").sort({ createdAt: -1 })
         } else {
             return res.status(403).json({ err: ERROR_403 });
         }
@@ -112,8 +112,8 @@ const notifyAdminForNewOrder = (orderId, userId) => {
     try {
         new Notifications(
             {
-                notification: `New order request!<br>Order ID -${orderId}<br>Please acknowledge it immediately.`,
-                severity: NORMAL,
+                notification: `New order request! Order ID -${orderId}, Please acknowledge it immediately.`,
+                type: NORMAL,
                 action: { type: ORDER_DETAIL, data: { orderId } },
                 user: userId,
                 role: ADMIN_ROLE

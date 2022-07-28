@@ -86,5 +86,6 @@ export const getAction = (action) => {
 }
 
 export const notUserRole = (role) => { return role !== USER_ROLE };
+export const isUserRole = (role) => { return role === USER_ROLE };
 export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
 export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE };

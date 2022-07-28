@@ -6,12 +6,12 @@ import { postData, putData } from '../utils/fetchData'
 import Cookie from 'js-cookie'
 import { ACC_ACT_MAIL } from '../utils/constants.js'
 import isEmpty from 'lodash/isEmpty';
-import Notifications from './Notifications/Notifications'
+import MenuNotifications from './Notifications/MenuNotifications'
 
 function NavBar() {
     const router = useRouter()
     const { state, dispatch } = useContext(DataContext)
-    const { auth, cart, contactus } = state
+    const { auth, cart } = state
     const [accountActivated, setAccountActivated] = useState(auth && auth.user && auth.user.activated)
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
 
@@ -64,8 +64,11 @@ function NavBar() {
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
-                     <Link href="/orders">
+                    <Link href="/orders">
                         <a className="dropdown-item">Orders</a>
+                    </Link>
+                    <Link href="/notifications">
+                        <a className="dropdown-item">Notifications</a>
                     </Link>
                     <div className="dropdown-divider"></div>
                     <button className="dropdown-item" onClick={handleLogout}>Logout</button>
@@ -140,7 +143,7 @@ function NavBar() {
                         </Link>
                     </li>
                     <li className="nav-item" >
-                        <Notifications />
+                        <MenuNotifications />
                     </li>
                     {
                         isEmpty(auth)

@@ -48,7 +48,7 @@ const notifyUserForConfirmedOrder = (orderId, userId) => {
         new Notifications(
             {
                 notification: `You order-[${orderId}] is confirmed by seller. Thank you for your patience, it will dispatch soon.`,
-                severity: NORMAL,
+                type: NORMAL,
                 action: { type: ORDER_DETAIL, data: { orderId } },
                 user: userId,
                 role: USER_ROLE

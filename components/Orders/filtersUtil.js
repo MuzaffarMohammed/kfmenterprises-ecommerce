@@ -1,10 +1,10 @@
 import moment from "moment";
-import { ALL, ACCEPTED, DELIVERED, IN_TRANSIT, REJECTED, TODAY, YET_TO_DISPATCH } from "../../utils/constants";
+import { ALL, ACCEPTED, DELIVERED, IN_TRANSIT, REJECTED, TODAY, YET_TO_DISPATCH, RETURNED } from "../../utils/constants";
 
-export const applyFilter = (filterType, orders) => {
+export const applyFilter = (filterType, orders, isUser) => {
     switch (filterType) {
-        case TODAY:
-            return getTodayOrders(orders);
+        case RETURNED:
+            return getReturnedOrders(orders);
         case YET_TO_DISPATCH:
             return getYetToDispatchOrders(orders);
         case ACCEPTED:
@@ -15,25 +15,30 @@ export const applyFilter = (filterType, orders) => {
             return getInTransitOrders(orders);
         case DELIVERED:
             return getDeliveredOrders(orders);
-        default:
-            return orders;
+        case ALL:
+            return getAllPlacedOrders(orders, isUser);
     }
 }
 
-export const getAllFiltersLengths = (orders) => {
+export const getAllFiltersLengths = (orders, isUser) => {
     return {
-        'TODAY': getTodayOrders(orders).length,
+        'RETURNED': getReturnedOrders(orders).length,
         'YET_TO_DISPATCH': getYetToDispatchOrders(orders).length,
         'ACCEPTED': getAcceptedOrders(orders).length,
         'REJECTED': getRejectedOrders(orders).length,
         'IN_TRANSIT': getInTransitOrders(orders).length,
         'DELIVERED': getDeliveredOrders(orders).length,
-        'ALL': orders.length
+        'ALL': getAllPlacedOrders(orders, isUser).length
     }
 }
 
-const getTodayOrders = (orders) => {
-    return orders.filter(order => order.dateOfPlaced ? moment(order.dateOfPlaced).isSame(moment(), 'day') : !order.placed);
+const getAllPlacedOrders = (orders, isUser) => {
+    return isUser ? orders : orders.filter(order => order.placed);
+}
+
+const getReturnedOrders = (orders) => {
+    //Yet to implement this..
+    return orders.filter(order => order.returned);
 }
 
 const getYetToDispatchOrders = (orders) => {
@@ -66,7 +71,7 @@ const deliveredOrder = (order) => {
 }
 
 const yetToDispatchOrder = (order) => {
-    return !order.accepted && !order.delivered;
+    return order.placed && !order.accepted && !order.delivered;
 }
 
 export const classNameOnHover = (order) => {
