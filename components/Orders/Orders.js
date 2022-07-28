@@ -6,7 +6,7 @@ import { applyFilter, getAllFiltersLengths } from './filtersUtil';
 import { postData } from '../../utils/fetchData';
 import { isLoading } from '../../utils/util';
 import isEmpty from 'lodash/isEmpty';
-import { sub, add } from 'date-fns'
+import { sub } from 'date-fns'
 import DateRangeSelector from "../Custom_Components/DateRangeSelector";
 import { useRouter } from 'next/router';
 
@@ -37,7 +37,7 @@ export default function Orders() {
                     if (res.err) setFilteredOrders([]);
                     else {
                         // dispatch({ type: 'ADD_ORDERS', payload: res.orders })
-                        const lengths = getAllFiltersLengths(res.orders);
+                        const lengths = getAllFiltersLengths(res.orders, isUser);
                         setFilterLengths(lengths);
                         setOrders(res.orders);
                         setFilteredOrders(res.orders);
@@ -48,7 +48,7 @@ export default function Orders() {
 
 
     const handleFilter = (filterType) => {
-        const filteredOrdersList = applyFilter(filterType, orders);
+        const filteredOrdersList = applyFilter(filterType, orders, isUser);
         setFilteredOrders(filteredOrdersList);
     }
 

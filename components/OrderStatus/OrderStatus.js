@@ -1,27 +1,22 @@
 import { patchData, postData } from '../../utils/fetchData'
 import { CONTACT_ADMIN_ERR_MSG, ORDER_CONFIRMATION_MAIL, ORDER_DELIVERED_MAIL } from '../../utils/constants'
-import { formatDateTime } from '../../utils/util'
+import { formatDateTime, notUserRole } from '../../utils/util'
 import { useState } from 'react';
 
-
-
-
-const OrderStatus = (props) => {
-
-
-    const [order, setorder] = useState(props.order);
+const OrderStatus = ({ orderDetail, auth, dispatch }) => {
+    const [order, setOrder] = useState(orderDetail);
 
     const handleAccept = (order) => {
         //Upating the db with accept response from th admin.
         try {
-            props.dispatch({ type: 'NOTIFY', payload: { loading: true } })
-            patchData(`order/accept/${order._id}`, null, props.auth.token)
+            dispatch({ type: 'NOTIFY', payload: { loading: true } })
+            patchData(`order/accept/${order._id}`, null, auth.token)
                 .then(res => {
-                    if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+                    if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                     const { accepted, dateOfAccept } = res.result;
 
-                    setorder({ ...order, accepted, dateOfAccept });
-                    return props.dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+                    setOrder({ ...order, accepted, dateOfAccept });
+                    return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
                 })
             const userData = {
                 userName: order.user.name,
@@ -30,21 +25,21 @@ const OrderStatus = (props) => {
                 subject: `Order ID: ${order._id} accepted by seller`,
                 orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
             }
-            postData('mail', userData, props.auth.token)
+            postData('mail', userData, auth.token)
         } catch (err) {
-            props.dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
+            dispatch({ type: 'NOTIFY', payload: { error: CONTACT_ADMIN_ERR_MSG } })
         }
     }
 
     const handleDelivered = (order) => {
-        props.dispatch({ type: 'NOTIFY', payload: { loading: true } })
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
 
-        patchData(`order/delivered/${order._id}`, null, props.auth.token)
+        patchData(`order/delivered/${order._id}`, null, auth.token)
             .then(res => {
-                if (res.err) return props.dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+                if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                 const { delivered, paid, dateOfPayment } = res.result;
-                setorder({ ...order, delivered, paid, dateOfPayment });
-                return props.dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+                setOrder({ ...order, delivered, paid, dateOfPayment });
+                return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
             })
         const userData = {
             userName: order.user.name,
@@ -54,7 +49,7 @@ const OrderStatus = (props) => {
             orderId: order._id,
             orderUrl: process.env.NEXT_PUBLIC_BASE_URL + `/order?id=${order._id}`,
         }
-        postData('mail', userData, props.auth.token)
+        postData('mail', userData, auth.token)
     }
 
     return (
@@ -70,14 +65,15 @@ const OrderStatus = (props) => {
                             <div className="label-align">
                                 <h4 className={order.accepted ? 'step-title-after' : 'step-title-await-before'}>
                                     {
-                                        order.accepted ?
-                                            `Order Confirmed on ${formatDateTime(new Date())}`
-                                            :
-                                            (props.auth.user.role === 'admin' ? 'Order Placed' : 'Awaiting Confirmation')
+                                        !order.placed ? 'Awaiting Payment Selection'
+                                            : order.accepted ?
+                                                `Order Confirmed on ${formatDateTime(order.dateOfAccept)}`
+                                                :
+                                                (notUserRole(auth.user.role) ? 'Order Placed' : 'Awaiting Confirmation')
                                     }
                                 </h4>
                                 {
-                                    props.auth.user.role === 'admin' && !order.accepted &&
+                                    notUserRole(auth.user.role) && !order.accepted &&
                                     <button className="btn btn-dark text-uppercase order-handle-button"
                                         onClick={() => handleAccept(order)}>
                                         Accept Order
@@ -123,11 +119,11 @@ const OrderStatus = (props) => {
                             <div className="label-align">
                                 <h4 className={order.delivered ? 'step-title-after' : 'step-title-before'}>
                                     {
-                                        order.delivered ? `Delivered on ${formatDateTime(new Date(props.payType === 'cod' ? order.dateOfPayment : order.dateOfAccept))}` : 'Not Yet Delivered'
+                                        order.delivered ? `Delivered on ${formatDateTime(order.dateOfPayment)}` : 'Not Yet Delivered'
                                     }
                                 </h4>
                                 {
-                                    props.auth.user.role === 'admin' && !order.delivered &&
+                                    notUserRole(auth.user.role) && !order.delivered &&
                                     <button className="btn btn-dark text-uppercase order-handle-button"
                                         disabled={order.accepted ? false : true}
                                         onClick={() => handleDelivered(order)} >

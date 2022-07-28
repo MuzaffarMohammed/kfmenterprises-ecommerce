@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function Menu({ title, menuItems, handleMenuClick }) {
     return (
-        <Dropdown className='menu-btn' onClick={() => { handleMenuClick() }}>
+        <Dropdown className='menu-btn'>
             <Dropdown.Toggle >{title}</Dropdown.Toggle>
             <Dropdown.Menu>
                 {menuItems}

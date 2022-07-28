@@ -1,10 +1,10 @@
 import { isLoggedInPopup } from "../components/SignIn/SignInCardFunctionalComponent";
 import { CONTACT_ADMIN_ERR_MSG, ERRCODE_408, TOKEN_EXPIRED_ERROR } from "../utils/constants";
-import { formatDateTime } from "../utils/util";
+import * as log from "./log"
 
 
 export const handleServerError = (methodName, err, errStatusCode, res) => {
-    console.error(` ${formatDateTime(new Date(), 'LTS ll')} : [ERROR] - ${methodName} : ${err}`);
+    log.error(methodName, err);
     let errMsg = CONTACT_ADMIN_ERR_MSG;
     if (err.name === TOKEN_EXPIRED_ERROR) {
         errStatusCode = ERRCODE_408;

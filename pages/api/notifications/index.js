@@ -4,6 +4,7 @@ import auth from '../../../middleware/auth'
 import { handleServerError } from '../../../middleware/error'
 import { ERROR_403 } from "../../../utils/constants";
 import { notAdminNotUserRole } from "../../../utils/util";
+import * as log from "../../../middleware/log"
 
 connectDB()
 
@@ -27,6 +28,7 @@ const postNotifications = async (req, res) => {
         const { role } = await auth(req, res)
         if (notAdminNotUserRole(role)) return res.status(403).json({ err: ERROR_403 });
         const { _id, checked } = req.body
+        log.debug('id : '+_id+" checked : "+checked)
         await Notifications.findOneAndUpdate({ _id }, { checked })
         res.json({ msg: "Notification acknowledged successfully." })
     } catch (err) { handleServerError('postNotifications', err, 500, res) }

@@ -51,7 +51,7 @@ const getKpis = async (req, res) => {
         const users = await Users.find({ activated: true }, { name: 1 });
         const orders = await Orders.find({}, { total: 1, delivered: 1, updatedAt: 1 });//all orders with only total, delivered, updatedAt field data.
         const products = await Products.find({}, { sold: 1, title: 1 }).sort({ sold: -1 });// All products order by sold = desc
-        const notifications = await Notifications.find({ role: role, severity: [DANGER, WARNING] })
+        const notifications = await Notifications.find({ role: role, type: [DANGER, WARNING] })
         
         let kpiData = { cards: [], charts: [] };
         if (kpisArr) {

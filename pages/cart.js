@@ -4,21 +4,20 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem'
-import { getData, postData, deleteData, putData } from '../utils/fetchData'
-import { deleteItem } from '../store/Actions'
-import { ONLINE } from '../utils/constants'
+import { getData, postData } from '../utils/fetchData'
+import { AUTO_CANCEL_ORDER_JOB } from '../utils/constants'
 import { isLoggedInPopup } from '../components/SignIn/SignInCardFunctionalComponent'
 import Address from '../components/Cart/Address'
 import { getAddressObj, validateAddress } from '../components/Cart/util'
+import { isLoading } from '../utils/util'
 
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
-  const { cart, auth, orders, address } = state
+  const { cart, auth, address } = state
   const [total, setTotal] = useState(0)
   const [callback, setCallback] = useState(false)
   const router = useRouter()
-
 
   useEffect(() => {
     const getTotal = () => {
@@ -65,11 +64,8 @@ const Cart = () => {
     let nonAvailProducts = [];
     for (const item of cart) {
       const res = await getData(`product/${item._id}`)
-      if (res.product.inStock - item.quantity >= 0) {
-        newCart.push(item)
-      } else {
-        nonAvailProducts.push(item.title);
-      }
+      if (res.product.inStock - item.quantity >= 0) newCart.push(item);
+      else nonAvailProducts.push(item.title);
     }
 
     if (newCart.length < cart.length) {
@@ -80,59 +76,15 @@ const Cart = () => {
         }
       })
     }
-
-    dispatch({ type: 'NOTIFY', payload: { loading: true } })
+    isLoading(true, dispatch);
     postData('order', { address: shippingAddress, cart, total }, auth.token)
       .then(res => {
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-        const newOrder = {
-          ...res.newOrder,
-          user: auth.user
+        if (res.newOrder) {
+          // scheduleAutoCancelOrder(res.newOrder && res.newOrder._id);
+          return router.push(`/order?id=${res.newOrder._id}`)
         }
-        dispatch({ type: 'ADD_ORDERS', payload: [newOrder, ...orders] })
-        //scheduleAutoCancelOrder(newOrder);
-        return router.push(`/order?id=${res.newOrder._id}`)
       })
-  }
-
-  const scheduleAutoCancelOrder = (newOrder) => {
-    try {
-      const timer = setTimeout(() => {
-        console.log('Product Auto Cancellation Process Check Start...');
-        getData(`order/${newOrder._id}`, auth.token)
-          .then(res => {
-            if (res.err) return;
-            const order = res.order;
-            if (order && !order.placed || (order.method === undefined || order.method === ONLINE)) {
-              //console.log('No payment done for order : ', order._id);
-              deleteOrder(order);
-            }
-          })
-        clearTimeout(timer);
-      }, process.env.NEXT_PUBLIC_AUTO_CANCEL_ORDER_TIME);
-    } catch (error) {
-    }
-  }
-
-  const deleteOrder = (order) => {
-    console.log('Deleting order...')
-    deleteData(`order/${order._id}`, auth.token)
-      .then(res => {
-        if (res.err) return;
-        updateInStockAndSoldOfProduct(order);
-        dispatch(deleteItem(orders, order._id, 'ADD_ORDERS'));
-      })
-  }
-
-  const updateInStockAndSoldOfProduct = (order) => {
-    console.log('Updating Instock and Sold count...')
-    order.cart.map(product => {
-      putData(`product/${product._id}`, { updateStockAndSold: true, sold: product.sold - product.quantity, inStock: product.inStock + product.quantity }, auth.token)
-        .then(res => {
-          if (res.err) return;
-          //console.log(res.msg)
-        })
-    })
   }
 
   if (cart.length === 0) {

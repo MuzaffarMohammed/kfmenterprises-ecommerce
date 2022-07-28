@@ -15,7 +15,7 @@ const OrderInfo = (props) => {
                 </label>
             </div>
             <div style={{ marginTop: '20px' }}>
-                <OrderStatus order={props.order} auth={props.auth} state={props.state} payType={props.payType} dispatch={props.dispatch} />
+                <OrderStatus orderDetail={props.order} auth={props.auth} state={props.state} dispatch={props.dispatch} />
             </div>
         </>
     )

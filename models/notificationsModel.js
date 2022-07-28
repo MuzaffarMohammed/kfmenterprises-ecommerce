@@ -10,7 +10,7 @@ const NotificationsSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    severity: {
+    type: {
         type: String,
         required: true,
         trim: true

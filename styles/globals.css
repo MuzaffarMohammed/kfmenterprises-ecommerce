@@ -204,7 +204,38 @@ h1, h2, h3, h5 {
   padding-bottom: 2px;
 }
 
+.timer-bar {
+  margin-bottom: 10px;
+  padding: 3px;
+  background-color: blanchedalmond;
+  text-align: center;
+  width: 100%;
+  font-size: small;
+}
+
+.notification-card {
+  cursor: pointer;
+}
+
+.notification-card a {
+  text-decoration: none;
+}
+
+.notification-card:hover {
+  background-color: aliceblue;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .timer-bar {
+    font-size: x-small;
+    width: 100%;
+  }
+}
+
 @media (max-width: 767px) {
+
+
   .terms h1 {
     font-size: 22px;
   }

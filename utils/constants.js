@@ -25,7 +25,7 @@ export const SIGNING_MSG = 'Signing in, please wait...';
 
 //Filters.js
 export const ALL = 'All Orders';
-export const TODAY = 'Today';
+export const RETURNED = 'Returned';
 export const REJECTED = 'Rejected';
 export const DELIVERED = 'Delivered';
 export const ACCEPTED = 'Accepted';
@@ -65,3 +65,7 @@ export const ORDER_DETAIL = "ORDER_DETAIL";
 // Roles
 export const ADMIN_ROLE = "admin";
 export const USER_ROLE = "user";
+
+
+// Jobs
+export const AUTO_CANCEL_ORDER_JOB = "auto_cancel_order_job";
