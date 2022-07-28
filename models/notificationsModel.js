@@ -38,7 +38,7 @@ const NotificationsSchema = new mongoose.Schema({
 })
 
 NotificationsSchema.pre('save', function (next) {
-    var doc = this;
+    let doc = this;
     Counter.findByIdAndUpdate({ _id: 'notificationId' }, { $inc: { seq: 1 } }, { new: true, upsert: true })
         .then(function (count) {
             doc._id = count.seq;
