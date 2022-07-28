@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem'
 import { getData, postData } from '../utils/fetchData'
-import { AUTO_CANCEL_ORDER_JOB } from '../utils/constants'
 import { isLoggedInPopup } from '../components/SignIn/SignInCardFunctionalComponent'
 import Address from '../components/Cart/Address'
 import { getAddressObj, validateAddress } from '../components/Cart/util'
@@ -81,7 +80,6 @@ const Cart = () => {
       .then(res => {
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         if (res.newOrder) {
-          // scheduleAutoCancelOrder(res.newOrder && res.newOrder._id);
           return router.push(`/order?id=${res.newOrder._id}`)
         }
       })

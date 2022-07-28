@@ -31,17 +31,6 @@ export const formatDateTime = (date, format) => {
     return moment(date).format(format ? format : "LT, ll");
 }
 
-export const formatDateTimeInsideData = (data, field) => {
-    data.map((item, i) => {
-        const formattedDateTime = formatDateTime(data[i][field]);
-        item = {
-            ...data[i],
-            [field]: formattedDateTime
-        }
-    });
-    return data;
-}
-
 export const isLoading = (loading, dispatch) => {
     dispatch({ type: 'NOTIFY', payload: { loading } })
 }

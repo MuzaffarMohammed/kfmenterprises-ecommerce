@@ -49,7 +49,7 @@ export const getFilterbtns = (notifications) => {
             description: 'All severe notifications',
             count: filterNotificationsByType(DANGER, notifications).length
         }
-    ]
+    ];
     return btns;
 }
 
