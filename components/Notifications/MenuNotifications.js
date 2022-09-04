@@ -41,7 +41,7 @@ function MenuNotifications() {
                                             </span>
                                         }
                                         {item.notification &&
-                                            <div className={`text-${item.type}`}>
+                                            <div className={`text-${item.type}`} style={{ fontSize: 'small'}}>
                                                 {item.notification}
                                             </div>
                                         }

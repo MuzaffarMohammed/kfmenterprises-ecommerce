@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { DataContext } from "../../store/GlobalState";
 import { getData } from "../../utils/fetchData";
-import RemoteTableGrid from "../Custom_Components/RemoteTableGrid";
+// import RemoteTableGrid from "../Custom_Components/RemoteTableGrid";
 import Loading from "../Loading";
 import { productColumns } from "./util";
 
@@ -57,7 +57,7 @@ export const Products = () => {
             <h2 className="container text-uppercase mt-3" >Products</h2>
             <div className="my-3 shadow-card">
                 {/* {isLoading && <Loading />} */}
-                <RemoteTableGrid
+                {/* <RemoteTableGrid
                     keyField='id'
                     columns={columns}
                     data={products}
@@ -65,7 +65,7 @@ export const Products = () => {
                     sizePerPage={sizePerPage}
                     totalSize={totalCount}
                     handleTableChange={handleTableChange}
-                />
+                /> */}
             </div>
         </div>
     )

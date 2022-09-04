@@ -57,7 +57,7 @@ const OrderDetail = () => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
                     if (res.order) {
                         setOrderDetail(res.order);
-                        displayTimer(res.order);
+                        //displayTimer(res.order);
                     }
                 });
         }
