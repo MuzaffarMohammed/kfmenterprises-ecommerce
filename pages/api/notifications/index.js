@@ -41,5 +41,5 @@ const getAllNotifications = async (req, res) => {
         if (notAdminNotUserRole(role)) return res.status(403).json({ err: ERROR_403 });
         const notifications = await Notifications.find({ role: role, checked: false }).sort({ createdAt: -1 });
         res.json({ notifications })
-    } catch (err) { handleServerError('getAllNotifications', err, 500, res) }
+    } catch (err) { res.json({})/*handleServerError('getAllNotifications', err, 500, res)*/ }
 }

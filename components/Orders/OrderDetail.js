@@ -10,7 +10,7 @@ import { DataContext } from '../../store/GlobalState'
 import { useRouter } from 'next/router'
 import { AUTO_CANCEL_ORDER_JOB, SIGNING_MSG } from '../../utils/constants'
 import moment from 'moment'
-import { notUserRole } from '../../utils/util'
+import { getDuration, notUserRole } from '../../utils/util'
 
 const OrderDetail = () => {
     const { state, dispatch } = useContext(DataContext)
@@ -20,35 +20,31 @@ const OrderDetail = () => {
     const [timer, setTimer] = useState('')
     const [showTimer, setShowTimer] = useState(false);
 
-    const autoCancelOrder = (order) => {
+    const autoCancelOrder = (order, intervalId) => {
         postData(`jobs`, { order, jobName: AUTO_CANCEL_ORDER_JOB }, auth.token)
+        clearInterval(intervalId);
+        setShowTimer(false);
+        router.push('/');
     }
 
     const displayTimer = (order) => {
         if (order.placed || isEmpty(order.createdAt) || notUserRole(auth.user.role)) return;
-        console.log('Setting new Timer...')
         const ORDER_CANCEL_TIME = process.env.NEXT_PUBLIC_AUTO_CANCEL_ORDER_TIME;
-        const startTime = moment(order.createdAt).tz(process.env.NEXT_PUBLIC_TZ).add(((ORDER_CANCEL_TIME + 1) * 60), 'seconds');
-        console.log('startTime', order.createdAt)
         const cancelDuration = ORDER_CANCEL_TIME * 60;
-        let countDownTime = moment(order.createdAt).tz(process.env.NEXT_PUBLIC_TZ).add((ORDER_CANCEL_TIME) * 60, 'seconds');
-        const x = setInterval(function () {
-            const diff = startTime.diff(countDownTime, 'seconds');
-            countDownTime = moment(countDownTime).subtract(1, 'seconds');
-            console.log('diff', diff, ' <= cancelDuration', cancelDuration)
-            if (diff > 0 && diff <= cancelDuration) {
-                console.log('Displaying Timer...');
-                setTimer(moment.utc(diff).format("mm:ss"));
+        const WAIT_TIME = 60 * 3;
+        const endTime = moment.utc(order.createdAt).local().add((ORDER_CANCEL_TIME) * 60, 'seconds');
+        const intervalId = setInterval(function () {
+            // Waiting for 60 seconds and displaying countdown.
+            const currentTime = moment().local();
+            const secondsRemain = endTime.diff(currentTime, 'seconds');
+            if (secondsRemain < (cancelDuration - WAIT_TIME) && secondsRemain > 0) {
+                setTimer(getDuration(currentTime, endTime));
                 setShowTimer(true);
-            } else if (diff <= 0) {
-                autoCancelOrder(order);
-                clearInterval(x);
-                setShowTimer(false);
-                router.push('/');
+            } else if (secondsRemain <= 0) {
+                autoCancelOrder(order, intervalId);
             } else setShowTimer(false);
         }, 1000);
     }
-
 
     useEffect(() => {
         if (!isEmpty(auth) && auth.token && !isEmpty(router.query.id)) {
@@ -57,11 +53,12 @@ const OrderDetail = () => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
                     if (res.order) {
                         setOrderDetail(res.order);
-                        //displayTimer(res.order);
+                        displayTimer(res.order);
                     }
                 });
         }
     }, [auth.token, router.query.id])
+
 
     if (isEmpty(auth) || isEmpty(auth.token)) return <SignInCard loadingMsg={SIGNING_MSG} delay />;
 

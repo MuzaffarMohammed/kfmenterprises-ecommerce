@@ -27,7 +27,6 @@ export const convertINRPaise = (rupee) => {
 }
 
 export const formatDateTime = (date, format) => {
-    const timeZone = process.env.NEXT_PUBLIC_TZ || process.env.TZ;
     return moment(date).format(format ? format : "LT, ll");
 }
 
@@ -78,3 +77,12 @@ export const notUserRole = (role) => { return role !== USER_ROLE };
 export const isUserRole = (role) => { return role === USER_ROLE };
 export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
 export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE };
+
+export const getDuration = (currentTime, endTime) =>{
+    const duration = moment.duration(endTime.diff(currentTime));
+    let seconds = duration.seconds().toString();
+    let minutes = duration.minutes().toString();
+    if(seconds.length <= 1) seconds = '0'+seconds;
+    if(minutes.length <= 1) minutes = '0'+minutes;
+    return minutes + ":" + seconds;
+}
