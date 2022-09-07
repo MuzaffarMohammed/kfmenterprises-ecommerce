@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState';
 import { isEmpty } from 'lodash';
-import { applyFilter, getFilterbtns, getNotifications, updateCheckedNotifications } from '../../utils/NotificationHelper';
+import { applyFilter, getFilterbtns, updateCheckedNotifications } from '../../utils/NotificationHelper';
 import { formatDateTime, getAction, isLoading } from '../../utils/util';
 import FilterBtns from '../Custom_Components/FilterBtns';
 import { useRouter } from 'next/router';
+import { getData } from '../../utils/fetchData';
+import {handleUIError} from '../../middleware/error'
 
 function Notifications() {
     const { state, dispatch } = useContext(DataContext);
-    const { auth, notifications } = state;
+    const { auth } = state;
     const router = useRouter()
     const query = router.query;
     const [notificationsArr, setNotificationsArr] = useState()
@@ -20,22 +22,26 @@ function Notifications() {
     useEffect(() => {
         if (!isEmpty(auth.token)) {
             isLoading(true, dispatch)
-            getNotifications(auth, dispatch);
+            getData('notifications', auth.token)
+                .then(res => {
+                    isLoading(false, dispatch)
+                    if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
+                    if (!isEmpty(res.notifications)) setNotificationsArr(res.notifications)
+                })
         }
     }, [auth.token])
 
     useEffect(() => {
         isLoading(false, dispatch)
-        if (notifications) {
-            setNotificationsArr(!isEmpty(notifications) ? notifications : [])
+        if (notificationsArr) {
             const types = isEmpty(query.type) ? (isEmpty(selectedTypes) ? ['All'] : selectedTypes) : (query.type === 'wd' && isEmpty(selectedTypes) ? ['warning', 'danger'] : selectedTypes);
             setSelectedTypes(types);
-            const filteredNList = applyFilter(types, notifications);
+            const filteredNList = applyFilter(types, notificationsArr);
             setFilteredNotifications(filteredNList)
-            const filterButtons = getFilterbtns(notifications);
+            const filterButtons = getFilterbtns(notificationsArr);
             setFilterBtns(filterButtons)
         }
-    }, [notifications, query.type])
+    }, [notificationsArr, query.type])
 
     const handleFilter = (filterType) => {
         setSelectedTypes([filterType]);

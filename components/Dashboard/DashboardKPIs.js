@@ -7,7 +7,7 @@ import { REGISTERED_CUSTOMERS, RISK_INDEX, TICK_FORMAT, TOTAL_ORDERS, TOTAL_PROD
 import DateRangeSelector from "../Custom_Components/DateRangeSelector";
 import { postData } from "../../utils/fetchData";
 import isEmpty from 'lodash/isEmpty';
-import { addDays, format } from 'date-fns'
+import { format } from 'date-fns'
 import { convertHTMLToPDFAndDownload } from "../../utils/HTMLToPDF";
 
 const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
@@ -16,17 +16,23 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
     const colPalette = ['#e48c16', '#265584', '#00b300', '#ce1141', '#703ba1', '#ffd650'];
     const [dateRange, setDateRange] = useState([
         {
-            startDate: new Date('07-25-2021 00:00:00'),
-            endDate: addDays(new Date('07-14-2021 00:00:00'), 25),
+            startDate: new Date('03-01-2021 00:00:00'),// Company Start Date
+            endDate: new Date(),// Till now
             key: 'selection'
         }
     ])
 
     useEffect(() => {
         if (kpiData && kpiData.charts && kpiData.charts.length > 0) {
+            console.log("KPI DATA CHECK...................")
             kpiData.charts.forEach(kpi => {
-                if (kpi.singleAnalysis) setSaKpi(kpi);
-                else {
+                if (kpi.singleAnalysis) {
+                    setSaKpi(kpi)
+                    if (!isEmpty(kpi) && !isEmpty(dateRange)) {
+                        console.log('From KPIDATA....', kpi)
+                        getAndGenerateSAChartByDateRange(dateRange, kpi);
+                    }
+                }else {
                     c3.generate({
                         bindto: `#${kpi.id}`,
                         data: kpi.data
@@ -34,7 +40,7 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
                 }
             });
         }
-    }, [kpiData])
+    }, [])
 
     const handleOnClickCard = (kpiName) => {
         switch (kpiName) {
@@ -55,13 +61,15 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
         }
     }
 
-    const getAndGenerateSAChartByDateRange = async (dates) => {
-        const res = await postData('kpi', { dateRange: dates, kpi: saKpi }, auth.token)
+    const getAndGenerateSAChartByDateRange = async (dates, kpi) => {
+        console.log('Callng getAndGenerateSAChartByDateRange..', kpi)
+
+        const res = await postData('kpi', { dateRange: dates, kpi }, auth.token)
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
 
         if (!isEmpty(res.kpiData)) {
             c3.generate({
-                bindto: `#${saKpi.id}`,
+                bindto: `#${kpi.id}`,
                 data: {
                     ...res.kpiData.data,
                     onclick: (d, element) => {
@@ -90,13 +98,15 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
         }
     }
 
-    useEffect(() => {
-        if (!isEmpty(dateRange) && !isEmpty(saKpi)) getAndGenerateSAChartByDateRange(dateRange);
-    }, [dateRange, saKpi])
+    const handleDateRangeSelect = (range) => {
+        setDateRange(range);
+console.log('From Handle method...', saKpi)
+        getAndGenerateSAChartByDateRange(range, saKpi);
+    }
 
     return (
         <div className="pl-3">
-            <div className="row">
+            <div className="row justify-content-center">
                 {
                     kpiData && kpiData.cards && kpiData.cards.map((kpi, i) => (
                         <div key={kpi.id} className="column dashboard-cards" onClick={() => { handleOnClickCard(kpi.name) }}>
@@ -124,7 +134,7 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
                 <div className="container dashboard-analytics-charts">
                     <div className="pt-2 dateRange-filter">
                         <div>
-                            <DateRangeSelector handleSelect={(range) => { setDateRange(range) }} defaultRange={dateRange} />
+                            <DateRangeSelector handleSelect={(range) => { handleDateRangeSelect(range) }} defaultRange={dateRange} />
                         </div>
                         <div className="pl-1">
                             <a className='btn btn-primary' onClick={() => { convertHTMLToPDFAndDownload('download-SA-id', saKpi.name + ' Report') }} title="Download as PDF"><i className="fas fa-file-download"></i></a>

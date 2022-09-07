@@ -98,7 +98,7 @@ const updateOrderPlaced = async (req, res) => {
         await Orders.findOneAndUpdate({ _id: id }, data)
         notifyAdminForNewOrder(id, result.id);
         res.json({
-            msg: 'Order placed successfully! You will be notified once order is accepted.',
+            msg: 'Order placed successfully! You will be notified once the order is accepted.',
             result: {
                 placed: true,
                 dateOfPlaced: formatDateTime(new Date()),

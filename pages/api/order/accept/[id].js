@@ -30,7 +30,6 @@ const acceptOrder = async (req, res) => {
         const { id } = req.query
         const dateOfAccept = formatDateTime(new Date());
         const order = await Orders.findOne({ _id: id}).populate({ path: "user", select: "_id" })
-       console.log(order)
         if(order && order.user._id){
             await Orders.findOneAndUpdate({ _id: id }, { accepted: true, dateOfAccept });
             notifyUserForConfirmedOrder(id, order.user._id);
