@@ -16,6 +16,7 @@ const Address = ({ isProfilePage }) => {
     const [addresses, setAddresses] = useState([])
     const { state, dispatch } = useContext(DataContext)
     const { auth } = state
+    const [newAddPanelVisible, setNewAddPanelVisible] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -40,8 +41,14 @@ const Address = ({ isProfilePage }) => {
     }, [auth])
 
     const handleSelectAddress = (selectedAddressIndex) => {
-        if (selectedAddressIndex >= 0) dispatch({ type: 'ADD_ADDRESS', payload: addresses[selectedAddressIndex] })
-        else dispatch({ type: 'ADD_ADDRESS', payload: { new: '-1' } })
+        if (selectedAddressIndex >= 0) {
+            setNewAddPanelVisible(false);
+            dispatch({ type: 'ADD_ADDRESS', payload: addresses[selectedAddressIndex] });
+        }
+        else {
+            setNewAddPanelVisible(true);
+            dispatch({ type: 'ADD_ADDRESS', payload: { new: '-1' } })
+        }
     }
 
     const handleAddressChange = (i, saveType) => {
@@ -83,7 +90,7 @@ const Address = ({ isProfilePage }) => {
                             </div>
                         ))
                     }
-                    {!isProfilePage ? <h6 className="font-weight-bold text-black">-or-</h6>: <hr />}
+                    {!isProfilePage ? <h6 className="font-weight-bold text-black">-or-</h6> : <hr />}
                 </>
             }
             <>
@@ -95,7 +102,7 @@ const Address = ({ isProfilePage }) => {
                         <h5>Add a New Address</h5>
                     }
                 </div>
-                <AddressForm addressObj={{}} saveType={ADDRESS_NEW} isProfilePage={isProfilePage} />
+                {newAddPanelVisible && <AddressForm addressObj={{}} saveType={ADDRESS_NEW} isProfilePage={isProfilePage} />}
                 <hr />
             </>
         </div>

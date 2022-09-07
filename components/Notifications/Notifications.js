@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState';
 import { isEmpty } from 'lodash';
 import { applyFilter, getFilterbtns, getNotifications, updateCheckedNotifications } from '../../utils/NotificationHelper';
-import { formatDateTime, getAction } from '../../utils/util';
+import { formatDateTime, getAction, isLoading } from '../../utils/util';
 import FilterBtns from '../Custom_Components/FilterBtns';
 import { useRouter } from 'next/router';
 
@@ -16,21 +16,21 @@ function Notifications() {
     const [filterBtns, setFilterBtns] = useState([])
     const [selectedTypes, setSelectedTypes] = useState([])
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
-    const isUser = auth && auth.user && auth.user.role === 'user';
-
 
     useEffect(() => {
         if (!isEmpty(auth.token)) {
+            isLoading(true, dispatch)
             getNotifications(auth, dispatch);
         }
     }, [auth.token])
 
     useEffect(() => {
+        isLoading(false, dispatch)
         if (notifications) {
             setNotificationsArr(!isEmpty(notifications) ? notifications : [])
             const types = isEmpty(query.type) ? (isEmpty(selectedTypes) ? ['All'] : selectedTypes) : (query.type === 'wd' && isEmpty(selectedTypes) ? ['warning', 'danger'] : selectedTypes);
             setSelectedTypes(types);
-            const filteredNList = applyFilter(types, notifications, isAdmin, isUser);
+            const filteredNList = applyFilter(types, notifications);
             setFilteredNotifications(filteredNList)
             const filterButtons = getFilterbtns(notifications);
             setFilterBtns(filterButtons)
@@ -39,7 +39,7 @@ function Notifications() {
 
     const handleFilter = (filterType) => {
         setSelectedTypes([filterType]);
-        const filteredNList = applyFilter([filterType], notificationsArr, isAdmin, isUser);
+        const filteredNList = applyFilter([filterType], notificationsArr);
         setFilteredNotifications(filteredNList);
     }
 
@@ -47,9 +47,11 @@ function Notifications() {
         <div className="justify-content-between">
             <h2 className="container text-uppercase mt-3" >Notifications</h2>
             <div className="my-3">
-                <div className='row  my-3 justify-content-center'>
-                    <FilterBtns filterBtns={filterBtns} handleFilter={handleFilter} />
-                </div>
+                {isAdmin &&
+                    <div className='row  my-3 justify-content-center'>
+                        <FilterBtns filterBtns={filterBtns} handleFilter={handleFilter} />
+                    </div>
+                }
                 {
                     (filteredNotifications && filteredNotifications.length > 0)
                         ? filteredNotifications.map((item, i) => (
