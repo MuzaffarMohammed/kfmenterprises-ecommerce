@@ -4,7 +4,6 @@ import auth from '../../../middleware/auth'
 import { handleServerError } from '../../../middleware/error'
 import { ERROR_403 } from "../../../utils/constants";
 import { isAdminRole, notAdminNotUserRole } from "../../../utils/util";
-import * as log from "../../../middleware/log"
 
 connectDB()
 
