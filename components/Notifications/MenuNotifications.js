@@ -4,26 +4,26 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { DataContext } from '../../store/GlobalState';
 import { getAction, formatDateTime } from '../../utils/util';
 import { isEmpty } from 'lodash';
-import { getNotifications, updateCheckedNotifications } from '../../utils/NotificationHelper';
+import { updateCheckedNotifications } from '../../utils/NotificationHelper';
+import { getData } from '../../utils/fetchData';
 
 function MenuNotifications() {
     const { state, dispatch } = useContext(DataContext);
-    const { auth, notifications } = state;
-    const [notificationsArr, setNotificationsArr] = useState()
+    const { auth } = state;
+    const [notificationsArr, setNotificationsArr] = useState([])
 
     useEffect(() => {
         if (!isEmpty(auth.token)) {
             setInterval(() => {
-                getNotifications(auth, dispatch);
+                getData('notifications', auth.token)
+                    .then(res => {
+                        if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
+                        if (!isEmpty(res.notifications)) setNotificationsArr(res.notifications)
+                    })
             }, 10000);
         }
     }, [auth.token])
 
-    useEffect(() => {
-        if (!isEmpty(notifications)) {
-            setNotificationsArr(notifications)
-        }
-    }, [notifications])
 
     const NotificationList = () => {
         return (
@@ -41,7 +41,7 @@ function MenuNotifications() {
                                             </span>
                                         }
                                         {item.notification &&
-                                            <div className={`text-${item.type}`} style={{ fontSize: 'small'}}>
+                                            <div className={`text-${item.type}`} style={{ fontSize: 'small' }}>
                                                 {item.notification}
                                             </div>
                                         }

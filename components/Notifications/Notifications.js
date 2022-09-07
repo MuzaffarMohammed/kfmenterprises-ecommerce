@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState';
 import { isEmpty } from 'lodash';
-import { applyFilter, getFilterbtns, getNotifications, updateCheckedNotifications } from '../../utils/NotificationHelper';
-import { formatDateTime, getAction } from '../../utils/util';
+import { applyFilter, getFilterbtns, updateCheckedNotifications } from '../../utils/NotificationHelper';
+import { formatDateTime, getAction, isLoading } from '../../utils/util';
 import FilterBtns from '../Custom_Components/FilterBtns';
 import { useRouter } from 'next/router';
+import { getData } from '../../utils/fetchData';
+import {handleUIError} from '../../middleware/error'
 
 function Notifications() {
     const { state, dispatch } = useContext(DataContext);
-    const { auth, notifications } = state;
+    const { auth } = state;
     const router = useRouter()
     const query = router.query;
     const [notificationsArr, setNotificationsArr] = useState()
@@ -16,30 +18,34 @@ function Notifications() {
     const [filterBtns, setFilterBtns] = useState([])
     const [selectedTypes, setSelectedTypes] = useState([])
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
-    const isUser = auth && auth.user && auth.user.role === 'user';
-
 
     useEffect(() => {
         if (!isEmpty(auth.token)) {
-            getNotifications(auth, dispatch);
+            isLoading(true, dispatch)
+            getData('notifications', auth.token)
+                .then(res => {
+                    isLoading(false, dispatch)
+                    if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
+                    if (!isEmpty(res.notifications)) setNotificationsArr(res.notifications)
+                })
         }
     }, [auth.token])
 
     useEffect(() => {
-        if (notifications) {
-            setNotificationsArr(!isEmpty(notifications) ? notifications : [])
+        isLoading(false, dispatch)
+        if (notificationsArr) {
             const types = isEmpty(query.type) ? (isEmpty(selectedTypes) ? ['All'] : selectedTypes) : (query.type === 'wd' && isEmpty(selectedTypes) ? ['warning', 'danger'] : selectedTypes);
             setSelectedTypes(types);
-            const filteredNList = applyFilter(types, notifications, isAdmin, isUser);
+            const filteredNList = applyFilter(types, notificationsArr);
             setFilteredNotifications(filteredNList)
-            const filterButtons = getFilterbtns(notifications);
+            const filterButtons = getFilterbtns(notificationsArr);
             setFilterBtns(filterButtons)
         }
-    }, [notifications, query.type])
+    }, [notificationsArr, query.type])
 
     const handleFilter = (filterType) => {
         setSelectedTypes([filterType]);
-        const filteredNList = applyFilter([filterType], notificationsArr, isAdmin, isUser);
+        const filteredNList = applyFilter([filterType], notificationsArr);
         setFilteredNotifications(filteredNList);
     }
 
@@ -47,9 +53,11 @@ function Notifications() {
         <div className="justify-content-between">
             <h2 className="container text-uppercase mt-3" >Notifications</h2>
             <div className="my-3">
-                <div className='row  my-3 justify-content-center'>
-                    <FilterBtns filterBtns={filterBtns} handleFilter={handleFilter} />
-                </div>
+                {isAdmin &&
+                    <div className='row  my-3 justify-content-center'>
+                        <FilterBtns filterBtns={filterBtns} handleFilter={handleFilter} />
+                    </div>
+                }
                 {
                     (filteredNotifications && filteredNotifications.length > 0)
                         ? filteredNotifications.map((item, i) => (

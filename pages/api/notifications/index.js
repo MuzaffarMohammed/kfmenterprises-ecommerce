@@ -3,8 +3,7 @@ import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
 import { handleServerError } from '../../../middleware/error'
 import { ERROR_403 } from "../../../utils/constants";
-import { notAdminNotUserRole } from "../../../utils/util";
-import * as log from "../../../middleware/log"
+import { isAdminRole, notAdminNotUserRole } from "../../../utils/util";
 
 connectDB()
 
@@ -28,7 +27,6 @@ const postNotifications = async (req, res) => {
         const { role } = await auth(req, res)
         if (notAdminNotUserRole(role)) return res.status(403).json({ err: ERROR_403 });
         const { _id, checked } = req.body
-        log.debug('id : '+_id+" checked : "+checked)
         await Notifications.findOneAndUpdate({ _id }, { checked })
         res.json({ msg: "Notification acknowledged successfully." })
     } catch (err) { handleServerError('postNotifications', err, 500, res) }
@@ -37,9 +35,11 @@ const postNotifications = async (req, res) => {
 
 const getAllNotifications = async (req, res) => {
     try {
-        const { role } = await auth(req, res);
+        const { id, role } = await auth(req, res);
         if (notAdminNotUserRole(role)) return res.status(403).json({ err: ERROR_403 });
-        const notifications = await Notifications.find({ role: role, checked: false }).sort({ createdAt: -1 });
+        let filter = { user: id, role: role, checked: false }
+        if (isAdminRole(role)) filter = { role: role, checked: false }
+        const notifications = await Notifications.find(filter).sort({ createdAt: -1 });
         res.json({ notifications })
-    } catch (err) { res.json({})/*handleServerError('getAllNotifications', err, 500, res)*/ }
+    } catch (err) { res.json({})/*handleServerError('getAllNotifications', err, 500, res) */ }
 }

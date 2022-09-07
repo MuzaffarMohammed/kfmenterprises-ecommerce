@@ -54,7 +54,7 @@ const OrderDetail = () => {
                     if (res.order) {
                         setOrderDetail(res.order);
                         displayTimer(res.order);
-                    }
+                    }else  router.push('/');
                 });
         }
     }, [auth.token, router.query.id])
@@ -73,7 +73,7 @@ const OrderDetail = () => {
                         {showTimer &&
                             <div className="timer-bar">
                                 <i className="fas fa-exclamation-triangle mr-1" style={{ color: 'orange' }} aria-hidden="true"></i>
-                                Time remain <span style={{ color: 'red' }}>{timer}</span> to place an order.
+                                Time remain <span style={{ color: 'red' }}>{timer}</span> to place your order. It will be auto-cancelled after the time lapsed.
                             </div>
                         }
                         <div className="row justify-content-center">

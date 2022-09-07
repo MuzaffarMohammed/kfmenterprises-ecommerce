@@ -1,16 +1,5 @@
-import { handleUIError } from "../middleware/error";
 import { DANGER, NORMAL, WARNING } from "./constants";
-import { getData, postData } from "./fetchData";
-
-export const getNotifications = (auth, dispatch) => {
-    getData('notifications', auth.token)
-        .then(res => {
-            if (res.code) return handleUIError(res.err, res.code, auth, dispatch);
-            if (res.notifications) {
-                dispatch({ type: 'NOTIFICATIONS', payload: res.notifications })
-            }
-        })
-}
+import { postData } from "./fetchData";
 
 export const updateCheckedNotifications = (_id, notifications, auth, dispatch) => {
     postData('notifications', { _id, checked: true }, auth.token);
