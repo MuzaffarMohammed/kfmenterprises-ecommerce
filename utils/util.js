@@ -73,6 +73,11 @@ export const getAction = (action) => {
     }
 }
 
+export const calculateDiscountedPercentage = (actualAmount, totalAmount) => {
+    const discountPercent = ((actualAmount - totalAmount) / actualAmount) * 100;
+    return discountPercent.toFixed(2);
+}
+
 export const notUserRole = (role) => { return role !== USER_ROLE };
 export const isUserRole = (role) => { return role === USER_ROLE };
 export const isAdminRole = (role) => { return role === ADMIN_ROLE };
