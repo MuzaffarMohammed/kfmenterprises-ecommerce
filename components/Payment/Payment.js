@@ -152,18 +152,25 @@ const Payment = (props) => {
     return (
         <>
             <div className="row order-step-header">
-                <h6>Select a payment method</h6>
+                {props.order.paid || props.auth.user.role === 'admin' ? <h6>Payment Details</h6> : <h6>Select a payment method</h6>}
             </div>
-            <div className='d-flex'>
-                <label className='mt-3' style={{ width: '100px' }}>Pay Mode: </label>
-                <select name="payType" id="payType" value={payType} placeholder='Select a payment method'
-                    onChange={handlePayTypeChange} className="mt-2 custom-select text-capitalize">
-                    <option value="select">Select</option>
-                    <option value="online">Online Payment</option>
-                    <option value="cod">Cash on delivery</option>
-                </select>
+            <div className="row mt-2 justify-content-between" hidden={props.order.placed === true || props.auth.user.role === 'admin' ?  false : true}>
+                <label className='mt-2' style={{ width: '100px' }}>Pay Mode </label>
+                <label className="mt-2 text-capitalize" >{(props.order.method != "COD" && props.order.method !="Cash on delivery") ? <>online - {props.order.method}</> : <>{props.order.method}</>}</label>
             </div>
-            <div className="row mt-3 justify-content-between">
+            {(props.order.placed === false && props.auth.user.role !== 'admin') || (props.order.placed === true && props.order.paid !== true && props.auth.user.role !== 'admin' && props.order.accepted === true ) ?
+                <div  className={ props.order.placed === false ? 'd-flex mt-2' : 'd-flex' }>
+                    {/* <label className="mt-3 text-capitalize">{props.order.method}</label> */}
+                    <label className='mt-2' style={{ width: '100px' }}>Pay Now </label>
+
+                    <select name="payType" id="payType" value={payType} placeholder='Select a payment method' 
+                        onChange={handlePayTypeChange} className="custom-select text-capitalize">
+                        <option value="select">Select</option>
+                        <option value="online">Online Payment</option>
+                        <option value="cod" hidden={props.order.placed === false || props.order.placed === true && props.order.method === "cod" ? false : true}>Cash on delivery</option>
+                    </select>
+                </div> : ""}
+            <div className="row mt-2 justify-content-between">
                 <label>Delivery Chargers</label>
                 <span style={{ color: 'green' }}>Free </span>
             </div>
@@ -171,13 +178,13 @@ const Payment = (props) => {
                 <label>Final Amount</label>
                 <h5 className="text-uppercase">₹{props.order.total}.00</h5>
             </div>
-            <button
+            {props.order.placed === true && props.order.accepted === false || props.order.paid === true || props.auth.user.role === 'admin' ? "" : <button
                 id="rzp-button1"
                 className="btn btn-primary text-uppercase"
                 style={{ width: '100%' }}
                 onClick={(e) => { handlePayment(e, props.order) }}>
                 {payBtnText}
-            </button>
+            </button>}
         </>
     )
 

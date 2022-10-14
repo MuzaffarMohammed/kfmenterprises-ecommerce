@@ -10,6 +10,7 @@ import isEmpty from 'lodash/isEmpty';
 const ProductsManager = (props) => {
     const initialState = {
         title: '',
+        mrpPrice:0,
         price: 0,
         tax: 0,
         totalPrice: 0,
@@ -24,9 +25,9 @@ const ProductsManager = (props) => {
     const Product_ = 'Product_';
     const _Image_ = '_Image_';
     const [product, setProduct] = useState(initialState)
-    const { title, price, inStock, tax, totalPrice, description, content, category } = product
-    const calcTotalPrice = (actPrice, calctTaxAmount) => Math.round((Number(actPrice) + calctTaxAmount));
-    const calcTaxAmount = (actPrice) => Math.round(Number(actPrice) * TAX)
+    const { title, mrpPrice, price, inStock, tax, totalPrice, description, content, category } = product
+    const calcTotalPrice = (actPrice, calctTaxAmount) => (Number(actPrice) + calctTaxAmount);
+    const calcTaxAmount = (actPrice) => Math.abs(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
     let delImages = useRef([])
     const [taxAmount, setTaxAmount] = useState(tax)
@@ -54,7 +55,7 @@ const ProductsManager = (props) => {
                 setTaxAmount(calcTax);
                 const calcTotal = calcTotalPrice(res.product.price, calcTax);
                 setTotalAmount(calcTotal);
-                setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotal, discount: product.discount })
+                setProduct({ ...res.product, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2), discount: product.discount })
                 setImages(res.product.images);
             })
         } else {
@@ -63,7 +64,7 @@ const ProductsManager = (props) => {
             setTaxAmount(calcTax);
             const calcTotal = calcTotalPrice(product.price, calcTax);
             setTotalAmount(calcTotal);
-            setProduct({ ...initialState, tax: calcTax, totalPrice: calcTotal })
+            setProduct({ ...initialState, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
             setImages([]);
         }
     }, [id])
@@ -75,7 +76,7 @@ const ProductsManager = (props) => {
             setTaxAmount(calcTax);
             const calcTotal = calcTotalPrice(value, calcTax);
             setTotalAmount(calcTotal);
-            setProduct({ ...product, [name]: value, tax: calcTax, totalPrice: calcTotal })
+            setProduct({ ...product, [name]: value, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
         } else {
             setProduct({ ...product, [name]: value });
         }
@@ -152,6 +153,7 @@ const ProductsManager = (props) => {
         e.preventDefault()
         isAdmin(auth, dispatch);
         if (!title) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product name.' } })
+        if (!mrpPrice) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product MRP price.' } })
         if (!price) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product price.' } })
         if (!inStock || inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product stock.' } })
         if (!description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
@@ -189,15 +191,23 @@ const ProductsManager = (props) => {
                             />
                         </div>
                         <div className="row">
-                            <div className="col-md-2 mt-1">
-                                <label htmlFor="price">Price</label>
-                                <input type="number" name="price" value={product.price}
+                         <div className="col-md-2 mt-1">
+                                <label htmlFor="mrpPrice">MRP Price</label>
+                                <input type="number" name="mrpPrice" value={product.mrpPrice}
                                     placeholder="Price" className="d-block w-100 p-2"
                                     onChange={handleChangeInput} 
                                     maxLength='5'
                                     />
                             </div>
                             <div className="col-md-2 mx-lg-3 mt-1">
+                                <label htmlFor="price">Your Price</label>
+                                <input type="number" name="price" value={product.price}
+                                    placeholder="Price" className="d-block w-100 p-2"
+                                    onChange={handleChangeInput} 
+                                    maxLength='5'
+                                    />
+                            </div>
+                            <div className="col-md-2 mx-lg-1 mt-1">
                                 <label htmlFor="tax">Tax (2%)</label>
                                 <input type="text" name="tax" value={product.tax}
                                     placeholder="Tax" className="d-block w-100 p-2"
@@ -205,7 +215,7 @@ const ProductsManager = (props) => {
                                     onChange={handleChangeInput}
                                 />
                             </div>
-                            <div className="col-md-3 mx-lg-1 mt-1">
+                            <div className="col-md-2 mx-lg-3 mt-1">
                                 <label htmlFor="total">Total Price</label>
                                 <input type="text" name="total" value={product.totalPrice}
                                     placeholder="Total Price" className="d-block w-100 p-2"
@@ -213,7 +223,7 @@ const ProductsManager = (props) => {
                                     disabled
                                 />
                             </div>
-                            <div className="col-lg-2 col-md-3 mx-lg-3 mt-1">
+                            <div className="col-lg-2 col-md-3 mx-lg-1 mt-1">
                                 <label htmlFor="inStock">In Stock</label>
                                 <input type="number" name="inStock" value={product.inStock}
                                     placeholder="inStock" className="d-block w-100 p-2"

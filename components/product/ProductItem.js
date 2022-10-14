@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
+import { calculateDiscountedPercentage } from '../../utils/util'
 
 const ProductItem = ({ product, handleCheck }) => {
     const { state, dispatch } = useContext(DataContext)
@@ -56,11 +57,6 @@ const ProductItem = ({ product, handleCheck }) => {
         )
     }
 
-    const calculateDiscountedPercentage = (product) => {
-        const discountPercent = (product.discount / product.totalPrice) * 100;
-        return Math.round(discountPercent);
-    }
-
     return (
         <div className="card">
             {
@@ -82,10 +78,10 @@ const ProductItem = ({ product, handleCheck }) => {
                     <h6 className="text-success">₹{product.totalPrice}
                         {product.discount !== 0 &&
                             <>
-                                <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px' }}>
-                                    {product.totalPrice + product.discount}
+                                <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px', fontWeight:900 }}>
+                                    {product.mrpPrice}
                                 </span>
-                                <span className='offer-text'>{calculateDiscountedPercentage(product)}% Off</span>
+                                <span className='offer-text'>{calculateDiscountedPercentage(product.mrpPrice, product.totalPrice)}% Off</span>
                             </>
                         }
                     </h6>
