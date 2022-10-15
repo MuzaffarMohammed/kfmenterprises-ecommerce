@@ -97,16 +97,16 @@ const createProduct = async (req, res) => {
         const result = await auth(req, res)
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
-        const { title, price, tax, totalPrice, inStock, description, content, category, images, number, discount } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, number, discount } = req.body
 
-        if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
+        if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
             return res.status(400).json({ err: 'Please add all the fields.' })
 
         const product = await Products.findOne({ title: title.toLowerCase() });
         if (product) return res.status(400).json({ err: 'Product Name already exist, please choose different name.' })
 
         const newProduct = new Products({
-            title: title.toLowerCase(), price, tax, totalPrice, inStock, description, content, category, images, number, discount
+            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, number, discount
         })
         await newProduct.save()
 

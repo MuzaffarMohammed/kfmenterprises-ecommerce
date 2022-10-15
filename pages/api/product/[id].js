@@ -46,7 +46,7 @@ const getProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.query
-        const { title, price, tax, totalPrice, inStock, description, content, category, images, discount, updateStockAndSold, sold } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, discount, updateStockAndSold, sold } = req.body
 
         if (updateStockAndSold) {
             await Products.findOneAndUpdate({ _id: id }, { inStock, sold })
@@ -54,11 +54,11 @@ const updateProduct = async (req, res) => {
         } else {
             const result = await auth(req, res)
             if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
-            if (!title || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
+            if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
             await Products.findOneAndUpdate({ _id: id }, {
-                title, price, tax, totalPrice, inStock, description, content, category, images, discount
+                title, mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, discount
             })
             res.json({ msg: 'Product updated successfully!' })
         }
