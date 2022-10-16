@@ -12,7 +12,7 @@ export const Products = () => {
     const { auth } = state;
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
     const [page, setPage] = useState(1)
-    const [sizePerPage, setSizePerPage] = useState(10)
+    const sizePerPage = 10
     const [products, setProducts] = useState([]);
     const [columns, setColumns] = useState(productColumns);
     const [totalCount, setTotalCount] = useState(0);

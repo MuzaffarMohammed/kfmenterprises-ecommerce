@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPaginate, pageChange }) => {
 
     const [currentPage, setCurrentPage] = useState(1)
-    const [pageLimit, setPageLimit] = useState(10)
+    const pageLimit = 10
     const [paginatedRows, setPaginatedRows] = useState(rows)
 
     useEffect(() => {
@@ -23,8 +23,8 @@ const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPagina
         const queryparams =
             column && column.format
             && column.format.url
-            && column.format.url.queryParams
-        column.format.url.queryParams;
+            && column.format.url.queryParams;
+
         let params = '';
         if (queryparams) {
             Object.keys(queryparams).forEach(param => {

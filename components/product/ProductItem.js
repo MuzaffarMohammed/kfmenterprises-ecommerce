@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
-import { calculateDiscountedPercentage } from '../../utils/util'
 import { ProductPrice } from './ProductPrice'
 
 const ProductItem = ({ product, handleCheck }) => {

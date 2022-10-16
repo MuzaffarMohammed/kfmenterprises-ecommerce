@@ -3,7 +3,6 @@ import { useState, useContext } from 'react'
 import { getData } from '../../utils/fetchData'
 import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
-import { calculateDiscountedPercentage } from '../../utils/util'
 import { ProductPrice } from '../../components/product/ProductPrice'
 
 const DetailProduct = (props) => {
