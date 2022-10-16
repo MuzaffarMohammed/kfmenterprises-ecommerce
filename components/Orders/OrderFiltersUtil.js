@@ -1,4 +1,3 @@
-import moment from "moment";
 import { ALL, ACCEPTED, DELIVERED, IN_TRANSIT, REJECTED, TODAY, YET_TO_DISPATCH, RETURNED } from "../../utils/constants";
 
 export const applyFilter = (filterType, orders, isUser) => {

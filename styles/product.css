@@ -42,18 +42,16 @@
 }
 
 .products .stock {
-    font-size: 12px;
-    margin-top: 4px;
+    font-size: 8px;
+    font-weight: bold;
 }
 
-.products .offer-text {
+.offer-text {
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 10px;
     color: white;
     background: teal;
     padding: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
     height: 10px;
     border-radius: 3px;
 }
