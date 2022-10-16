@@ -8,28 +8,33 @@ import { formatDateTime } from "../../utils/util";
 
 export const productColumns = [
     {
-        dataField: "title",
-        text: "Product Name",
+        id:"title",
+        field: "title",
+        name: "Product Name",
         sort: true
     },
     {
-        dataField: "totalPrice",
-        text: "Price",
+        id: "totalPrice",
+        field: "totalPrice",
+        name: "Price",
         sort: true
     },
     {
-        dataField: "tax",
-        text: "Tax",
+        id: "tax",
+        field: "tax",
+        name: "Tax",
         sort: true
     },
     {
-        dataField: "inStock",
-        text: "In Stock",
+        id: "inStock",
+        field: "inStock",
+        name: "In Stock",
         sort: true
     },
     {
-        dataField: "createdAt",
-        text: "Creation Date",
+        id: "createdAt",
+        field: "createdAt",
+        name: "Creation Date",
         sort: true,
         //formatter: dateFormatter
     }

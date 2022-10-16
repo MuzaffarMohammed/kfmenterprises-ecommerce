@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
-import { calculateDiscountedPercentage } from '../../utils/util'
+import { ProductPrice } from './ProductPrice'
 
 const ProductItem = ({ product, handleCheck }) => {
     const { state, dispatch } = useContext(DataContext)
@@ -20,13 +20,17 @@ const ProductItem = ({ product, handleCheck }) => {
             <>
                 <Link href={`/product/${product._id}`}>
                     <a className="btn btn-primary"
-                        style={{ marginRight: '5px', flex: 1 }}>View</a>
+                        style={{ marginRight: '5px', fontSize: '12px' }}>
+                        View
+                        <i className="fas fa-search pl-1" aria-hidden="true" ></i>
+                    </a>
                 </Link>
                 <button className="btn btn-success"
-                    style={{ marginLeft: '5px', flex: 1 }}
+                    style={{ marginLeft: '5px', flex: 1, fontSize: '12px' }}
                     disabled={product.inStock === 0 ? true : false}
                     onClick={() => { dispatchAddToCart() }} >
-                    Buy
+                    Add to Cart
+                    <i className="fas fa-shopping-cart pl-1" aria-hidden="true" ></i>
                 </button>
             </>
         )
@@ -70,32 +74,7 @@ const ProductItem = ({ product, handleCheck }) => {
                 <img className="card-img-top" src={product.images[0].url} alt={product.title} />
             </Link>
             <div className="card-body">
-                <h6 className="card-title text-capitalize" title={product.title}>
-                    {product.title}
-                </h6>
-
-                <div className="row justify-content-between mx-0">
-                    <h6 className="text-success">₹{product.totalPrice}
-                        {product.discount !== 0 &&
-                            <>
-                                <span style={{ marginLeft: '5px', textDecoration: 'line-through', color: 'grey', fontSize: '12px', fontWeight:900 }}>
-                                    {product.mrpPrice}
-                                </span>
-                                <span className='offer-text'>{calculateDiscountedPercentage(product.mrpPrice, product.totalPrice)}% Off</span>
-                            </>
-                        }
-                    </h6>
-                    {
-                        product.inStock > 0
-                            ? <h6 className="stock text-success">In Stock {isAdmin ? ":" + product.inStock : ""}</h6>
-                            : <h6 className="stock text-danger">Out Of Stock</h6>
-                    }
-                </div>
-
-                {/* <p className="card-text" title={product.description}>
-                    {product.description}
-                </p> */}
-
+                <ProductPrice product={product} isAdmin={isAdmin} />
                 <div className="row justify-content-between mx-0 pt-1">
                     {!auth.user || auth.user.role !== "admin" ? userLink() : adminLink()}
                 </div>

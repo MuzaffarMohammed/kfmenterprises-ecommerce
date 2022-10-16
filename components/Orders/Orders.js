@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../../store/GlobalState'
-import OrdersGrid from './OrdersGrid';
 import Filters from './Filters'
-import { applyFilter, getAllFiltersLengths } from './filtersUtil';
+import { applyFilter, getAllFiltersLengths } from './OrderFiltersUtil';
 import { postData } from '../../utils/fetchData';
 import { isLoading } from '../../utils/util';
 import isEmpty from 'lodash/isEmpty';
 import { sub } from 'date-fns'
 import DateRangeSelector from "../Custom_Components/DateRangeSelector";
 import { useRouter } from 'next/router';
+import TableGrid from '../Custom_Components/TableGrid';
+import { orderColumns } from './OrderGridJson';
 
 export default function Orders() {
     const { state, dispatch } = useContext(DataContext);
@@ -74,7 +75,7 @@ export default function Orders() {
                     </div>
                 </div>
                 <div className="p-2 mt-4 table-responsive orders-grid">
-                    <OrdersGrid orders={filteredOrders} isAdmin={isAdmin} isUser={isUser} />
+                    <TableGrid columns={orderColumns} rows={filteredOrders} totalCount={filteredOrders.length} isOrderPage isAdmin={isAdmin} />
                 </div>
             </div>
         </div>

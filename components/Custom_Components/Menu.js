@@ -1,5 +1,4 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import PropTypes from 'prop-types';
 
 function Menu({ title, menuItems }) {
     return (
