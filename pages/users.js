@@ -1,14 +1,14 @@
 import Head from 'next/head'
 import { useContext } from 'react'
-import {DataContext} from '../store/GlobalState'
+import { DataContext } from '../store/GlobalState'
 import Link from 'next/link'
 
 const Users = () => {
-    const {state, dispatch} = useContext(DataContext)
-    const {users, auth, modal} = state
+    const { state, dispatch } = useContext(DataContext)
+    const { users, auth, modal } = state
 
-    if(!auth.user) return null;
-    return(
+    if (!auth.user) return null;
+    return (
         <div className="table-responsive">
             <Head>
                 <title>KFM Cart - Users</title>
@@ -19,36 +19,34 @@ const Users = () => {
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>Avatar</th>
-                        <th>Name</th>
+                        {/* <th>Avatar</th> */}
+                        <th>User Name</th>
                         <th>Email</th>
-                        <th>Admin</th>
+                        <th>Registered Status</th>
                         {/* <th>Action</th> */}
                     </tr>
                 </thead>
 
                 <tbody>
                     {
-                        users.map((user, index)=> (
-                            <tr key={user._id} style={{cursor: 'pointer'}}>
+                        users.map((user, index) => (
+                            <tr key={user._id} style={{ cursor: 'pointer' }}>
                                 <th>{index + 1}</th>
                                 <th>{user._id}</th>
-                                <th>
+                                {/* <th>
                                     <img src={user.avatar} alt={user.avatar}
-                                    style={{
-                                        width: '30px', height: '30px', 
-                                        overflow: 'hidden', objectFit: 'cover'
-                                    }} />
-                                </th>
+                                        style={{
+                                            width: '30px', height: '30px',
+                                            overflow: 'hidden', objectFit: 'cover'
+                                        }} />
+                                </th> */}
                                 <th>{user.name}</th>
                                 <th>{user.email}</th>
                                 <th>
                                     {
-                                        user.role === 'admin'
-                                        ? user.root ? <i className="fas fa-check text-success"> Root</i>
-                                                    : <i className="fas fa-check text-success"></i>
-
-                                        :<i className="fas fa-times text-danger"></i>
+                                        user.activated ?
+                                            <i className="fas fa-check text-success"></i>
+                                            : <i className="fas fa-times text-danger"></i>
                                     }
                                 </th>
                                 {/* <th>
@@ -62,7 +60,7 @@ const Users = () => {
                                     {
                                         auth.user.root && auth.user.email !== user.email
                                         ? <i className="fas fa-trash-alt text-danger ml-2" title="Remove"
-                                        data-toggle="modal" data-target="#exampleModal"
+                                        data-toggle="modal" data-target="#confirmModal"
                                         onClick={() => dispatch({
                                             type: 'ADD_MODAL',
                                             payload: [{ data: users, id: user._id, title: user.name, type: 'ADD_USERS' }]

@@ -3,17 +3,17 @@ import Users from '../../../models/userModel'
 import Tokens from '../../../models/tokenModel'
 import jwt from 'jsonwebtoken'
 import { createAccessToken } from '../../../utils/generateToken'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 
 connectDB()
 
 export default async (req, res) => {
     try {
         const rf_token = req.cookies.refreshtoken;
-        if (!rf_token) return res.status(400).json({ err: 'Please login now!' });
+        if (!rf_token) return res.status(400).json({ err: 'Please sign in!' });
 
         const result = jwt.verify(rf_token, process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET);
-        if (!result) return res.status(401).json({ err: ERROR_401 });
+        if (!result) return res.status(401).json({ err: ERROR_403 });
 
         checkIsBlacklistedToken(result.refreshTokenId, res);
 

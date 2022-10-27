@@ -1,26 +1,11 @@
-.orderInfoCardTopMargin{
-margin-top:0px !important;
-min-height: 271px;
+.order-Info-card {
+    font-size: 14px;
+    margin-top: 0px !important;
+    min-height: 271px;
 }
 
-.orderDate{
-    font-size: 16px;
-    font-weight: 400;
+.order-Info-card h5 {
+    font-weight: bolder;
 }
 
-.orderId{ 
-    font-size: 16px;
-    font-weight: 400;
-}
 
-@media (max-width: 500px) {
-.orderInfoFontSize{
-    font-size:14px ;
-}
-}
-
-@media (max-width: 320px) {
-    .orderInfoFontSize{
-        font-size:14px ;
-    }
-    }

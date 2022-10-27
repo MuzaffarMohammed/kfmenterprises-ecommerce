@@ -1,0 +1,25 @@
+
+.dateRange-card {
+    background: white;
+    box-shadow: 3px 3px 8px 1px rgb(165 169 179);
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-top: 7px;
+    padding-bottom: 15px;
+    width: 100%;
+    z-index: 9999;
+    position: absolute;
+    display: inline-grid;
+    width: min-content;
+}
+
+.dateRange-comp{
+    display: inline-flex;
+}
+
+@media (max-width: 767px) {
+    .dateRange-card-align {
+        text-align: start;
+    }
+
+}

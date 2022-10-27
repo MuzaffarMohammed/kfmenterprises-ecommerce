@@ -6,21 +6,16 @@ import { postData, putData } from '../utils/fetchData'
 import Cookie from 'js-cookie'
 import { ACC_ACT_MAIL } from '../utils/constants.js'
 import isEmpty from 'lodash/isEmpty';
+import MenuNotifications from './Notifications/MenuNotifications'
 
 function NavBar() {
     const router = useRouter()
     const { state, dispatch } = useContext(DataContext)
-    const { auth, cart, contactus } = state
+    const { auth, cart } = state
     const [accountActivated, setAccountActivated] = useState(auth && auth.user && auth.user.activated)
     const isAdmin = auth && auth.user && auth.user.role === 'admin';
 
-    const isActive = (r) => {
-        if (r === router.pathname) {
-            return " active"
-        } else {
-            return ""
-        }
-    }
+    const isActive = (r) => { return r === router.pathname ? " active" : "" }
 
     const handleLogout = async () => {
         const res = await putData(`auth/logout`, {}, auth.token)
@@ -39,6 +34,10 @@ function NavBar() {
                 <Link href="/users">
                     <a className="dropdown-item">Users</a>
                 </Link>
+                <Link href="/products">
+                    <a className="dropdown-item">Products
+                    </a>
+                </Link>
                 <Link href="/create">
                     <a className="dropdown-item">Add Product
                     </a>
@@ -54,11 +53,8 @@ function NavBar() {
         return (
             <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src={auth.user.avatar} alt={auth.user.avatar}
-                        style={{
-                            borderRadius: '50%', width: '30px', height: '30px',
-                            transform: 'translateY(-3px)', marginRight: '3px'
-                        }} /> {auth.user.name}
+                    <img className="my-account" src={auth.user.avatar} alt={auth.user.avatar} />
+                    {auth.user.name}
                 </a>
 
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -68,6 +64,12 @@ function NavBar() {
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
+                    <Link href="/orders">
+                        <a className="dropdown-item">Orders</a>
+                    </Link>
+                    <Link href="/notifications">
+                        <a className="dropdown-item">Notifications</a>
+                    </Link>
                     <div className="dropdown-divider"></div>
                     <button className="dropdown-item" onClick={handleLogout}>Logout</button>
                 </div>
@@ -102,7 +104,7 @@ function NavBar() {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                 {accountActivated === false &&
-                    <button onClick={() => { triggerAccountActivationMail() }} className="btn btn-warning activateBtn">ACTIVATE YOUR ACCOUNT</button>
+                    <button onClick={() => { triggerAccountActivationMail() }} className="btn btn-warning activateBtn">Activate Your Account</button>
                 }
 
                 <ul className="navbar-nav p-1">
@@ -113,16 +115,35 @@ function NavBar() {
                             </a>
                         </Link>
                     </li>
+                    {isAdmin &&
+                        <li className="nav-item" >
+                            <Link href="/dashboard">
+                                <a className={"nav-link" + isActive('/dashboard')}>
+                                    <i className="fas fa-th" aria-hidden="true" ></i> Dashboard
+                                </a>
+                            </Link>
+                        </li>
+                    }
                     <li className="nav-item" style={{ display: `${isAdmin ? 'none' : 'block'}` }}>
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>
-                                <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
-                                    <span className="position-absolute cart-count-badge">
-                                        {cart.length}
-                                    </span>
-                                </i> Cart
+                                <i className="fas fa-shopping-cart" aria-hidden="true" >
+                                    {cart && cart.length > 0 ?
+                                        <>
+                                            <span className="count-badge count-badge-cart">
+                                                {cart.length}
+                                            </span>
+                                            <span className="navbar-menu-text" style={{ paddingLeft: cart.length > 9 ? '25px' : '20px' }}>Cart</span>
+                                        </>
+                                        :
+                                        <span className="navbar-menu-text">Cart</span>
+                                    }
+                                </i>
                             </a>
                         </Link>
+                    </li>
+                    <li className="nav-item" >
+                        <MenuNotifications />
                     </li>
                     {
                         isEmpty(auth)

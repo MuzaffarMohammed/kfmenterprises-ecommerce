@@ -1,7 +1,8 @@
 import connectDB from '../../../../utils/connectDB'
 import Orders from '../../../../models/orderModel'
 import auth from '../../../../middleware/auth'
-import { COD, CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../../utils/constants'
+import { COD, CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../../utils/constants'
+import { formatDateTime } from '../../../../utils/util'
 
 connectDB()
 
@@ -20,7 +21,7 @@ export default async (req, res) => {
 const deliveredOrder = async (req, res) => {
     try {
         const result = await auth(req, res)
-        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
         const { id } = req.query
 
@@ -40,7 +41,7 @@ const deliveredOrder = async (req, res) => {
             })
         } else {
             await Orders.findOneAndUpdate({ _id: id }, {
-                paid: true, dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                paid: true, dateOfPayment: new Date(),
                 method: COD, delivered: true
             })
 
@@ -48,7 +49,7 @@ const deliveredOrder = async (req, res) => {
                 msg: 'Updated success!',
                 result: {
                     paid: true,
-                    dateOfPayment: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    dateOfPayment: new Date(),
                     method: COD,
                     delivered: true
                 }

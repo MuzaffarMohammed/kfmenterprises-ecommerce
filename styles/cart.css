@@ -32,6 +32,7 @@
 
 .product-delete {
     padding-left: 20px;
+    cursor: pointer;
 }
 
 .sorry_and_continue_msg {
@@ -45,7 +46,7 @@
     text-align: center;
 }
 
-.item-total{
+.item-price{
     font-weight: 600;
 }
 
@@ -59,7 +60,7 @@
     .cartitem-border {
         margin-left: 0px;
     }
-    .item-total{
+    .item-price{
         font-size: 12px;
         font-weight: bold;
     }

@@ -1,15 +1,17 @@
 /* Float four columns side by side */
-.column {
+.col-card {
   float: left;
   width: 25%;
   padding: 0 10px;
 }
 
 /* Remove extra left and right margins, due to padding */
-.column .row {margin: 0 -5px;}
+.col-card .row {
+  margin: 0 -5px;
+}
 
 /* Clear floats after the columns */
-.column .row:after {
+.col-card .row:after {
   content: "";
   display: table;
   clear: both;
@@ -18,7 +20,7 @@
 
 /* Responsive columns */
 @media screen and (max-width: 600px) {
-  .column {
+  .col-card {
     width: 100%;
     display: block;
     margin-bottom: 20px;
@@ -26,52 +28,107 @@
 }
 
 /* Style the counter cards */
-.column .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.9);
-  height:110px;
+.col-card .card {
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.9); */
+  height: 110px;
   margin: 50px 15px 0px;
   padding: 16px;
   text-align: center;
   background: linear-gradient(to right, #092f56, #000000);
+  opacity: 75%;
 }
 
-.column .card h3{color: white; margin-top: 15px;}
-.column i { font-size: 32px; text-align: center; vertical-align: middle;}
-.column span { font-size: 18px; text-align: center; vertical-align: middle;}
+.col-card .card h3 {
+  color: white;
+  margin-top: 15px;
+}
+
+.col-card i {
+  font-size: 32px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.col-card span {
+  font-size: 18px;
+  text-align: center;
+  vertical-align: middle;
+}
 
 .parallax {
-    /* The image used */
-    background-image: url("../public/assets/images/parallax/kfm_parallax-min.jpg");
-  
-    /* Set a specific height */
-    min-height: 200px; 
-  
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;}
+  /* The image used */
+  background-image: url("../public/assets/images/parallax/kfm_parallax-min.jpg");
 
-    /* Responsive text of cards */
-@media screen and (max-width: 767px) {
-  .column {width: 50%;}
-    .column .card {height:100px; margin: 15px 0px -5px; padding: 0px;}
-    .column i {font-size: 25px; width: 100%;}
-    .column span {font-size: 14px;}
-  }
+  /* Set a specific height */
+  min-height: 200px;
 
- /* Responsive text of cards */
-  @media (max-width:900px) and (min-width:768px) {
-  .column .card {height:100px; margin: 25px -5px 0px; padding: 12px;}
-  .column i {font-size: 25px;}
-  .column span {font-size: 14px;}
-  .parallax {  min-height: 150px;}
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
- /* Responsive text of cards */
- @media (max-width:1025px) and (min-width:900px) {
-  .column .card {height:100px; margin: 25px 5px 0px; padding: 10px;}
-  .column i {font-size: 25px;}
-  .column span {font-size: 16px;}
-  .parallax {  min-height: 150px; }
+/* Responsive text of cards */
+@media screen and (max-width: 767px) {
+  .col-card {
+    width: 50%;
+  }
+
+  .col-card .card {
+    height: 100px;
+    margin: 15px 0px -5px;
+    padding: 0px;
+  }
+
+  .col-card i {
+    font-size: 25px;
+    width: 100%;
+  }
+
+  .col-card span {
+    font-size: 14px;
+  }
+}
+
+/* Responsive text of cards */
+@media (max-width:900px) and (min-width:768px) {
+  .col-card .card {
+    height: 100px;
+    margin: 25px -5px 0px;
+    padding: 12px;
+  }
+
+  .col-card i {
+    font-size: 25px;
+  }
+
+  .col-card span {
+    font-size: 14px;
+  }
+
+  .parallax {
+    min-height: 150px;
+  }
+}
+
+/* Responsive text of cards */
+@media (max-width:1025px) and (min-width:900px) {
+  .col-card .card {
+    height: 100px;
+    margin: 25px 5px 0px;
+    padding: 10px;
+  }
+
+  .col-card i {
+    font-size: 25px;
+  }
+
+  .col-card span {
+    font-size: 16px;
+  }
+
+  .parallax {
+    min-height: 150px;
+  }
 }

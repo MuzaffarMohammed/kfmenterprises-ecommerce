@@ -8,19 +8,33 @@
     font-size:60px;
     color:green;
 }
+.order-placed{
+    font-size: 18px;
+    font-weight: 800;
+}
 .shop-more{
     font-size: 16px;
     font-weight: 800;
 }
+.notify-mail{
+    font-size: 14px;  
+}
 @media screen and (max-width: 767px) {
     .thank-you{
         top: 18%;
+        left:35%;
         font-size: 11px;
     }
     .tick-circle {
-        font-size: 36px;
+        font-size: 30px;
     }
     .shop-more{
         font-size: 12px;
+    }
+    .order-placed{
+        font-size: 10px;
+    }
+    .notify-mail{
+        font-size: 8px;  
     }
 }

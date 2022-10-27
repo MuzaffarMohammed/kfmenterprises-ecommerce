@@ -1,0 +1,14 @@
+.centerDiv {
+    text-align: center;
+    padding-top: 150px;
+}
+
+.centerDiv h1 {
+    font-size: 24px;
+}
+
+@media (min-width: 900px) {
+    .centerDiv h1{
+        font-size: 32px;
+    }
+}

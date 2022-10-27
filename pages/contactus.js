@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import {useState, useContext, useEffect} from 'react'
-import {valid} from '../utils/valid'
+import {useState, useContext} from 'react'
 import {DataContext} from '../store/GlobalState'
 import {postData} from '../utils/fetchData'
 import { useRouter } from 'next/router'
@@ -42,7 +41,7 @@ const ContactUs = () => {
           <title>KFM Cart - Contact Us</title>
         </Head>
 
-        <form className="container mx-auto my-4 border_login contform" onSubmit={handleSubmit}>
+        <form className="container mx-auto my-4 shadow-card contform" onSubmit={handleSubmit}>
           <h2>LET’S GET IN TOUCH</h2>
           <div className="row">
           <div className="col-xl-5 contact">

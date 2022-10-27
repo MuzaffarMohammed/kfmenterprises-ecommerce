@@ -1,0 +1,13 @@
+.payment-card {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.payment-card h5 {
+  font-weight: bolder;
+}
+
+.payment-loading-icon {
+  color: #144271;
+  font-size: 40px;
+}

@@ -1,0 +1,26 @@
+.menu-btn .btn {
+    background: none !important;
+    border: 0 !important;
+    padding-left: 0px;
+}
+
+.menu-btn .btn:focus {
+    box-shadow: none !important;
+}
+
+.count-badge-notification {
+    background: rgb(168 200 235 / 45%);
+    color: white;
+    margin-top: -12px;
+    margin-left: -2px;
+}
+
+.menu-item{
+    width: 300px;
+}
+
+@media (min-width: 900px) {
+    .menu-btn .btn {
+        padding: 9px;
+    }
+}

@@ -1,5 +1,5 @@
 import auth from '../../../middleware/auth';
-import { CONTACT_ADMIN_ERR_MSG, ERROR_401 } from '../../../utils/constants';
+import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants';
 import { cloud_delete } from './cloudinary';
 
 
@@ -18,7 +18,7 @@ export default async (req, res) => {
 const deleteImage = async (req, res) => {
     try {
         const result = await auth(req, res);
-        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_401 })
+        if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
         cloud_delete(req.body.publicIds);
         res.status(200).json({ message: 'Image(s) deleted successfully!' });
     } catch (err) {
