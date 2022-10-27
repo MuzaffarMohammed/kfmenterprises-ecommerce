@@ -22,7 +22,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     <a className="btn btn-primary"
                         style={{ marginRight: '5px', fontSize: '12px' }}>
                         View
-                        <i className="fas fa-search pl-1" aria-hidden="true" ></i>
+                        {/* <i className="fas fa-search pl-1" aria-hidden="true" ></i> */}
                     </a>
                 </Link>
                 <button className="btn btn-success"
@@ -30,7 +30,7 @@ const ProductItem = ({ product, handleCheck }) => {
                     disabled={product.inStock === 0 ? true : false}
                     onClick={() => { dispatchAddToCart() }} >
                     Add to Cart
-                    <i className="fas fa-shopping-cart pl-1" aria-hidden="true" ></i>
+                    {/* <i className="fas fa-shopping-cart pl-1" aria-hidden="true" ></i> */}
                 </button>
             </>
         )

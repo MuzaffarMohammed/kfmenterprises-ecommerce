@@ -1,6 +1,6 @@
 export const restPasswordMail = (req) => {
     return `<p>Hi ${req.body.userName},</p>
-    <p><span style="color: #000000;">&nbsp;You recently requested to reset your password for your KFM Cart account. Click on 'Change Password' to reset it. <br><strong>Note: This password reset is only valid for the next 20 Minutes. </strong></span></p>
+    <p><span style="color: #000000;">&nbsp;You recently requested to reset your password for your KFM Cart account. Click on 'Change Password' to reset it. <br><strong><span style="color: #FF0000;">Note: This password reset is only valid for the next 20 Minutes. </span></strong></span></p>
     <table style="height: 127px; width: 90%; border: none;">
     <tbody>
     <tr style="height: 21px;">
@@ -12,7 +12,7 @@ export const restPasswordMail = (req) => {
     <tbody>
     <tr style="height: 41px;">
     <td style="width: 23.1075%; height: 10px; text-align: right;">&nbsp;Proceed Reset Password:</td>
-    <td style="width: 86.0762%; height: 10px;">&nbsp;<a href="${req.body.baseUrl + req.body.forgotPasswordUrl}" target="_blank" rel="noopener"><input type="button" value="Change Password" style="height: 30px; background-color: black; color: white; font-weight: bold; text-align: center; border-radius:5px;"/></a></td>
+    <td style="width: 86.0762%; height: 10px;">&nbsp;<a href="${req.body.baseUrl + req.body.forgotPasswordUrl}" target="_blank" rel="noopener"><input type="button" value="Change Password" style="height: 30px; background-color: black; color: white; font-weight: bold; text-align: center; border-radius:5px;cursor:pointer;"/></a></td>
     </tr>
     </tbody>
     </table>
