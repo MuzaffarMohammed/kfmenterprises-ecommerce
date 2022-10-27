@@ -8,8 +8,8 @@ import { getData, postData } from '../utils/fetchData'
 import { isLoggedInPopup } from '../components/SignIn/SignInCardFunctionalComponent'
 import Address from '../components/Cart/Address'
 import { getAddressObj, validateAddress } from '../components/Cart/util'
-import { isLoading } from '../utils/util'
-
+import { isAdminRole, isLoading } from '../utils/util'
+import { ERROR_403 } from '../utils/constants'
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
@@ -17,6 +17,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0)
   const [callback, setCallback] = useState(false)
   const router = useRouter()
+  const isAdmin = auth && auth.user && isAdminRole(auth.user.role)
 
   useEffect(() => {
     const getTotal = () => {
@@ -54,6 +55,7 @@ const Cart = () => {
   const handlePayment = async (e) => {
     e.preventDefault();
     if (!isLoggedInPopup(auth, dispatch)) return;
+    if(isAdmin) return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403} })
     var shippingAddress = address;
     if (shippingAddress && shippingAddress.new && shippingAddress.new === '-1') shippingAddress = getAddressObj(document.getElementById('addressForm'));
     const validateAddressMsg = validateAddress(shippingAddress);
@@ -107,7 +109,7 @@ const Cart = () => {
           <tbody>
             {
               cart.map(item => (
-                <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} isAdmin={auth && auth.user && auth.user.role === 'admin'} />
+                <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} isAdmin={isAdmin} />
               ))
             }
           </tbody>
