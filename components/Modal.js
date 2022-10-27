@@ -76,7 +76,7 @@ const Modal = () => {
                         {modal.content}
                     </div>
                     {
-                        (modal.type !== SIGN_IN || modal.type !== ADDRESS_EDIT) && (
+                        (modal.type !== SIGN_IN && modal.type !== ADDRESS_EDIT) && (
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleSubmit}>Yes</button>
                                 <button type="button" className="btn btn-primary" data-dismiss="modal">Cancel</button>
