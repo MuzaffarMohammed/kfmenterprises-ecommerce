@@ -1,5 +1,5 @@
 import connectDB from '../../../utils/connectDB'
-import Categories from '../../../models/categoriesModel'
+import Categories from '../../../models/categoryModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
@@ -50,7 +50,7 @@ const deleteCategory = async (req, res) => {
 
         const { id } = req.query
 
-        const products = await Products.findOne({ category: id })
+        const products = await Products.findOne({ categories: id })
         if (products) return res.status(400).json({
             err: "Please delete all products with a relationship"
         })

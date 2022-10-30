@@ -4,28 +4,28 @@ import { DataContext } from '../../store/GlobalState'
 import { imageUpload } from '../../utils/imageUpload'
 import { postData, getData, putData, deleteData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
-import { isAdmin, isLoggedIn, renameFile } from '../../utils/util'
-import isEmpty from 'lodash/isEmpty';
+import { isAdmin, renameFile } from '../../utils/util'
 
 const ProductsManager = (props) => {
     const initialState = {
         title: '',
-        mrpPrice:0,
+        mrpPrice: 0,
         price: 0,
         tax: 0,
         totalPrice: 0,
         inStock: 0,
         description: '',
         content: '',
-        category: '',
         number: 0,
+        categories: 'all',
         discount: Math.floor(Math.random() * 70) + 1
     }
     const TAX = 0.02;
     const Product_ = 'Product_';
     const _Image_ = '_Image_';
     const [product, setProduct] = useState(initialState)
-    const { title, mrpPrice, price, inStock, tax, totalPrice, description, content, category } = product
+    const [categories, setCategories] = useState('')
+    const { title, mrpPrice, price, inStock, tax, totalPrice, description, content } = product
     const calcTotalPrice = (actPrice, calctTaxAmount) => (Number(actPrice) + calctTaxAmount);
     const calcTaxAmount = (actPrice) => Math.abs(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
@@ -34,7 +34,7 @@ const ProductsManager = (props) => {
     const [totalAmount, setTotalAmount] = useState(totalPrice)
     const [totalProducts, setTotalProducts] = useState(props.totalProducts)
     const { state, dispatch } = useContext(DataContext)
-    const { categories, auth } = state
+    const {  categories : categoriesList, auth } = state
 
     const router = useRouter()
     const { id } = router.query
@@ -47,7 +47,6 @@ const ProductsManager = (props) => {
     // }, [])
 
     useEffect(() => {
-        console.log('id : ', id)
         if (id) {
             setOnEdit(true)
             getData(`product/${id}`).then(res => {
@@ -55,6 +54,7 @@ const ProductsManager = (props) => {
                 setTaxAmount(calcTax);
                 const calcTotal = calcTotalPrice(res.product.price, calcTax);
                 setTotalAmount(calcTotal);
+                setCategories(res.product.categories);
                 setProduct({ ...res.product, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2), discount: product.discount })
                 setImages(res.product.images);
             })
@@ -64,6 +64,7 @@ const ProductsManager = (props) => {
             setTaxAmount(calcTax);
             const calcTotal = calcTotalPrice(product.price, calcTax);
             setTotalAmount(calcTotal);
+            setCategories('all')
             setProduct({ ...initialState, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
             setImages([]);
         }
@@ -77,9 +78,10 @@ const ProductsManager = (props) => {
             const calcTotal = calcTotalPrice(value, calcTax);
             setTotalAmount(calcTotal);
             setProduct({ ...product, [name]: value, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
-        } else {
-            setProduct({ ...product, [name]: value });
-        }
+        } else if (name === 'category') {
+            setCategories(value);
+        } else setProduct({ ...product, [name]: value });
+
         dispatch({ type: 'NOTIFY', payload: {} });
     }
 
@@ -158,17 +160,17 @@ const ProductsManager = (props) => {
         if (!inStock || inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product stock.' } })
         if (!description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
         if (!content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
-        if (category === '' || category === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
+        if (categories === '' || categories === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
         if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product images.' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const handledImages = await handleCloudinaryImages(images);
         let res;
         if (onEdit) {
-            res = await putData(`product/${id}`, { ...product, images: handledImages }, auth.token)
+            res = await putData(`product/${id}`, { ...product, categories, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         } else {
-            res = await postData('product', { ...product, number: totalProducts, images: handledImages }, auth.token)
+            res = await postData('product', { ...product, categories, number: totalProducts, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         }
         return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
@@ -191,21 +193,21 @@ const ProductsManager = (props) => {
                             />
                         </div>
                         <div className="row">
-                         <div className="col-md-2 mt-1">
+                            <div className="col-md-2 mt-1">
                                 <label htmlFor="mrpPrice">MRP Price</label>
                                 <input type="number" name="mrpPrice" value={product.mrpPrice}
                                     placeholder="Price" className="d-block w-100 p-2"
-                                    onChange={handleChangeInput} 
+                                    onChange={handleChangeInput}
                                     maxLength='5'
-                                    />
+                                />
                             </div>
                             <div className="col-md-2 mx-lg-3 mt-1">
                                 <label htmlFor="price">Your Price</label>
                                 <input type="number" name="price" value={product.price}
                                     placeholder="Price" className="d-block w-100 p-2"
-                                    onChange={handleChangeInput} 
+                                    onChange={handleChangeInput}
                                     maxLength='5'
-                                    />
+                                />
                             </div>
                             <div className="col-md-2 mx-lg-1 mt-1">
                                 <label htmlFor="tax">Tax (2%)</label>
@@ -250,11 +252,11 @@ const ProductsManager = (props) => {
                     <div className="row mx-1">
                         <div className="col mt-2">
                             <div className="input-group-prepend px-0 my-2">
-                                <select name="category" id="category" value={category}
+                                <select name="category" id="category" value={categories}
                                     onChange={handleChangeInput} className="custom-select text-capitalize">
                                     <option value="all">All</option>
                                     {
-                                        categories.map(item => (
+                                        categoriesList.map(item => (
                                             <option key={item._id} value={item._id}>
                                                 {item.name}
                                             </option>
@@ -303,10 +305,10 @@ const ProductsManager = (props) => {
 
 export async function getServerSideProps({ params: { id } }) {
 
-    const res = await getData(`product?limit=99999999&category=all&sort=''&title=all`)
+    const res = await getData(`product?limit=99999999&category=all&sort=''`)
     // server side rendering
     return {
-        props: { totalProducts: res && res.result + 1 }, // will be passed to the page component as props
+        props: { totalProducts: res && res.count + 1 }, // will be passed to the page component as props
     }
 }
 
