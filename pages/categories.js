@@ -24,7 +24,7 @@ const Categories = () => {
         if (id) {
             res = await putData(`categories/${id}`, { name }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-            dispatch(updateItem(categories, id, res.category, 'ADD_CATEGORIES'))
+            dispatch(updateItem(categories, id, res.categories, 'ADD_CATEGORIES'))
 
         } else {
             res = await postData('categories', { name }, auth.token)

@@ -6,7 +6,7 @@ import TableGrid from "../Custom_Components/TableGrid";
 import Loading from "../Loading";
 import { productColumns } from "./util";
 
-export const Products = () => {
+export const ProductList = () => {
 
     const { state, dispatch } = useContext(DataContext);
     const { auth } = state;
@@ -20,7 +20,7 @@ export const Products = () => {
 
     const getProducts = (page, sizePerPage) => {
         setIsLoading(true)
-        getData(`product?limit=${sizePerPage}&page=${page}&category=all&title=all`, auth.token)
+        getData(`product?limit=${sizePerPage}&page=${page}&category=all`, auth.token)
             .then(res => {
                 setIsLoading(false)
                 if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })

@@ -64,6 +64,8 @@ const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPagina
                 return orderStatusFormatter(row, isAdmin);
             case "orderDeliveryStatus":
                 return orderDeliveryStatusFormatter(row);
+            case "object":
+                return row[column.format.field] && row[column.format.field][column.field]
             default:
                 return row;
         }

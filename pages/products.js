@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Products } from '../components/product/Products';
+import { ProductList } from '../components/product/ProductList';
 
 const products = () => {
 
@@ -8,7 +8,7 @@ const products = () => {
             <Head>
                 <title>KFM Cart - Products</title>
             </Head>
-            <Products />
+            <ProductList />
         </div>
     );
 }

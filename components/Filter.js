@@ -1,40 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import filterSearch from '../utils/filterSearch'
-import { getData } from '../utils/fetchData'
-import { useRouter } from 'next/router'
-
-const Filter = ({ state }) => {
-    const [search, setSearch] = useState('')
-    const [sort, setSort] = useState('')
-    const [category, setCategory] = useState('')
-
-    const { categories } = state
-
-    const router = useRouter()
+import React, { useState } from 'react'
 
 
-    const handleCategory = (e) => {
-        setCategory(e.target.value)
-        filterSearch({ router, category: e.target.value }, '/', false);
-    }
-
-    const handleSort = (e) => {
-        setSort(e.target.value)
-        filterSearch({ router, sort: e.target.value }, '/', false)
-    }
-
-    useEffect(() => {
-        filterSearch({ router, search: search ? search.toLowerCase() : 'all' }, '/', false)
-    }, [search])
+const Filter = ({ isAdmin, categories, selectedCategory, searchText, selectedSort, handleCategory, handleSearch, handleSort }) => {
+    const [search, setSearch] = useState(searchText)
+    const [sort, setSort] = useState(selectedSort)
+    const ALL = 'all';
 
     return (
         <div className="input-group">
             <div className="input-group-prepend col-md-2 px-2 mt-2">
-                <select className="custom-select text-capitalize"
-                    value={category} onChange={handleCategory}>
-
-                    <option value="all">All</option>
-
+                <select className="custom-select text-capitalize" value={selectedCategory} onChange={(e) => {
+                    handleCategory(e.target.value);
+                }}>
+                    {isAdmin && <option value={ALL}> All</option>}
                     {
                         categories.map(item => (
                             <option key={item._id} value={item._id}>{item.name}</option>
@@ -44,24 +22,20 @@ const Filter = ({ state }) => {
             </div>
 
             <form autoComplete="off" className="mt-2 col-md-8 px-2">
-                <input type="text" className="form-control" list="title_product" placeholder="Search"
-                    value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} maxLength='25' />
+                <input type="text" className="form-control" list="title_product" placeholder="Search your item here..."
+                    value={searchText.toLowerCase()}
+                    onChange={(e) => { handleSearch(e.target.value) }}
+                    maxLength='25' />
             </form>
 
             <div className="input-group-prepend col-md-2 px-2 mt-2">
-                <select className="custom-select text-capitalize"
-                    value={sort} onChange={handleSort}>
-
-                    <option value="-createdAt">Newest</option>
-                    <option value="oldest">Oldest</option>
+                <select className="custom-select" value={selectedSort} onChange={(e) => { handleSort(e.target.value) }}>
+                    <option value="-createdAt">Newest Arrivals</option>
                     <option value="-sold">Best sales</option>
                     <option value="-totalPrice">Price: High-Low</option>
                     <option value="totalPrice">Price: Low-High</option>
-
                 </select>
             </div>
-
-
         </div>
     )
 }

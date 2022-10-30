@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    mrpPrice:{
+    mrpPrice: {
         type: Number,
         required: true,
         trim: true
@@ -38,8 +38,9 @@ const productSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    category: {
-        type: String,
+    categories: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'categories',
         required: true
     },
     checked: {

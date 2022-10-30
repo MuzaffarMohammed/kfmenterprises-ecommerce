@@ -69,3 +69,6 @@ export const USER_ROLE = "user";
 
 // Jobs
 export const AUTO_CANCEL_ORDER_JOB = "auto_cancel_order_job";
+
+
+export const DEFAULT_MAX_PRODUCTS_LIMIT = 10;

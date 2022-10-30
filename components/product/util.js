@@ -1,11 +1,3 @@
-import { formatDateTime } from "../../utils/util";
-
-// const dateFormatter = cell => {
-//     console.log('cell.label', cell.label)
-//     if (cell && !cell.label) return;
-//     return formatDateTime(cell.label);
-// }
-
 export const productColumns = [
     {
         id:"title",
@@ -29,6 +21,16 @@ export const productColumns = [
         id: "inStock",
         field: "inStock",
         name: "In Stock",
+        sort: true
+    },
+    {
+        id: "name",
+        field: "name",
+        name: "Category",
+        format:{
+            type:"object",
+            field:"categories"
+        },
         sort: true
     },
     {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
-const CategoriesSchema = new mongoose.Schema({
-    msg: {
+const categorySchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true,
         trim: true
@@ -10,5 +10,5 @@ const CategoriesSchema = new mongoose.Schema({
     timestamps: true
 })
 
-let Dataset = mongoose.models.categories || mongoose.model('categories', CategoriesSchema)
+let Dataset = mongoose.models.categories || mongoose.model('categories', categorySchema)
 export default Dataset
