@@ -2,7 +2,7 @@ import connectDB from '../../../utils/connectDB'
 import Categories from '../../../models/categoryModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
-import { CONTACT_ADMIN_ERR_MSG, DEFAULT_MAX_PRODUCTS_LIMIT, ERROR_403 } from '../../../utils/constants'
+import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 
 connectDB()
 
@@ -41,14 +41,10 @@ const getProducts = async (req, res) => {
         const { category, page, limit, sort, title } = req.query;
 
         let params = {}
-        //console.log('category : ', category, ' page:', page, ' limit: ', limit, ' sort :', sort, ' title :', title)
         if (category && category !== 'all') params = { ...params, categories: category }
         if (title && title !== 'all') params = { ...params, title: { $regex: title } }
-        // console.log('params :', params)
         const products = await Products.find(params).populate({ path: "categories", select: "name _id", model: Categories })
             .sort(sort ? sort : '-createdAt').skip((page ? (page - 1) : 0) * limit).limit(limit);
-
-        //console.log('products :', products.length)
         res.json({
             status: 'success',
             count: products.length,

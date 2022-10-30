@@ -14,9 +14,8 @@ import { CategoryDisplayItems } from '../components/Home/Categories/CategoryDisp
 const Home = (props) => {
 
   const [bsProducts, setBsProducts] = useState(props.bestSellingProds)
-  const { state, dispatch } = useContext(DataContext)
-  const { auth, categories } = state
-  const isAdmin = auth && auth.user && isAdminRole(auth.user.role);
+  const { state } = useContext(DataContext)
+  const { categories } = state
 
   useEffect(() => {
     setBsProducts(props.bestSellingProds)

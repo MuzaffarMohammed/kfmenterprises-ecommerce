@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-
+import React from 'react'
 
 const Filter = ({ isAdmin, categories, selectedCategory, searchText, selectedSort, handleCategory, handleSearch, handleSort }) => {
-    const [search, setSearch] = useState(searchText)
-    const [sort, setSort] = useState(selectedSort)
     const ALL = 'all';
 
     return (
@@ -20,14 +17,12 @@ const Filter = ({ isAdmin, categories, selectedCategory, searchText, selectedSor
                     }
                 </select>
             </div>
-
             <form autoComplete="off" className="mt-2 col-md-8 px-2">
                 <input type="text" className="form-control" list="title_product" placeholder="Search your item here..."
                     value={searchText.toLowerCase()}
                     onChange={(e) => { handleSearch(e.target.value) }}
                     maxLength='25' />
             </form>
-
             <div className="input-group-prepend col-md-2 px-2 mt-2">
                 <select className="custom-select" value={selectedSort} onChange={(e) => { handleSort(e.target.value) }}>
                     <option value="-createdAt">Newest Arrivals</option>

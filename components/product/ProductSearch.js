@@ -29,13 +29,6 @@ export const ProductSearch = () => {
 
     const search = (category, searchText, sort) => {
         isLoading(true, dispatch)
-        console.log('-------------------------------------')
-        console.log('category Selected : ', category)
-
-        // console.log('searchText Selected : ', searchText)
-        // console.log('sort Selected : ', sort)
-
-
         getData(`product?page=${1}&limit=${limit.current}&category=${category}&sort=${sort}&title=${searchText}`)
             .then(res => {
                 isLoading(false, dispatch);
@@ -95,8 +88,6 @@ export const ProductSearch = () => {
 
     return (
         <>
-
-
             <div className="container p-0">
 
                 <Filter isAdmin={isAdmin} categories={categories} selectedCategory={category} searchText={searchText} selectedSort={sort}
@@ -108,7 +99,6 @@ export const ProductSearch = () => {
                 </div>
                 }
             </div>
-
             <div className="products">
                 {
                     products && products.map(product => (
