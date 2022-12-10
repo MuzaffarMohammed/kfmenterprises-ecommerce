@@ -1,5 +1,3 @@
-import { calculateDiscountedPercentage } from "../../utils/util";
-
 export const ProductPrice = ({ product, isAdmin, isProductDetailPage }) => {
 
     return (

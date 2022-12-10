@@ -233,7 +233,7 @@ const ProductsManager = () => {
                     <div className="row img-up mx-0">
                         {
                             images.map((img, index) => (
-                                <div key={index} className="file_img my-1">
+                                <div key={'IMG-'+index} className="file_img my-1">
                                     <img src={img.url ? img.url : URL.createObjectURL(img)}
                                         alt="" className="img-thumbnail rounded my-1" />
 
