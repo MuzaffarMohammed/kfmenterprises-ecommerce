@@ -78,6 +78,9 @@ export const calculateDiscountedPercentage = (actualAmount, totalAmount) => {
     return discountPercent.toFixed(2);
 }
 
+export const calcTaxAmount = (actPrice, TAX) => Math.abs(Number(actPrice) * TAX);
+export const calcTotalPrice = (actPrice, calctTaxAmount) => Number(actPrice) + Number(calctTaxAmount);
+
 export const notUserRole = (role) => { return role !== USER_ROLE };
 export const isUserRole = (role) => { return role === USER_ROLE };
 export const isAdminRole = (role) => { return role === ADMIN_ROLE };

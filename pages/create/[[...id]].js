@@ -4,9 +4,10 @@ import { DataContext } from '../../store/GlobalState'
 import { imageUpload } from '../../utils/imageUpload'
 import { postData, getData, putData, deleteData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
-import { isAdmin, renameFile } from '../../utils/util'
+import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, isAdmin } from '../../utils/util'
 
-const ProductsManager = (props) => {
+const ProductsManager = () => {
+    const TAX = 0.02;
     const initialState = {
         title: '',
         mrpPrice: 0,
@@ -18,54 +19,33 @@ const ProductsManager = (props) => {
         content: '',
         number: 0,
         categories: 'all',
-        discount: Math.floor(Math.random() * 70) + 1
+        discount: 0
     }
-    const TAX = 0.02;
-    const Product_ = 'Product_';
-    const _Image_ = '_Image_';
     const [product, setProduct] = useState(initialState)
     const [categories, setCategories] = useState('')
-    const { title, mrpPrice, price, inStock, tax, totalPrice, description, content } = product
-    const calcTotalPrice = (actPrice, calctTaxAmount) => (Number(actPrice) + calctTaxAmount);
-    const calcTaxAmount = (actPrice) => Math.abs(Number(actPrice) * TAX)
     const [images, setImages] = useState([])
     let delImages = useRef([])
-    const [taxAmount, setTaxAmount] = useState(tax)
-    const [totalAmount, setTotalAmount] = useState(totalPrice)
-    const [totalProducts, setTotalProducts] = useState(props.totalProducts)
     const { state, dispatch } = useContext(DataContext)
-    const {  categories : categoriesList, auth } = state
+    const { categories: categoriesList, auth } = state
 
     const router = useRouter()
     const { id } = router.query
     const [onEdit, setOnEdit] = useState(false)
 
-    // useEffect(() => {
-    //     console.log('auth : ', auth)
-    //     isLoggedIn(auth, dispatch, router);
-
-    // }, [])
-
     useEffect(() => {
         if (id) {
             setOnEdit(true)
             getData(`product/${id}`).then(res => {
-                const calcTax = calcTaxAmount(res.product.price);
-                setTaxAmount(calcTax);
-                const calcTotal = calcTotalPrice(res.product.price, calcTax);
-                setTotalAmount(calcTotal);
+                const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
-                setProduct({ ...res.product, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2), discount: product.discount })
+                setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax)})
                 setImages(res.product.images);
             })
         } else {
             setOnEdit(false)
-            const calcTax = calcTaxAmount(product.price);
-            setTaxAmount(calcTax);
-            const calcTotal = calcTotalPrice(product.price, calcTax);
-            setTotalAmount(calcTotal);
+            const calcTax = calcTaxAmount(product.price, TAX);
             setCategories('all')
-            setProduct({ ...initialState, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
+            setProduct({ ...initialState, tax: calcTax, totalPrice: calcTotalPrice(product.price, calcTax)})
             setImages([]);
         }
     }, [id])
@@ -73,31 +53,10 @@ const ProductsManager = (props) => {
     const handleChangeInput = async e => {
         const { name, value } = e.target;
         if (name === 'price') {
-            const calcTax = calcTaxAmount(value);
-            setTaxAmount(calcTax);
-            const calcTotal = calcTotalPrice(value, calcTax);
-            setTotalAmount(calcTotal);
-            setProduct({ ...product, [name]: value, tax: calcTax.toFixed(2), totalPrice: calcTotal.toFixed(2) })
-        } else if (name === 'category') {
-            setCategories(value);
-        } else setProduct({ ...product, [name]: value });
-
-        dispatch({ type: 'NOTIFY', payload: {} });
-    }
-
-
-    const existingAllImgArr = (imgs) => {
-        const existingImgArr = [];
-        imgs.forEach(file => {
-            if (file.url && file.url.indexOf(Product_) !== -1 && file.url.indexOf(_Image_) !== -1) {
-                existingImgArr.push(parseInt(file.url.split(Product_)[1].split(_Image_)[1].split('.')[0]));
-            }
-        });
-        return existingImgArr;
-    }
-    const getSucceedingFileNo = (existingImgArr, imgNo) => {
-        while (existingImgArr.indexOf(imgNo) !== -1) ++imgNo;
-        return imgNo;
+            const calcTax = calcTaxAmount(value, TAX);
+            setProduct({ ...product, [name]: value, tax: calcTax, totalPrice: calcTotalPrice(value, calcTax)})
+        } else if (name === 'category') setCategories(value);
+        else setProduct({ ...product, [name]: value });
     }
 
     const handleUploadInput = e => {
@@ -109,15 +68,9 @@ const ProductsManager = (props) => {
 
         if (files.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Files does not exist.' } })
         if (existingImgCount + files.length > 5) return dispatch({ type: 'NOTIFY', payload: { error: 'Select upto 5 images only!' } })
-        const existingImgArr = existingAllImgArr(images);
         files.forEach(file => {
             if (file.size > 1024 * 1024) return err = 'The largest image size is 1mb'
             if (file.type !== 'image/jpeg' && file.type !== 'image/png') return err = 'Image format is incorrect.'
-
-            const imgNo = getSucceedingFileNo(existingImgArr, ++existingImgCount);
-            const fileExtn = file.name.split('.').pop();
-            if (!onEdit) file = renameFile(file, Product_ + totalProducts + _Image_ + imgNo + '.' + fileExtn);
-            else file = renameFile(file, Product_ + product.number + _Image_ + imgNo + '.' + fileExtn);
             newImages.push(file);
         })
         if (err) dispatch({ type: 'NOTIFY', payload: { error: err } })
@@ -154,23 +107,24 @@ const ProductsManager = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         isAdmin(auth, dispatch);
-        if (!title) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product name.' } })
-        if (!mrpPrice) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product MRP price.' } })
-        if (!price) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product price.' } })
-        if (!inStock || inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product stock.' } })
-        if (!description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
-        if (!content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
+        if (!product.title) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product name.' } })
+        if (!product.mrpPrice) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product MRP price.' } })
+        if (!product.price) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product price.' } })
+        if (!product.inStock || product.inStock === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product stock.' } })
+        if (!product.description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
+        if (!product.content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
         if (categories === '' || categories === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
-        if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product images.' } })
+        if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const handledImages = await handleCloudinaryImages(images);
+        const discount = calculateDiscountedPercentage(product.mrpPrice, product.totalPrice);
         let res;
         if (onEdit) {
-            res = await putData(`product/${id}`, { ...product, categories, images: handledImages }, auth.token)
+            res = await putData(`product/${id}`, { ...product, discount, categories, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         } else {
-            res = await postData('product', { ...product, categories, number: totalProducts, images: handledImages }, auth.token)
+            res = await postData('product', { ...product, discount, categories, images: handledImages }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         }
         return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
@@ -179,7 +133,7 @@ const ProductsManager = (props) => {
     return (
         <div className="container-fluid products_manager">
             <Head>
-                <title>KFM Cart - Products Manager</title>
+                <title>KFM Cart - Product Manager</title>
             </Head>
             <form className="row my-3" onSubmit={handleSubmit}>
                 <div className="col-xl-6 col-xs-12">
@@ -269,13 +223,10 @@ const ProductsManager = (props) => {
                 </div>
 
                 <div className="col-xl-5 col-xs-12 mx-md-4 mx-xs-3 mt-5 mt-md-0 justify-content-md-center">
-                    Click to browse and upload your images
-                    <div className="input-group mt-2 mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text">Upload</span>
-                        </div>
-                        <div className="custom-file border">
-                            <input type="file" className="custom-file-input" placeholder="Click here to upload"
+                    <div className="mt-2 mb-3">
+                        <div className='upload-img-btn pt-2'>
+                            <label htmlFor="upload-img-input">+ Upload Image(s) <i className="fas fa-image upload-img-icon" aria-hidden="true" /></label>
+                            <input type="file" id="upload-img-input"
                                 onChange={handleUploadInput} multiple accept="image/*" />
                         </div>
                     </div>

@@ -29,14 +29,10 @@ export default async (req, res) => {
 const getProduct = async (req, res) => {
     try {
         const { id, count } = req.query;
-
         const product = await Products.findById(id)
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
-
         if (count) return res.json({ count: product.inStock })
-
         res.json({ product })
-
     } catch (err) {
         console.error('Error occurred while getProduct: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
@@ -71,16 +67,11 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
-
         const { id } = req.query;
-
         deleteImages(id, req.headers.authorization, res);
-
         await Products.findByIdAndDelete(id)
         res.json({ msg: 'Product deleted successfully.' })
-
     } catch (err) {
         console.error('Error occurred while deleteProduct: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
@@ -92,7 +83,6 @@ const deleteImages = async (id, token, res) => {
     try {
         const product = await Products.findById(id);
         const publicIds = product.images.map(image => image.public_id);
-        console.log('Public Ids : ', publicIds);
         deleteData(`uploads/delete`, token, { publicIds });
     } catch (err) {
         console.error('Error occurred while deleteImages: ' + err);
