@@ -5,6 +5,7 @@ import { imageUpload } from '../../utils/imageUpload'
 import { postData, getData, putData, deleteData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
 import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, isAdmin } from '../../utils/util'
+import { deleteImagesFromCloudinary } from './productManagerUtil'
 
 const ProductsManager = () => {
     const TAX = 0.02;
@@ -77,21 +78,15 @@ const ProductsManager = () => {
         setImages([...images, ...newImages]);
     }
 
-    const deleteImage = index => {
+    const handleImageDelete = (index, images) => {
         const newArr = [...images]
         delImages.current = newArr.splice(index, 1);
         setImages(newArr);
     }
 
-    const deleteImagesFromCloudinary = (imgsTodelete) => {
-        let publicIds = [];
-        imgsTodelete.map(img => { if (img.public_id) publicIds.push(img.public_id) });
-        if (publicIds) deleteData(`uploads/delete`, auth.token, { publicIds });
-        delImages.current = [];
-    }
-
     const handleCloudinaryImages = async (imgs) => {
-        deleteImagesFromCloudinary(delImages.current);
+        deleteImagesFromCloudinary(delImages.current, auth);
+        delImages.current = [];
         let newUploadedImgsURLs = [];
         const imgsToUpload = imgs.filter(img => !img.url)
         const oldImgsURLs = imgs.filter(img => img.url)
@@ -237,7 +232,7 @@ const ProductsManager = () => {
                                     <img src={img.url ? img.url : URL.createObjectURL(img)}
                                         alt="" className="img-thumbnail rounded my-1" />
 
-                                    <span onClick={() => deleteImage(index)}>X</span>
+                                    <span onClick={() => handleImageDelete(index, images)}>X</span>
                                 </div>
                             ))
                         }
