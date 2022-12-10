@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import { useState, useContext, useEffect, useRef } from 'react'
 import { DataContext } from '../../store/GlobalState'
-import { imageUpload } from '../../utils/imageUpload'
-import { postData, getData, putData, deleteData } from '../../utils/fetchData'
+import { postData, getData, putData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
 import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, isAdmin } from '../../utils/util'
-import { deleteImagesFromCloudinary } from './productManagerUtil'
+import { deleteImagesFromCloudinary, populateProduct, uploadImagesToCloudinary, validateUploadInputs } from './productManagerUtil'
 
 const ProductsManager = () => {
     const TAX = 0.02;
@@ -53,29 +52,15 @@ const ProductsManager = () => {
 
     const handleChangeInput = async e => {
         const { name, value } = e.target;
-        if (name === 'price') {
-            const calcTax = calcTaxAmount(value, TAX);
-            setProduct({ ...product, [name]: value, tax: calcTax, totalPrice: calcTotalPrice(value, calcTax)})
-        } else if (name === 'category') setCategories(value);
-        else setProduct({ ...product, [name]: value });
+        if (name === 'category') setCategories(value);
+        else setProduct(populateProduct(name, value, TAX, product));
     }
 
     const handleUploadInput = e => {
         dispatch({ type: 'NOTIFY', payload: {} })
-        let newImages = []
-        let err = ''
-        const files = [...e.target.files]
-        let existingImgCount = images.length;
-
-        if (files.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Files does not exist.' } })
-        if (existingImgCount + files.length > 5) return dispatch({ type: 'NOTIFY', payload: { error: 'Select upto 5 images only!' } })
-        files.forEach(file => {
-            if (file.size > 1024 * 1024) return err = 'The largest image size is 1mb'
-            if (file.type !== 'image/jpeg' && file.type !== 'image/png') return err = 'Image format is incorrect.'
-            newImages.push(file);
-        })
-        if (err) dispatch({ type: 'NOTIFY', payload: { error: err } })
-        setImages([...images, ...newImages]);
+        const res = validateUploadInputs([...e.target.files], images.length);
+        if(res.err) dispatch({ type: 'NOTIFY', payload: { error: err } })
+        setImages([...images, ...res.images]);
     }
 
     const handleImageDelete = (index, images) => {
@@ -87,16 +72,9 @@ const ProductsManager = () => {
     const handleCloudinaryImages = async (imgs) => {
         deleteImagesFromCloudinary(delImages.current, auth);
         delImages.current = [];
-        let newUploadedImgsURLs = [];
-        const imgsToUpload = imgs.filter(img => !img.url)
-        const oldImgsURLs = imgs.filter(img => img.url)
-        if (imgsToUpload.length > 0) {
-            newUploadedImgsURLs = await imageUpload(imgsToUpload, 'product');
-            const handledImgs = [...oldImgsURLs, ...newUploadedImgsURLs];
-            setImages(handledImgs);
-            return handledImgs;
-        }
-        return images;
+        const handledImgs = await uploadImagesToCloudinary(imgs);
+        setImages(handledImgs);
+        return handledImgs;
     }
 
     const handleSubmit = async (e) => {
