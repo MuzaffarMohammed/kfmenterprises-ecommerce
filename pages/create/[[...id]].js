@@ -3,8 +3,12 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { postData, getData, putData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
-import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, isAdmin } from '../../utils/util'
-import { deleteImagesFromCloudinary, populateProduct, uploadImagesToCloudinary, validateUploadInputs } from './productManagerUtil'
+import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, handleResponseMsg, isAdmin } from '../../utils/util'
+import { deleteImagesFromCloudinary, populateProduct, uploadImagesToCloudinary, validateUploadInputs } from '../../utils/productManagerUtil'
+import { handleUIError } from '../../middleware/error'
+import SignInCard from '../../components/SignIn/SignInCard'
+import { ERRCODE_408, OKCODE_200, SIGNING_MSG } from '../../utils/constants'
+import { isEmpty } from 'lodash'
 
 const ProductsManager = () => {
     const TAX = 0.02;
@@ -77,6 +81,9 @@ const ProductsManager = () => {
         return handledImgs;
     }
 
+    const handleImageClick = (img, index) =>{
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         isAdmin(auth, dispatch);
@@ -93,15 +100,13 @@ const ProductsManager = () => {
         const handledImages = await handleCloudinaryImages(images);
         const discount = calculateDiscountedPercentage(product.mrpPrice, product.totalPrice);
         let res;
-        if (onEdit) {
-            res = await putData(`product/${id}`, { ...product, discount, categories, images: handledImages }, auth.token)
-            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-        } else {
-            res = await postData('product', { ...product, discount, categories, images: handledImages }, auth.token)
-            if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-        }
-        return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+        if (onEdit) res = await putData(`product/${id}`, { ...product, discount, categories, images: handledImages }, auth.token)
+        else res = await postData('product', { ...product, discount, categories, images: handledImages }, auth.token)
+        handleResponseMsg(res, dispatch);
     }
+
+    //This line should be always below useEffect hooks
+    if (isEmpty(auth) || isEmpty(auth.token)) return <SignInCard loadingMsg={SIGNING_MSG} delay />;
 
     return (
         <div className="container-fluid products_manager">
@@ -208,8 +213,7 @@ const ProductsManager = () => {
                             images.map((img, index) => (
                                 <div key={'IMG-'+index} className="file_img my-1">
                                     <img src={img.url ? img.url : URL.createObjectURL(img)}
-                                        alt="" className="img-thumbnail rounded my-1" />
-
+                                        alt="" className="img-thumbnail rounded my-1" onClick={()=>{handleImageClick(img, index)}}/>
                                     <span onClick={() => handleImageDelete(index, images)}>X</span>
                                 </div>
                             ))

@@ -88,16 +88,15 @@ export const ProductSearch = () => {
 
     return (
         <>
-            <div className="container p-0">
-
+            <div className="pt-4">
                 <Filter isAdmin={isAdmin} categories={categories} selectedCategory={category} searchText={searchText} selectedSort={sort}
                     handleCategory={handleCategory} handleSearch={handleSearch} handleSort={handleSort} />
-                {isAdmin && <div className="">
+                {/* {isAdmin && <div className="">
                     <div className="row justify-content-center">
                         <DeleteAllProductsButton delProducts={delProducts} handleCheckALL={handleCheckALL} dispatch={dispatch} isCheck={isCheck} />
                     </div>
-                </div>
-                }
+                </div> }
+                */}
             </div>
             <div className="products">
                 {

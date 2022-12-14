@@ -1,6 +1,6 @@
-import { deleteData } from "../../utils/fetchData";
-import { imageUpload } from "../../utils/imageUpload";
-import { calcTaxAmount, calcTotalPrice } from "../../utils/util";
+import { deleteData } from "./fetchData";
+import { imageUpload } from "./imageUpload";
+import { calcTaxAmount, calcTotalPrice } from "./util";
 
 
 export const populateProduct = (name, value, TAX, product) =>{
