@@ -87,6 +87,10 @@ h1, h2, h3, h5 {
   color: var(--app-color);
 }
 
+h5{
+  font-weight: bold;
+}
+
 :root {
   --app-color: #144271;
 }
@@ -97,6 +101,10 @@ h1, h2, h3, h5 {
 
 .app-color {
   color: var(--app-color);
+}
+
+.btn-sm{
+  font-size: 0.725rem;
 }
 
 .btn-primary {

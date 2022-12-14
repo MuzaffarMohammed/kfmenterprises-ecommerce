@@ -57,7 +57,7 @@ export default function Orders() {
 
     return (
         <div className="justify-content-between">
-            <h2 className="container text-uppercase mt-3" >Orders</h2>
+            <h5 className="text-uppercase mt-3" >Orders</h5>
             <div className="my-3">
                 <div>
                     <div className="float-right">

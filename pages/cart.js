@@ -103,7 +103,7 @@ const Cart = () => {
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
-      <h2 className="container text-uppercase mt-3" >My Cart</h2>
+      <h5 className="text-uppercase mt-3" >My Cart</h5>
       <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
         <table className="table my-3">
           <tbody>

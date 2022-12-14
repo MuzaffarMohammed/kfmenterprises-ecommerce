@@ -51,7 +51,7 @@ function Notifications() {
 
     return (
         <div className="justify-content-between">
-            <h2 className="container text-uppercase mt-3" >Notifications</h2>
+            <h5 className="text-uppercase mt-3" >Notifications</h5>
             <div className="my-3">
                 {isAdmin &&
                     <div className='row  my-3 justify-content-center'>

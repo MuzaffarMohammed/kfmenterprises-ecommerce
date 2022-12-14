@@ -105,7 +105,7 @@ console.log('From Handle method...', saKpi)
     }
 
     return (
-        <div className="pl-3">
+        <div className="mx-3">
             <div className="row justify-content-center">
                 {
                     kpiData && kpiData.cards && kpiData.cards.map((kpi, i) => (
@@ -116,7 +116,7 @@ console.log('From Handle method...', saKpi)
                     ))
                 }
             </div>
-            <div className="mt-4 row">
+            <div className="mt-3 row">
                 {kpiData && kpiData.charts && kpiData.charts.map(kpi => (
                     <div key={kpi.id}>
                         {!kpi.singleAnalysis &&
@@ -131,7 +131,7 @@ console.log('From Handle method...', saKpi)
             </div>
             {
                 saKpi &&
-                <div className="container dashboard-analytics-charts">
+                <div className="container-fluid dashboard-analytics-charts">
                     <div className="pt-2 dateRange-filter">
                         <div>
                             <DateRangeSelector handleSelect={(range) => { handleDateRangeSelect(range) }} defaultRange={dateRange} />
