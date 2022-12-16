@@ -15,7 +15,8 @@ export default async (req, res) => {
         const result = jwt.verify(rf_token, process.env.NEXT_PUBLIC_REFRESH_TOKEN_SECRET);
         if (!result) return res.status(401).json({ err: ERROR_403 });
 
-        checkIsBlacklistedToken(result.refreshTokenId, res);
+        const isBlackListed = await checkIsBlacklistedToken(result.refreshTokenId, res);
+        if(isBlackListed) return res.status(401).json({ err: `You are not authorized to access the application right now, ${CONTACT_ADMIN_ERR_MSG}` })
 
         const user = await Users.findById(result.id);
         if (!user) return res.status(401).json({ err: 'User does not exist.' });
@@ -43,6 +44,6 @@ const checkIsBlacklistedToken = async (refreshTokenId, res) => {
     const token = await Tokens.findOne({ refreshTokenId, isBlackListed: true});
     if (token) {
         console.error('WARNING: Blacklisted user accessing the system, refreshTokenId: ', refreshTokenId);
-        return res.status(401).json({ err: `You are not authorized to access the application right now, ${CONTACT_ADMIN_ERR_MSG}` })
+        return true;
     }
 }

@@ -4,7 +4,6 @@ import { DataContext } from "../../store/GlobalState";
 import { DEFAULT_MAX_PRODUCTS_LIMIT } from "../../utils/constants";
 import { getData } from "../../utils/fetchData";
 import { isAdminRole, isLoading } from "../../utils/util";
-import DeleteAllProductsButton from "../AdminComponents/DeleteAllProductsButton";
 import Filter from "../Filter";
 import ProductItem from "./ProductItem";
 
@@ -56,12 +55,6 @@ export const ProductSearch = () => {
         setProducts([...products])
     }
 
-    const handleCheckALL = () => {
-        delProducts.forEach(product => product.checked = !isCheck)
-        setDelProducts([...delProducts])
-        setIsCheck(!isCheck)
-    }
-
     const handleCategory = (val) => {
         setCategory(val);
         limit.current = DEFAULT_MAX_PRODUCTS_LIMIT;
@@ -88,16 +81,15 @@ export const ProductSearch = () => {
 
     return (
         <>
-            <div className="container p-0">
-
+            <div className="pt-4">
                 <Filter isAdmin={isAdmin} categories={categories} selectedCategory={category} searchText={searchText} selectedSort={sort}
                     handleCategory={handleCategory} handleSearch={handleSearch} handleSort={handleSort} />
-                {isAdmin && <div className="">
+                {/* {isAdmin && <div className="">
                     <div className="row justify-content-center">
                         <DeleteAllProductsButton delProducts={delProducts} handleCheckALL={handleCheckALL} dispatch={dispatch} isCheck={isCheck} />
                     </div>
-                </div>
-                }
+                </div> }
+                */}
             </div>
             <div className="products">
                 {

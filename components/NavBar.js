@@ -34,8 +34,8 @@ function NavBar() {
                 <Link href="/users">
                     <a className="dropdown-item">Users</a>
                 </Link>
-                <Link href="/products">
-                    <a className="dropdown-item">Products
+                <Link href="/productList">
+                    <a className="dropdown-item">Product List
                     </a>
                 </Link>
                 <Link href="/create">

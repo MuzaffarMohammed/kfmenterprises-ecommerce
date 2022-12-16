@@ -63,7 +63,7 @@ const EditUser = () => {
             </div> */}
 
             <div className="col-md-4 mx-auto my-4">
-                <h2 className="text-uppercase text-secondary">Edit User</h2>
+                <h5 className="text-uppercase text-secondary">Edit User</h5>
 
                 <div className="form-group">
                     <label htmlFor="name" className="d-block">Name</label>

@@ -4,9 +4,9 @@ import { ProductList } from '../components/product/ProductList';
 const products = () => {
 
     return (
-        <div className="container justify-content-between">
+        <div className="container-fluid justify-content-between">
             <Head>
-                <title>KFM Cart - Products</title>
+                <title>KFM Cart - Product List</title>
             </Head>
             <ProductList />
         </div>
