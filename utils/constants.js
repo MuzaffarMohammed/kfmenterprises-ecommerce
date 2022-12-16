@@ -12,6 +12,7 @@ export const STATES_ARR = ['Telangana'];
 export const COUNTRIES_ARR = ['India'];
 export const TIME_SERIES_ARR = ['WEEK', 'MONTH', 'YEAR'];
 export const SIGN_IN = 'SIGN_IN';
+export const PRODUCT_ATTR = 'PRODUCT_ATTR';
 export const OKCODE_200 = 200; 
 // Error msgs
 export const ERROR_403 = 'Unauthorized Access!';

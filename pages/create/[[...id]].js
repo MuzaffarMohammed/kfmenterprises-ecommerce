@@ -9,9 +9,10 @@ import SignInCard from '../../components/SignIn/SignInCard'
 import { SIGNING_MSG } from '../../utils/constants'
 import { isEmpty } from 'lodash'
 import ProductForm from '../../components/ProductManager/ProductForm'
+import { openProductAtrributesPopup } from '../../components/ProductManager/ProductAtrributesPopup'
 
 const ProductsManager = () => {
-    const TAX = 0.02;
+    const TAX = process.env.NEXT_PUBLIC_RAZORPAY_TAX;
     const initialState = {
         title: '',
         mrpPrice: 0,
@@ -23,7 +24,8 @@ const ProductsManager = () => {
         content: '',
         number: 0,
         categories: 'all',
-        discount: 0
+        discount: 0,
+        attributes: []
     }
     const [product, setProduct] = useState(initialState)
     const [categories, setCategories] = useState('')
@@ -33,13 +35,13 @@ const ProductsManager = () => {
     const { categories: categoriesList, auth } = state
 
     const router = useRouter()
-    const { id } = router.query
+    const { id: productId } = router.query
     const [onEdit, setOnEdit] = useState(false)
 
     useEffect(() => {
-        if (id) {
+        if (productId) {
             setOnEdit(true)
-            getData(`product/${id}`).then(res => {
+            getData(`product/${productId}`).then(res => {
                 const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
                 setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) })
@@ -52,7 +54,7 @@ const ProductsManager = () => {
             setProduct({ ...initialState, tax: calcTax, totalPrice: calcTotalPrice(product.price, calcTax) })
             setImages([]);
         }
-    }, [id])
+    }, [productId])
 
     const handleChangeInput = async e => {
         const { name, value } = e.target;
@@ -61,9 +63,10 @@ const ProductsManager = () => {
     }
 
     const handleUploadInput = e => {
+        e.preventDefault()
         dispatch({ type: 'NOTIFY', payload: {} })
-        const res = validateUploadInputs([...e.target.files], images.length);
-        if (res.err) dispatch({ type: 'NOTIFY', payload: { error: err } })
+        const res = validateUploadInputs([...e.target.files], images.length, false);
+        if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         setImages([...images, ...res.images]);
     }
 
@@ -74,14 +77,20 @@ const ProductsManager = () => {
     }
 
     const handleCloudinaryImages = async (imgs) => {
-        deleteImagesFromCloudinary(delImages.current, auth);
+        deleteImagesFromCloudinary(delImages.current, auth, productId, false, product.attributes);
         delImages.current = [];
         const handledImgs = await uploadImagesToCloudinary(imgs);
         setImages(handledImgs);
         return handledImgs;
     }
 
-    const handleImageClick = (img, index) => {
+    const handleImageClick = (img) => {
+        if (!onEdit) return dispatch({ type: 'NOTIFY', payload: { error: 'Please create the product first to include its attributes!' } })
+        const callBack = (updatedAttrs) => product.attributes = updatedAttrs;
+        let attribute = !isEmpty(product.attributes) && product.attributes.filter(attr => attr.defaultImg && attr.defaultImg.public_id === img.public_id)[0];
+        attribute = attribute ? attribute : { ...product, images: [] };
+        delete attribute.attributes;
+        openProductAtrributesPopup({ productId, attribute, img, TAX }, product.attributes, callBack, dispatch);
     }
 
     const handleSubmit = async (e) => {
@@ -100,8 +109,10 @@ const ProductsManager = () => {
         const handledImages = await handleCloudinaryImages(images);
         const discount = calculateDiscountedPercentage(product.mrpPrice, product.totalPrice);
         let res;
-        if (onEdit) res = await putData(`product/${id}`, { ...product, discount, categories, images: handledImages }, auth.token)
-        else res = await postData('product', { ...product, discount, categories, images: handledImages }, auth.token)
+        const data = { ...product, discount, categories, images: handledImages };
+        if (onEdit) res = await putData(`product/${productId}`, data, auth.token)
+        else res = await postData('product', data, auth.token);
+        setOnEdit(true);
         handleResponseMsg(res, dispatch);
     }
 
@@ -120,15 +131,17 @@ const ProductsManager = () => {
                 handleUploadInput={handleUploadInput}
                 handleImageClick={handleImageClick}
                 handleImageDelete={handleImageDelete}
+                handleSubmit={handleSubmit}
                 categories={categories}
                 categoriesList={categoriesList}
                 onEdit={onEdit}
+                isAttributes={false}
             />
         </div>
     )
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { productId } }) {
 
     const res = await getData(`product?limit=99999999&category=all&sort=''`)
     // server side rendering

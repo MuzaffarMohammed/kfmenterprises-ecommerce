@@ -62,7 +62,7 @@ const Modal = () => {
 
     return (
         <div className="modal fade" id="confirmModal" tabIndex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
+            <div className="modal-dialog" style={{ maxWidth: modal.maxWidth ? modal.maxWidth : '500px' }} role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title text-capitalize" id="confirmModalLabel">

@@ -38,6 +38,9 @@ const productSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    attributes: {
+        type: Array
+    },
     categories: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'categories',
