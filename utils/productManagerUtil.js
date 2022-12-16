@@ -12,24 +12,22 @@ export const populateProduct = (name, value, TAX, product) => {
 }
 
 export const updateAttributes = (existingAttrs, newAttr, isDelete, del_publicIds) => {
-    let toUpdateAttr = [];
     if (!isEmpty(existingAttrs)) {
         // Getting toBeRemoveAttrIndex for update/ delete of attribute from the existing attributes of product by 'defaultImg.public_id'.
         if (isDelete) return deleteAttrs(del_publicIds, existingAttrs); // For removing existing attribute by public_ids
-        else return updateAttrs(newAttr, existingAttrs, toUpdateAttr); // For removing existing Attribute & updating with new one.
-    } else if (newAttr) toUpdateAttr = [newAttr];
-    return toUpdateAttr;
+        else return updateAttrs(newAttr, existingAttrs); // For removing existing Attribute & updating with new one.
+    }
+    return [newAttr];
 }
 
-const updateAttrs = (newAttr, existingAttrs, toUpdateAttr) => {
+const updateAttrs = (newAttr, existingAttrs) => {
     const toBeRemoveAttrIndex = existingAttrs.findIndex((obj) => {
         const publid_id = obj.defaultImg && obj.defaultImg.public_id;
         const new_public_id = newAttr && newAttr.defaultImg && newAttr.defaultImg.public_id;
         return publid_id === new_public_id; // For removing existing Attribute & updating with new one.
     });
     if (toBeRemoveAttrIndex > -1) existingAttrs.splice(toBeRemoveAttrIndex, 1);
-    toUpdateAttr = !newAttr ? existingAttrs : [...existingAttrs, newAttr];// Old Attrs + new Attr
-    return toUpdateAttr;
+    return !newAttr ? existingAttrs : [...existingAttrs, newAttr];// Old Attrs + new Attr
 }
 
 const deleteAttrs = (del_publicIds, existingAttrs) => {
