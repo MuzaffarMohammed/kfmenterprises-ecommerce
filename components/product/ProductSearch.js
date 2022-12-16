@@ -4,7 +4,6 @@ import { DataContext } from "../../store/GlobalState";
 import { DEFAULT_MAX_PRODUCTS_LIMIT } from "../../utils/constants";
 import { getData } from "../../utils/fetchData";
 import { isAdminRole, isLoading } from "../../utils/util";
-import DeleteAllProductsButton from "../AdminComponents/DeleteAllProductsButton";
 import Filter from "../Filter";
 import ProductItem from "./ProductItem";
 
@@ -54,12 +53,6 @@ export const ProductSearch = () => {
             if (product._id === id) product.checked = !product.checked
         })
         setProducts([...products])
-    }
-
-    const handleCheckALL = () => {
-        delProducts.forEach(product => product.checked = !isCheck)
-        setDelProducts([...delProducts])
-        setIsCheck(!isCheck)
     }
 
     const handleCategory = (val) => {

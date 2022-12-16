@@ -1,4 +1,4 @@
-import { ADMIN_ROLE, DATE_FORMAT, ERRCODE_408, ERROR_403, ORDER_DETAIL, PLEASE_LOG_IN, SIGNING_MSG, TOKEN_EXPIRED_ERROR, USER_ROLE } from "./constants";
+import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, USER_ROLE } from "./constants";
 import isEmpty from 'lodash/isEmpty';
 import add from 'date-fns/add'
 import { format } from 'date-fns'
@@ -17,7 +17,7 @@ export const isAdmin = (auth, dispatch) => {
         return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
 }
 
-export const handleResponseMsg = (res, dispatch) =>{
+export const handleResponseMsg = (res, dispatch) => {
     if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
     else if (res.msg) return dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
 }
@@ -92,11 +92,11 @@ export const isAdminRole = (role) => { return role === ADMIN_ROLE };
 export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
 export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE };
 
-export const getDuration = (currentTime, endTime) =>{
+export const getDuration = (currentTime, endTime) => {
     const duration = moment.duration(endTime.diff(currentTime));
     let seconds = duration.seconds().toString();
     let minutes = duration.minutes().toString();
-    if(seconds.length <= 1) seconds = '0'+seconds;
-    if(minutes.length <= 1) minutes = '0'+minutes;
+    if (seconds.length <= 1) seconds = '0' + seconds;
+    if (minutes.length <= 1) minutes = '0' + minutes;
     return minutes + ":" + seconds;
 }

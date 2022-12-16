@@ -1,8 +1,7 @@
 import connectDB from '../../../../utils/connectDB'
 import Products from '../../../../models/productModel'
 import auth from '../../../../middleware/auth'
-import { deleteData } from '../../../../utils/fetchData'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../../utils/constants'
+import { ERROR_403 } from '../../../../utils/constants'
 import { handleServerError } from '../../../../middleware/error'
 import { isEmpty } from 'lodash'
 
