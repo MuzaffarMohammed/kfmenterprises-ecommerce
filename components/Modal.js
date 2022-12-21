@@ -3,7 +3,7 @@ import { DataContext } from '../store/GlobalState'
 import { deleteItem } from '../store/Actions'
 import { deleteData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
-import { ADDRESS_EDIT, SIGN_IN } from '../utils/constants'
+import { ADDRESS_EDIT, PRODUCT_ATTR, SIGN_IN } from '../utils/constants'
 
 
 const Modal = () => {
@@ -38,8 +38,7 @@ const Modal = () => {
             deleteData(`product/${item.id}`, auth.token)
                 .then(res => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-                    dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
-                    return router.push('/')
+                    return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
                 })
         });
     }
@@ -76,7 +75,7 @@ const Modal = () => {
                         {modal.content}
                     </div>
                     {
-                        (modal.type !== SIGN_IN && modal.type !== ADDRESS_EDIT) && (
+                        (modal.type !== SIGN_IN && modal.type !== ADDRESS_EDIT && modal.type !== PRODUCT_ATTR) && (
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleSubmit}>Yes</button>
                                 <button type="button" className="btn btn-primary" data-dismiss="modal">Cancel</button>

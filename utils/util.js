@@ -17,11 +17,6 @@ export const isAdmin = (auth, dispatch) => {
         return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
 }
 
-export const handleResponseMsg = (res, dispatch) => {
-    if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
-    else if (res.msg) return dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
-}
-
 export const isLoggedIn = (auth) => {
     return (isEmpty(auth) || isEmpty(auth.token))
 }
@@ -99,4 +94,10 @@ export const getDuration = (currentTime, endTime) => {
     if (seconds.length <= 1) seconds = '0' + seconds;
     if (minutes.length <= 1) minutes = '0' + minutes;
     return minutes + ":" + seconds;
+}
+
+export const parseNumDecimalType = (val, type) => {
+    if (type !== 'number' || !val) return val;
+    if (val.indexOf('.') !== -1) return parseFloat(val);
+    else return parseInt(val);
 }

@@ -5,6 +5,7 @@
     cursor: pointer;
     margin-left: 8px;
 }
+
 @media (max-width: 768px) {
     .img-up .file_img {
         width: 22%;
@@ -21,6 +22,7 @@
 
 .img-up .file_img .img-del {
     position: absolute;
+    float: right;
     top: 8px;
     right: 4px;
     z-index: 4;
@@ -29,6 +31,14 @@
     padding: 3px 6px;
     border-radius: 50%;
     font-size: 8px;
+    font-weight: bolder;
+}
+
+.size-del-btn {
+    cursor: pointer;
+    color: rgb(242, 21, 58);
+    padding: 3px 6px;
+    font-size: 14px;
     font-weight: bolder;
 }
 
@@ -45,6 +55,23 @@
     font-size: 9px;
     font-weight: bolder;
     opacity: 0.8;
+}
+
+.file_img:hover .product-tooltip {
+    display: block;
+}
+
+.product-tooltip {
+    display: none;
+    background-color: white;
+    padding: 4px;
+    opacity: 0.8;
+    position: absolute;
+    z-index: 5;
+    bottom: 6px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: bold;
 }
 
 .img-up .file_img .img-edit:hover {

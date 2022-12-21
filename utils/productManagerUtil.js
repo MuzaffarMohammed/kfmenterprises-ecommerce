@@ -76,3 +76,10 @@ export const uploadImagesToCloudinary = async (imgs) => {
     return imgs;
 }
 
+export const validateSizes = (sizes) => {
+    if (!sizes) return;
+    return sizes.every(size =>
+        size.length !== 0 && size.breadth !== 0
+        && size.mrpPrice !== 0 && size.price !== 0
+        && size.totalPrice !== 0 && size.inStock !== 0);
+}
