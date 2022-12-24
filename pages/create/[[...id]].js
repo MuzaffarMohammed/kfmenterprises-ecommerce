@@ -3,13 +3,14 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import { DataContext } from '../../store/GlobalState'
 import { postData, getData, putData } from '../../utils/fetchData'
 import { useRouter } from 'next/router'
-import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, handleResponseMsg, isAdmin } from '../../utils/util'
+import { calcTaxAmount, calcTotalPrice, calculateDiscountedPercentage, handleResponseMsg, isAdmin, parseNumDecimalType } from '../../utils/util'
 import { deleteImagesFromCloudinary, populateProduct, uploadImagesToCloudinary, validateUploadInputs } from '../../utils/productManagerUtil'
 import SignInCard from '../../components/SignIn/SignInCard'
 import { SIGNING_MSG } from '../../utils/constants'
 import { isEmpty } from 'lodash'
 import ProductForm from '../../components/ProductManager/ProductForm'
 import { openProductAtrributesPopup } from '../../components/ProductManager/ProductAtrributesPopup'
+import { handleUIError } from '../../middleware/error'
 
 const ProductsManager = () => {
     const TAX = process.env.NEXT_PUBLIC_RAZORPAY_TAX;
@@ -58,8 +59,9 @@ const ProductsManager = () => {
 
     const handleChangeInput = async e => {
         const { name, value } = e.target;
-        if (name === 'category') setCategories(value);
-        else setProduct(populateProduct(name, value, TAX, product));
+        const parsedVal = parseNumDecimalType(value, e.target.type);
+        if (name === 'category') setCategories(parsedVal);
+        else setProduct(populateProduct(name, parsedVal, TAX, product));
     }
 
     const handleUploadInput = e => {
@@ -112,8 +114,12 @@ const ProductsManager = () => {
         const data = { ...product, discount, categories, images: handledImages };
         if (onEdit) res = await putData(`product/${productId}`, data, auth.token)
         else res = await postData('product', data, auth.token);
-        setOnEdit(true);
-        handleResponseMsg(res, dispatch);
+        if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
+        else if (res.msg) {
+            console.log('res.productId : ', res.productId)
+            dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+            if (res.productId) router.push('/create/' + res.productId);
+        }
     }
 
     //This line should be always below useEffect hooks

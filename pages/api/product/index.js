@@ -72,8 +72,8 @@ const createProduct = async (req, res) => {
         const newProduct = new Products({
             title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount
         })
-        await newProduct.save()
-        res.json({ msg: 'New product added successfully.' })
+        const productCreated = await newProduct.save()
+        res.json({ msg: 'New product added successfully.', productId: productCreated._id })
     } catch (err) {
         console.error('Error occurred while createProduct: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
