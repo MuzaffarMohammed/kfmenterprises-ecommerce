@@ -1,9 +1,9 @@
-import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, PLEASE_LOG_IN, SIGNING_MSG, TOKEN_EXPIRED_ERROR, USER_ROLE } from "./constants";
+import { ADMIN_ROLE, DATE_FORMAT, ERROR_403, ORDER_DETAIL, USER_ROLE } from "./constants";
 import isEmpty from 'lodash/isEmpty';
 import add from 'date-fns/add'
 import { format } from 'date-fns'
 import moment from "moment";
-import SignInCard from "../components/SignIn/SignInCard";
+import { handleUIError } from "../middleware/error";
 
 export const renameFile = (originalFile, newName) => {
     return new File([originalFile], newName, {
@@ -15,6 +15,11 @@ export const renameFile = (originalFile, newName) => {
 export const isAdmin = (auth, dispatch) => {
     if (auth && auth.user && auth.user.role !== 'admin')
         return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
+}
+
+export const handleResponseMsg = (res, dispatch) => {
+    if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
+    else if (res.msg) return dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
 }
 
 export const isLoggedIn = (auth) => {
@@ -78,17 +83,20 @@ export const calculateDiscountedPercentage = (actualAmount, totalAmount) => {
     return discountPercent.toFixed(2);
 }
 
+export const calcTaxAmount = (actPrice, TAX) => Math.abs(Number(actPrice) * TAX);
+export const calcTotalPrice = (actPrice, calctTaxAmount) => Number(actPrice) + Number(calctTaxAmount);
+
 export const notUserRole = (role) => { return role !== USER_ROLE };
 export const isUserRole = (role) => { return role === USER_ROLE };
 export const isAdminRole = (role) => { return role === ADMIN_ROLE };
 export const notAdminRole = (role) => { return role !== ADMIN_ROLE };
 export const notAdminNotUserRole = (role) => { return role !== ADMIN_ROLE && role !== USER_ROLE };
 
-export const getDuration = (currentTime, endTime) =>{
+export const getDuration = (currentTime, endTime) => {
     const duration = moment.duration(endTime.diff(currentTime));
     let seconds = duration.seconds().toString();
     let minutes = duration.minutes().toString();
-    if(seconds.length <= 1) seconds = '0'+seconds;
-    if(minutes.length <= 1) minutes = '0'+minutes;
+    if (seconds.length <= 1) seconds = '0' + seconds;
+    if (minutes.length <= 1) minutes = '0' + minutes;
     return minutes + ":" + seconds;
 }

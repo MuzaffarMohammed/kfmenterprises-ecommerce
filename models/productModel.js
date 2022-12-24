@@ -38,6 +38,9 @@ const productSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    attributes: {
+        type: Array
+    },
     categories: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'categories',
@@ -56,10 +59,6 @@ const productSchema = new mongoose.Schema({
         default: 0
     },
     discount: {
-        type: Number,
-        default: 0
-    },
-    number: {
         type: Number,
         default: 0
     }

@@ -21,7 +21,7 @@ export const BestSellingProducts = ({ bsProducts }) => {
                 {
                     bsProducts && bsProducts.length !== 0 ? bsProducts.map(product => (
                         <div key={product._id} className="productsCarousel">
-                            <ProductItem key={product._id} product={product} />
+                            <ProductItem key={product._id} product={product} viewOnly={true} />
                         </div>
                     )) : <h2>No Products</h2>
                 }

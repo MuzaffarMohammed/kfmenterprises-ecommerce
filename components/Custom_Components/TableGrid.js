@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPaginate, pageChange }) => {
 
     const [currentPage, setCurrentPage] = useState(1)
-    const pageLimit = 10
+    const pageLimit = 15
     const [paginatedRows, setPaginatedRows] = useState(rows)
 
     useEffect(() => {

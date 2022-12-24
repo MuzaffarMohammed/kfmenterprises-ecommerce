@@ -61,7 +61,7 @@ const createProduct = async (req, res) => {
         const result = await auth(req, res)
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
-        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, number, discount } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount } = req.body
 
         if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || categories === 'all' || images.length === 0)
             return res.status(400).json({ err: 'Please add all the fields.' })
@@ -70,12 +70,10 @@ const createProduct = async (req, res) => {
         if (product) return res.status(400).json({ err: 'Product Name already exist, please choose different name.' })
 
         const newProduct = new Products({
-            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, number, discount
+            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount
         })
         await newProduct.save()
-
         res.json({ msg: 'New product added successfully.' })
-
     } catch (err) {
         console.error('Error occurred while createProduct: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })

@@ -1,5 +1,3 @@
-import { calculateDiscountedPercentage } from "../../utils/util";
-
 export const ProductPrice = ({ product, isAdmin, isProductDetailPage }) => {
 
     return (
@@ -17,7 +15,7 @@ export const ProductPrice = ({ product, isAdmin, isProductDetailPage }) => {
                             <span className="text-muted" style={{ marginLeft: '5px', textDecoration: 'line-through', fontSize: '12px' }}>
                                 {product.mrpPrice}
                             </span>
-                            <span className='offer-text'>{calculateDiscountedPercentage(product.mrpPrice, product.totalPrice)}% Off</span>
+                            <span className='offer-text'>{product.discount}% Off</span>
                         </>
                     }
                 </h6>

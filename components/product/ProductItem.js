@@ -4,7 +4,7 @@ import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
 import { ProductPrice } from './ProductPrice'
 
-const ProductItem = ({ product, handleCheck }) => {
+const ProductItem = ({ product, handleCheck, viewOnly }) => {
     const { state, dispatch } = useContext(DataContext)
     const { cart, auth } = state
     const isAdmin = auth && auth.user && auth.user.role === 'admin'
@@ -64,7 +64,7 @@ const ProductItem = ({ product, handleCheck }) => {
     return (
         <div className="card">
             {
-                auth.user && auth.user.role === 'admin' &&
+                (auth.user && auth.user.role === 'admin' && !viewOnly) &&
                 <input type="checkbox" checked={product.checked}
                     className="position-absolute"
                     style={{ height: '20px', width: '20px' }}

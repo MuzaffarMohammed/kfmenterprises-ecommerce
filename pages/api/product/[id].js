@@ -2,7 +2,8 @@ import connectDB from '../../../utils/connectDB'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { deleteData } from '../../../utils/fetchData'
-import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
+import { ERROR_403 } from '../../../utils/constants'
+import { handleServerError } from '../../../middleware/error'
 
 connectDB()
 
@@ -29,18 +30,12 @@ export default async (req, res) => {
 const getProduct = async (req, res) => {
     try {
         const { id, count } = req.query;
-
         const product = await Products.findById(id)
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
-
         if (count) return res.json({ count: product.inStock })
-
         res.json({ product })
+    } catch (err) { handleServerError('getProduct', err, 500, res) }
 
-    } catch (err) {
-        console.error('Error occurred while getProduct: ' + err);
-        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
-    }
 }
 
 const updateProduct = async (req, res) => {
@@ -62,29 +57,18 @@ const updateProduct = async (req, res) => {
             })
             res.json({ msg: 'Product updated successfully!' })
         }
-    } catch (err) {
-        console.error('Error occurred while updateProduct: ' + err);
-        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
-    }
+    } catch (err) { handleServerError('updateProduct', err, 500, res) }
 }
 
 const deleteProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
-
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
-
         const { id } = req.query;
-
         deleteImages(id, req.headers.authorization, res);
-
         await Products.findByIdAndDelete(id)
         res.json({ msg: 'Product deleted successfully.' })
-
-    } catch (err) {
-        console.error('Error occurred while deleteProduct: ' + err);
-        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
-    }
+    } catch (err) { handleServerError('deleteProduct', err, 500, res) }
 }
 
 const deleteImages = async (id, token, res) => {
@@ -92,10 +76,6 @@ const deleteImages = async (id, token, res) => {
     try {
         const product = await Products.findById(id);
         const publicIds = product.images.map(image => image.public_id);
-        console.log('Public Ids : ', publicIds);
         deleteData(`uploads/delete`, token, { publicIds });
-    } catch (err) {
-        console.error('Error occurred while deleteImages: ' + err);
-        return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
-    }
+    } catch (err) { handleServerError('deleteImages', err, 500, res) }
 }
