@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { populateProduct } from "../../utils/productManagerUtil";
 import { parseNumDecimalType } from "../../utils/util";
 import PriceQuantiity from "./PriceQuantity";
@@ -18,6 +18,7 @@ const LengthXBreadth = ({ dataArr, handleSizes }) => {
     }
 
     const [sizes, setSizes] = useState([inititalSize]);
+    let isDisplayProductChanged = useRef(false);
 
     useEffect(() => {
         if (!isEmpty(dataArr)) {
@@ -44,6 +45,15 @@ const LengthXBreadth = ({ dataArr, handleSizes }) => {
         setSizes(newArr);
     }
 
+    const handleDisplayProduct = e => {
+        const index = e.target.value;
+        sizes.forEach(size => delete size.isDisplay);
+        const newArr = [...sizes]
+        newArr[index] = { ...newArr[index], isDisplay: true };
+        setSizes(newArr);
+        isDisplayProductChanged.current = true;
+    }
+
     return (
         <>
             {sizes && sizes.map((size, index) => (
@@ -64,14 +74,19 @@ const LengthXBreadth = ({ dataArr, handleSizes }) => {
                             maxLength='5'
                         />
                     </div>
-                    <div className="col-5 col-lg-7 size-del-btn">
-                        <div className="float-right" onClick={() => { deleteSize(index) }}>x</div>
+
+                    <div className="col-6 col-lg-8">
+                        <div className="float-right size-del-btn" onClick={() => { deleteSize(index) }}>x</div>
                     </div>
                     <PriceQuantiity product={size} handleChangeInput={(e) => { handleChangeInput(e, index) }} />
+                    <div className="col-6 col-lg-6 pt-2 display-product">
+                        <input type="radio" name="display-product" value={index} defaultChecked={size.isDisplay} onClick={handleDisplayProduct} />
+                        <label className="pl-1 my-0" htmlFor="display-product">Display Product</label>
+                    </div>
                 </div>
             ))}
             <button className="mt-2 btn-primary" onClick={handleAddSize}>+ More Size</button>
-            <button hidden id='link-sizes' className="mt-2 btn-primary" onClick={() => { handleSizes(sizes) }}>Link Sizes</button>
+            <button hidden id='link-sizes' className="mt-2 btn-primary" onClick={() => { handleSizes(sizes, isDisplayProductChanged.current) }}>Link Sizes</button>
         </>
     );
 }
