@@ -11,27 +11,38 @@ export const populateProduct = (name, value, TAX, product) => {
     return { ...product, [name]: value };
 }
 
-export const updateAttributes = (existingAttrs, newAttr, isDelete, del_publicIds) => {
+export const updateAttributes = (existingAttrs, newAttr, isDelete, del_publicIds, isDisplayProductChanged) => {
     if (!isEmpty(existingAttrs)) {
         // Getting toBeRemoveAttrIndex for update/ delete of attribute from the existing attributes of product by 'defaultImg.public_id'.
         if (isDelete) return deleteAttrs(del_publicIds, existingAttrs); // For removing existing attribute by public_ids
-        else return updateAttrs(newAttr, existingAttrs); // For removing existing Attribute & updating with new one.
+        else return updateAttrs(newAttr, existingAttrs, isDisplayProductChanged); // For removing existing Attribute & updating with new one.
     }
     return [newAttr];
 }
 
-const updateAttrs = (newAttr, existingAttrs) => {
+const updateAttrs = (newAttr, existingAttrs, isDisplayProductChanged) => {
     const toBeRemoveAttrIndex = existingAttrs.findIndex((obj) => {
         const publid_id = obj.defaultImg && obj.defaultImg.public_id;
         const new_public_id = newAttr && newAttr.defaultImg && newAttr.defaultImg.public_id;
         return publid_id === new_public_id; // For removing existing Attribute & updating with new one.
     });
     if (toBeRemoveAttrIndex > -1) existingAttrs.splice(toBeRemoveAttrIndex, 1);
+    existingAttrs = removeDisplayProductField(existingAttrs, isDisplayProductChanged);
+    debugger;
     return !newAttr ? existingAttrs : [...existingAttrs, newAttr];// Old Attrs + new Attr
 }
 
+const removeDisplayProductField = (existingAttrs, isDisplayProductChanged) => {
+    if (isDisplayProductChanged) {
+        existingAttrs.forEach(attr => {
+            attr.sizes && attr.sizes.forEach(size => { if (size.isDisplay) delete size.isDisplay })
+        })
+    }
+    return existingAttrs;
+}
+
 const deleteAttrs = (del_publicIds, existingAttrs) => {
-    del_publicIds.forEach(del_public_id => {
+    del_publicIds && del_publicIds.forEach(del_public_id => {
         const toBeRemoveAttrIndex = existingAttrs.findIndex(obj => obj.defaultImg && obj.defaultImg.public_id === del_public_id);
         if (toBeRemoveAttrIndex > -1) existingAttrs.splice(toBeRemoveAttrIndex, 1);
     });

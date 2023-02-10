@@ -71,7 +71,7 @@ const ProductItem = ({ product, handleCheck, viewOnly }) => {
                     onChange={() => handleCheck(product._id)} />
             }
             <Link href={`/product/${product._id}`}>
-                <img className="card-img-top" src={product.images[0].url} alt={product.title} />
+                <img className="card-img-top" src={product.url} alt={product.title} />
             </Link>
             <div className="card-body">
                 <ProductPrice product={product} isAdmin={isAdmin} />

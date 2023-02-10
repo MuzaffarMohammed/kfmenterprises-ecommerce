@@ -34,12 +34,20 @@
     font-weight: bolder;
 }
 
-.size-del-btn {
+.size-del-btn{
+    padding: 10px;
     cursor: pointer;
-    color: rgb(242, 21, 58);
-    padding: 3px 6px;
-    font-size: 14px;
+    background: rgb(242, 21, 58);
+    color: white;
+    padding: 3px 7px;
+    border-radius: 50%;
+    font-size: 9px;
     font-weight: bolder;
+}
+
+.display-product{
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .img-up .file_img .img-edit {

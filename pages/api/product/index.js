@@ -3,6 +3,7 @@ import Categories from '../../../models/categoryModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
+import { calculateDiscountedPercentage } from '../../../utils/util'
 
 connectDB()
 
@@ -48,11 +49,43 @@ const getProducts = async (req, res) => {
         res.json({
             status: 'success',
             count: products.length,
-            products
+            products: displayProducts(products)
         })
     } catch (err) {
         console.error('Error occurred while getProducts: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
+    }
+}
+
+const displayProducts = products => {
+
+    let displayProducts = [];
+    let disProduct = {};
+    products.forEach(product => {
+        disProduct = { _id: product._id, checked: product.checked }
+        product.attributes && product.attributes.forEach(attr => {
+            disProduct = { ...disProduct, url: attr.defaultImg.url, title:attr.title }
+            let displayProductFound = false;
+            attr.sizes && attr.sizes.forEach(size => {
+                if (size.isDisplay) {
+                    disProduct = populateProductPrices(disProduct, size);
+                    displayProductFound = true;
+                }
+            });
+            if (!displayProductFound) disProduct = populateProductPrices(disProduct, attr.sizes[0]);
+        });
+        displayProducts.push(disProduct);
+    });
+    return displayProducts;
+}
+
+const populateProductPrices = (disProduct, size) => {
+    return {
+        ...disProduct,
+        totalPrice: size.totalPrice,
+        mrpPrice: size.mrpPrice,
+        inStock: size.inStock,
+        discount: calculateDiscountedPercentage(size.mrpPrice, size.totalPrice)
     }
 }
 

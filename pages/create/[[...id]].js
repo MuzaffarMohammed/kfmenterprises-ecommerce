@@ -45,8 +45,10 @@ const ProductsManager = () => {
             getData(`product/${productId}`).then(res => {
                 const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
+                let imgs = [];
+                res.product.attributes && res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) imgs.push(attr.defaultImg) })
                 setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) })
-                setImages(res.product.images);
+                setImages(imgs);
             })
         } else {
             setOnEdit(false)
@@ -105,13 +107,13 @@ const ProductsManager = () => {
         if (!product.description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
         if (!product.content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
         if (categories === '' || categories === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
-        if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
+        if (!product.attributes || product.attributes.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const handledImages = await handleCloudinaryImages(images);
         const discount = calculateDiscountedPercentage(product.mrpPrice, product.totalPrice);
         let res;
-        const data = { ...product, discount, categories, images: handledImages };
+        const data = { ...product, discount, categories };
         if (onEdit) res = await putData(`product/${productId}`, data, auth.token)
         else res = await postData('product', data, auth.token);
         if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
@@ -145,15 +147,6 @@ const ProductsManager = () => {
             />
         </div>
     )
-}
-
-export async function getServerSideProps({ params: { productId } }) {
-
-    const res = await getData(`product?limit=99999999&category=all&sort=''`)
-    // server side rendering
-    return {
-        props: { totalProducts: res && res.count + 1 }, // will be passed to the page component as props
-    }
 }
 
 export default ProductsManager

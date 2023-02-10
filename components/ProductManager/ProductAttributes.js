@@ -31,6 +31,7 @@ const ProductAtrributes = ({ attrData, existingAttrs, callBack }) => {
     const [isLoading, setIsLoading] = useState(false)
     let sizes = useRef([]);
     let selectedSizeType = useRef();
+    let isDisplayProductChanged = useRef(false);
 
     useEffect(() => {
         if (!isEmpty(attrData.attribute)) {
@@ -68,7 +69,8 @@ const ProductAtrributes = ({ attrData, existingAttrs, callBack }) => {
         return handledImgs;
     }
 
-    const handleSizes = (sizeArr) => {
+    const handleSizes = (sizeArr, isProdDisplayChanged) => {
+        isDisplayProductChanged.current = isProdDisplayChanged;
         if (sizeArr) {
             sizes.current = sizeArr;
             selectedSizeType.current = sizeArr[0].type;
@@ -96,8 +98,7 @@ const ProductAtrributes = ({ attrData, existingAttrs, callBack }) => {
         const handledImages = await handleCloudinaryImages(images);
         const discount = calculateDiscountedPercentage(attribute.mrpPrice, attribute.totalPrice);
         const newAttr = { ...attribute, selectedSizeType: selectedSizeType.current, sizes: sizes.current, discount, images: handledImages };
-        console.log('newAttr : ', newAttr)
-        const updatedAttrs = updateAttributes(existingAttrs, newAttr, false);
+        const updatedAttrs = updateAttributes(existingAttrs, newAttr, false, [], isDisplayProductChanged.current);
         callBack(updatedAttrs);
         const res = await putData(`product/attributes/${productId}`, { attributes: updatedAttrs }, auth.token);
         setIsLoading(false);
