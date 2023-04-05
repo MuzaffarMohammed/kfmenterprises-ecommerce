@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const CategoriesSchema = new mongoose.Schema({
-    msg: {
+    name: {
         type: String,
         required: true,
         trim: true

@@ -76,19 +76,21 @@ const OrderDetail = () => {
                                 Time remain <span style={{ color: 'red' }}>{timer}</span> to place your order. It will be auto-cancelled after the time lapsed.
                             </div>
                         }
-                        <div className="row justify-content-center">
-                            <div className='col-xl-7 order-Info-card shadow-card'>
+                        <div className="row col-12 justify-content-center">
+                            {orderDetail.paid ? <div className='col-xl-7 order-Info-card shadow-card'>
                                 <OrderInfo order={orderDetail} auth={auth} state={state} dispatch={dispatch} />
-                            </div>
+                            </div> : <div className='col-xl-7 shipping-card shadow-card'>
+                                <Payment order={orderDetail} auth={auth} dispatch={dispatch} />
+                            </div>}
                             <div className="col-xl-4 ml-xl-4 shipping-card shadow-card">
                                 <ShippingDetails order={orderDetail} />
                             </div>
                             <div className="col-xl-7 items-card shadow-card">
                                 <OrderItems order={orderDetail} auth={auth} />
                             </div>
-                            <div className='col-xl-4 ml-xl-4 payment-card shadow-card'>
+                           {orderDetail.paid ? <div className='col-xl-4 ml-xl-4 payment-card shadow-card'>
                                 <Payment order={orderDetail} auth={auth} dispatch={dispatch} />
-                            </div>
+                            </div> :" "} 
                         </div>
                     </div>
                 </>)

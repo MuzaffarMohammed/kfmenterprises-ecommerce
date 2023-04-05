@@ -6,7 +6,7 @@ import { razorPayOptions } from '../../utils/payUtil.js'
 import { formatDateTime } from '../../utils/util.js'
 
 const Payment = (props) => {
-
+    const [product] = useState(props.product)
     const [payBtnText, setPayBtnText] = useState('Click to finish');
     const [payType, setPayType] = useState('');
     const router = useRouter()
@@ -173,6 +173,10 @@ const Payment = (props) => {
             <div className="row mt-2 justify-content-between">
                 <label>Delivery Chargers</label>
                 <span style={{ color: 'green' }}>Free </span>
+            </div>
+            <div className="row mt-2 justify-content-between">
+                <label>MRP</label>
+                <span style={{ color: '#000' }}>₹{props.product}.00 </span>
             </div>
             <div className="row mt-1 justify-content-between">
                 <label>Final Amount</label>

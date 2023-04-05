@@ -5,6 +5,7 @@ import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
 
 const DetailProduct = (props) => {
+    
     const [product] = useState(props.product)
     const [tab, setTab] = useState(0)
 
@@ -42,7 +43,8 @@ const DetailProduct = (props) => {
             </div>
             <div className="col-xl-5 col-xs-12 mt-4 mx-3">
                 <h2 className="text-uppercase">{product.title}</h2>
-                <h5 className="text-danger">₹{product.totalPrice}</h5>
+                <h6 style={{ textDecoration: 'line-through', color: 'grey', fontSize: '12px', fontWeight:900 }}><label style={{marginRight: '5px', color: '#144271', fontSize: '12px', fontWeight:700 }}>MRP: </label> ₹{product.mrpPrice.toFixed(2)}</h6>
+                <h5 style={{color:'#000'}}><label style={{marginRight: '5px', color: '#144271', fontSize: '1.25rem', fontWeight:700 }}>Our Price: </label>₹{product.totalPrice}</h5>
                 <div className="row mx-0 d-flex justify-content-between">
                     {
                         product.inStock > 0
