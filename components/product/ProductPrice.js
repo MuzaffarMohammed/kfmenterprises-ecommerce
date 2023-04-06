@@ -1,10 +1,19 @@
-export const ProductPrice = ({ product, isAdmin, isProductDetailPage }) => {
+import { useEffect, useState } from "react";
+
+export const ProductPrice = ({ product, isAdmin, isProductDetailPage, productTitle, prodPriceData }) => {
+
+    const[mrpPrice, setMrpPrice] = useState();
+
+    useEffect(() => {
+        setMrpPrice(product.mrpPrice);
+        console.log(prodPriceData)
+    },[]);
 
     return (
         <>
             {!isProductDetailPage &&
-                <h6 className="card-title text-capitalize" title={product.title} style={{ fontSize: isProductDetailPage ? "24px" : "" }}>
-                    {product.title}
+                <h6 className="card-title text-capitalize" title={productTitle} style={{ fontSize: isProductDetailPage ? "24px" : "" }}>
+                    {productTitle}
                 </h6>
             }
             <div className={!isProductDetailPage ? "row justify-content-between mx-0" : "row mx-0"}>
@@ -13,7 +22,7 @@ export const ProductPrice = ({ product, isAdmin, isProductDetailPage }) => {
                     {product.discount !== 0 &&
                         <>
                             <span className="text-muted" style={{ marginLeft: '5px', textDecoration: 'line-through', fontSize: '12px' }}>
-                                {product.mrpPrice}
+                                {mrpPrice}
                             </span>
                             <span className='offer-text'>{product.discount}% Off</span>
                         </>
