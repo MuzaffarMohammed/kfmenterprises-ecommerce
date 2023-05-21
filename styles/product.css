@@ -1,166 +1,174 @@
 .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    justify-content: center;
-    margin: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  justify-content: center;
+  margin: 10px 0;
 }
 
 .products .card {
-    padding: 18px;
-    margin: 10px auto;
-    border: none;
-    box-shadow: 3px 3px 8px 1px rgb(165 169 179);
-    width: 18rem;
-    border-radius: 1.25rem;
+  padding: 18px;
+  margin: 10px auto;
+  border: none;
+  box-shadow: 3px 3px 8px 1px rgb(165 169 179);
+  width: 18rem;
+  border-radius: 1.25rem;
 }
 
 .products .card-img-top {
-    height: 250px;
-    width: 100%;
+  height: 250px;
+  width: 100%;
 }
 
 .products .card-img-top:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .products .card-body {
-    background-color: #009cef1a;
-    border-radius: 0px 0px 10px 10px;
+  background-color: #009cef1a;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .products .card-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .products .card-text {
-    height: 70px;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+  height: 70px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .products .stock {
-    font-size: 8px;
-    font-weight: bold;
+  font-size: 8px;
+  font-weight: bold;
 }
 
 .offer-text {
-    margin-left: 5px;
-    font-size: 10px;
-    color: white;
-    background: teal;
-    padding: 4px;
-    height: 10px;
-    border-radius: 3px;
+  margin-left: 5px;
+  font-size: 10px;
+  color: white;
+  background: teal;
+  padding: 4px;
+  height: 10px;
+  border-radius: 3px;
 }
 
 @media (max-width: 768px) {
-    .products .card {
-        width: 85%;
-    }
+  .products .card {
+    width: 85%;
+  }
 }
 
 /* --------- Product Carousel ----------- */
 
 .productsCarousel {
-    width: 71%;
+  width: 71%;
 }
 
 .productsCarousel .card-img-top {
-    height: 186px;
-    width: 100%;
+  height: 186px;
+  width: 100%;
 }
 
 .productsCarousel .card-img-top:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .productsCarousel .card-body {
-    display: none;
+  display: none;
 }
 
 .productsCarousel .card {
-    height: 188px;
-    width: 65%;
-    display: block;
-    margin: auto;
-    box-shadow: 5px 1px 10px 1px rgb(197 197 197);
+  height: 188px;
+  width: 65%;
+  display: block;
+  margin: auto;
+  box-shadow: 5px 1px 10px 1px rgb(197 197 197);
 }
 
-.product-search{
-    width: 90%;
+.product-search {
+  width: 90%;
 }
 
 @media (max-width: 767px) {
-    .productsCarousel .card-img-top {
-        height: 100px;
-    }
-    .productsCarousel .card {
-        height: 100px;
-        width: 100%;
-    }
+  .productsCarousel .card-img-top {
+    height: 100px;
+  }
+  .productsCarousel .card {
+    height: 100px;
+    width: 100%;
+  }
 
-    .product-search{
-        width: 90%;
-    }
+  .product-search {
+    width: 90%;
+  }
 }
 
-@media (max-width:800px) and (min-width:768px) {
-    .productsCarousel .card {
-        height: 152px;
-        width: 80%;
-    }
-    .productsCarousel .card-img-top {
-        height: 150px;
-    }
+@media (max-width: 800px) and (min-width: 768px) {
+  .productsCarousel .card {
+    height: 152px;
+    width: 80%;
+  }
+  .productsCarousel .card-img-top {
+    height: 150px;
+  }
 }
 
-@media (max-width:1025px) and (min-width:900px) {
-    .productsCarousel .card {
-        width: 75%;
-    }
+@media (max-width: 1025px) and (min-width: 900px) {
+  .productsCarousel .card {
+    width: 75%;
+  }
 }
 
 /* --------- Detail Product ----------- */
 
 .detail_page .img-thumbnail.active {
-    border-color: orangered;
-    padding: 2px;
+  border-color: #144271;
+  padding: 2px;
 }
 
 .detail_page .prodDetailImg {
-    height: 450px;
+  height: 450px;
 }
 
 .detail_page .prodDetialmultiImgs {
-    height: 95px;
+  height: 95px;
 }
 
 @media (max-width: 500px) {
-    .detail_page .prodDetailImg {
-        height: 300px;
-    }
-    .detail_page .prodDetialmultiImgs {
-        height: 80px;
-    }
+  .detail_page .prodDetailImg {
+    height: 300px;
+  }
+  .detail_page .prodDetialmultiImgs {
+    height: 80px;
+  }
 }
 
 @media only screen and (max-width: 900px) and (min-width: 768px) {
-    .detail_page .prodDetailImg {
-        height: 500px;
-    }
-    .detail_page .prodDetialmultiImgs {
-        height: 130px;
-    }
+  .detail_page .prodDetailImg {
+    height: 500px;
+  }
+  .detail_page .prodDetialmultiImgs {
+    height: 130px;
+  }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 900px) {
-    .detail_page .prodDetailImg {
-        height: 600px;
-    }
-    .detail_page .prodDetialmultiImgs {
-        height: 160px;
-    }
+  .detail_page .prodDetailImg {
+    height: 600px;
+  }
+  .detail_page .prodDetialmultiImgs {
+    height: 160px;
+  }
+}
+
+.productSizeSelected {
+  color: red;
+  margin: 5px;
+  padding:5px;
+  border: 2px solid red;
+  cursor: pointer;
 }

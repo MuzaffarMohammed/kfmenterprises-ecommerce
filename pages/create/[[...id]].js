@@ -107,7 +107,7 @@ const ProductsManager = () => {
         if (!product.description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
         if (!product.content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
         if (categories === '' || categories === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
-        if (!product.attributes || product.attributes.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
+       // if (!product.attributes || product.attributes.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const handledImages = await handleCloudinaryImages(images);
