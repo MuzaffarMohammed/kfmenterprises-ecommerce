@@ -26,7 +26,8 @@ const ProductsManager = () => {
         number: 0,
         categories: 'all',
         discount: 0,
-        attributes: []
+        attributes: [],
+        attributesRequired: false
     }
     const [product, setProduct] = useState(initialState)
     const [categories, setCategories] = useState('')
@@ -34,21 +35,23 @@ const ProductsManager = () => {
     let delImages = useRef([])
     const { state, dispatch } = useContext(DataContext)
     const { categories: categoriesList, auth } = state
-
+    const [attributesRequired, setAttributesRequired] = useState(false);
     const router = useRouter()
     const { id: productId } = router.query
     const [onEdit, setOnEdit] = useState(false)
 
     useEffect(() => {
+        debugger;
         if (productId) {
             setOnEdit(true)
             getData(`product/${productId}`).then(res => {
                 const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
-                let imgs = [];
                 res.product.attributes && res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) imgs.push(attr.defaultImg) })
                 setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) })
-                setImages(imgs);
+                setImages(res.product && res.product.images ? res.product.images: []);
+                console.log('res.product.attributesRequired :',(res.product && res.product.attributesRequired))
+                setAttributesRequired(res.product && res.product.attributesRequired);
             })
         } else {
             setOnEdit(false)
@@ -97,6 +100,12 @@ const ProductsManager = () => {
         openProductAtrributesPopup({ productId, attribute, img, TAX }, product.attributes, callBack, dispatch);
     }
 
+    const handleAttributesRequired = e =>{
+       //e.preventDefault();
+        console.log('e.checked : ',e.target.checked);
+        setAttributesRequired(e.target.checked);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         isAdmin(auth, dispatch);
@@ -107,15 +116,15 @@ const ProductsManager = () => {
         if (!product.description) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product description.' } })
         if (!product.content) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product content.' } })
         if (categories === '' || categories === 'all') return dispatch({ type: 'NOTIFY', payload: { error: 'Please add a product category.' } })
-        if (!product.attributes || product.attributes.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
+        if (images.length === 0) return dispatch({ type: 'NOTIFY', payload: { error: 'Please add product image(s).' } })
 
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const handledImages = await handleCloudinaryImages(images);
         const discount = calculateDiscountedPercentage(product.mrpPrice, product.totalPrice);
         let res;
-        const data = { ...product, discount, categories };
+        const data = { ...product, discount, categories, images: handledImages, attributesRequired};
         if (onEdit) res = await putData(`product/${productId}`, data, auth.token)
-        else res = await postData('product', data, auth.token);
+        else res = await postData('product?type=CP', data, auth.token);
         if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
         else if (res.msg) {
             console.log('res.productId : ', res.productId)
@@ -139,11 +148,13 @@ const ProductsManager = () => {
                 handleUploadInput={handleUploadInput}
                 handleImageClick={handleImageClick}
                 handleImageDelete={handleImageDelete}
+                handleAttributesRequired={handleAttributesRequired}
                 handleSubmit={handleSubmit}
                 categories={categories}
                 categoriesList={categoriesList}
                 onEdit={onEdit}
                 isAttributes={false}
+                attributesRequired={attributesRequired}
             />
         </div>
     )

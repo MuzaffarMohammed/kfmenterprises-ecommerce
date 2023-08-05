@@ -1,4 +1,5 @@
 import ClothSizes from "./ClothSizes";
+import CustomSize from "./CustomSize";
 import LengthXBreadth from "./LengthXBreadth";
 
 export const sizeTypeList = [
@@ -18,6 +19,7 @@ export const renderSizes = (sizeType, data, handleSizes) => {
         case 'lxb':
             return <LengthXBreadth sizesType={sizesType} dataArr={dataArr} handleSizes={handleSizes} />;
         case 'custom':
+            return <CustomSize sizesType={sizesType} dataArr={dataArr} handleSizes={handleSizes} />;
         default:
             return;
     }

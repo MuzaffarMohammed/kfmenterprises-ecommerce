@@ -38,3 +38,6 @@ yarn.lock
 package-lock.json
 .env.local
 public/assets/images/product
+
+# Local Netlify folder
+.netlify
