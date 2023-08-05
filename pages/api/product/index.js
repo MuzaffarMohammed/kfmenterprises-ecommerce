@@ -20,7 +20,9 @@ export default async (req, res) => {
             } else await getProducts(req, res)
             break;
         case "POST":
-            await createProduct(req, res)
+            if (req.query.type === 'CP') {
+                await createProduct(req, res)
+            }
             break;
     }
 }
@@ -64,16 +66,19 @@ const displayProducts = products => {
     products.forEach(product => {
         disProduct = { _id: product._id, checked: product.checked }
         product.attributes && product.attributes.forEach(attr => {
-            disProduct = { ...disProduct, url: attr.defaultImg.url, title:attr.title }
+            disProduct = { ...disProduct, url: attr.defaultImg.url, title: attr.title }
             let displayProductFound = false;
             attr.sizes && attr.sizes.forEach(size => {
                 if (size.isDisplay) {
                     disProduct = populateProductPrices(disProduct, size);
+                    console.log('disProduct 1: ',disProduct)
                     displayProductFound = true;
                 }
             });
             if (!displayProductFound) disProduct = populateProductPrices(disProduct, attr.sizes[0]);
         });
+        console.log('disProduct 2: ',disProduct)
+
         displayProducts.push(disProduct);
     });
     return displayProducts;

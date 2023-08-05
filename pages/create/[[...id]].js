@@ -115,7 +115,7 @@ const ProductsManager = () => {
         let res;
         const data = { ...product, discount, categories };
         if (onEdit) res = await putData(`product/${productId}`, data, auth.token)
-        else res = await postData('product', data, auth.token);
+        else res = await postData('product?type=CP', data, auth.token);
         if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
         else if (res.msg) {
             console.log('res.productId : ', res.productId)
