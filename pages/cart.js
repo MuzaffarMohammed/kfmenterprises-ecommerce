@@ -43,26 +43,19 @@ const Cart = () => {
       const res = cart.reduce((prev, item) => {
         return prev + (item.totalPrice * item.quantity)
       }, 0)
-      setTotal(res)
+      setTotal(Number(res).toFixed(2))
     }
     getTotal()
   }, [cart])
 
   useEffect(() => {
-    const cartLocal = JSON.parse(localStorage.getItem('__next__cart01'))
-    if (cartLocal && cartLocal.length > 0) {
+    if (cart && cart.length > 0) {
       let newArr = []
       const updateCart = async () => {
-        for (const item of cartLocal) {
-          const res = await getData(`product/${item._id}`)
-          if (!res.err) {
-            const { _id, title, images, totalPrice, inStock, sold } = res.product
-            if (inStock > 0) {
-              newArr.push({
-                _id, title, images, totalPrice, inStock, sold,
-                quantity: item.quantity > inStock ? inStock : item.quantity
-              })
-            }
+        for (const item of cart) {
+          const res = await getData(`product/${item._id}?dp=1`);
+          if (!res.err && res.product && res.product.inStock > 0) {
+            newArr.push({...res.product, quantity: item.quantity > res.product.inStock ? res.product.inStock : item.quantity})
           }
         }
         dispatch({ type: 'ADD_CART', payload: newArr })
@@ -83,8 +76,8 @@ const Cart = () => {
     let newCart = [];
     let nonAvailProducts = [];
     for (const item of cart) {
-      const res = await getData(`product/${item._id}`)
-      if (res.product.inStock - item.quantity >= 0) newCart.push(item);
+      const res = await getData(`product/${item._id}?count=true`)
+      if (res.count && (res.count - item.quantity >= 0)) newCart.push(item);
       else nonAvailProducts.push(item.title);
     }
 

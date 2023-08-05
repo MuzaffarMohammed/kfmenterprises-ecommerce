@@ -55,7 +55,7 @@ const ProductForm = (props) => {
                         {props.isAttributes &&
                             <>
                                 <div className="row pt-2">
-                                    <label className='product-attributes-label' htmlFor="selectedSizeType">Choose a size type</label>
+                                    <label className='product-attributes-label' htmlFor="selectedSizeType">Select a Type</label>
                                     <select name="selectedSizeType" id="sizes" value={props.product.selectedSizeType}
                                         onChange={handleSizeTypeSelect} className="custom-select text-capitalize product-attributes-input">
                                         {props.sizeTypeList.map(item => (
@@ -122,6 +122,9 @@ const ProductForm = (props) => {
                                         </select>
                                     </div>
                                 </div>
+                                <div className="col mt-2">
+                                    <input type="checkbox" checked={props.attributesRequired} onChange={props.handleAttributesRequired}></input>
+                                    Attributes Required</div>
                             </div>
                         }
                     </div>
@@ -140,10 +143,10 @@ const ProductForm = (props) => {
                                     <img src={img.url ? img.url : URL.createObjectURL(img)}
                                         alt="" className="img-thumbnail rounded my-1" />
                                     <span className='img-del' onClick={() => props.handleImageDelete(index, props.images)}>X</span>
-                                    {(img.url && !props.isAttributes) &&
+                                    {(img.url && !props.isAttributes && props.attributesRequired) &&
                                         <span className='img-edit' onClick={() => { props.handleImageClick(img) }}><i className="fas fa-edit" aria-hidden="true" /></span>
                                     }
-                                    {!props.isAttributes &&
+                                    {!(props.isAttributes || !props.attributesRequired) &&
                                         <div className="product-tooltip">
                                             {productTooltip(props.product.attributes, img)}
                                         </div>

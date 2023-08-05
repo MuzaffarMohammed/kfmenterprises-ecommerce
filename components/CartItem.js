@@ -12,7 +12,7 @@ const CartItem = ({ item, dispatch, cart, isAdmin }) => {
     return (
         <tr>
             <td className='product-img'>
-                <img src={item.images[0].url} alt={item.title}
+                <img src={item.url} alt={item.title}
                     className="img-thumbnail w-100"
                     style={{ minWidth: '70px', height: '70px' }} />
             </td>

@@ -3,7 +3,7 @@ import Categories from '../../../models/categoryModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
-import { calculateDiscountedPercentage } from '../../../utils/util'
+import { displayProducts } from '../../../utils/productUtil'
 
 connectDB()
 
@@ -59,47 +59,12 @@ const getProducts = async (req, res) => {
     }
 }
 
-const displayProducts = products => {
-
-    let displayProducts = [];
-    let disProduct = {};
-    products.forEach(product => {
-        disProduct = { _id: product._id, checked: product.checked }
-        product.attributes && product.attributes.forEach(attr => {
-            disProduct = { ...disProduct, url: attr.defaultImg.url, title: attr.title }
-            let displayProductFound = false;
-            attr.sizes && attr.sizes.forEach(size => {
-                if (size.isDisplay) {
-                    disProduct = populateProductPrices(disProduct, size);
-                    console.log('disProduct 1: ',disProduct)
-                    displayProductFound = true;
-                }
-            });
-            if (!displayProductFound) disProduct = populateProductPrices(disProduct, attr.sizes[0]);
-        });
-        console.log('disProduct 2: ',disProduct)
-
-        displayProducts.push(disProduct);
-    });
-    return displayProducts;
-}
-
-const populateProductPrices = (disProduct, size) => {
-    return {
-        ...disProduct,
-        totalPrice: size.totalPrice,
-        mrpPrice: size.mrpPrice,
-        inStock: size.inStock,
-        discount: calculateDiscountedPercentage(size.mrpPrice, size.totalPrice)
-    }
-}
-
 const createProduct = async (req, res) => {
     try {
         const result = await auth(req, res)
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
-        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, attributesRequired } = req.body
 
         if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || categories === 'all' || images.length === 0)
             return res.status(400).json({ err: 'Please add all the fields.' })
@@ -108,7 +73,7 @@ const createProduct = async (req, res) => {
         if (product) return res.status(400).json({ err: 'Product Name already exist, please choose different name.' })
 
         const newProduct = new Products({
-            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount
+            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, attributesRequired
         })
         const productCreated = await newProduct.save()
         res.json({ msg: 'New product added successfully.', productId: productCreated._id })

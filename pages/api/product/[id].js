@@ -4,6 +4,7 @@ import auth from '../../../middleware/auth'
 import { deleteData } from '../../../utils/fetchData'
 import { ERROR_403 } from '../../../utils/constants'
 import { handleServerError } from '../../../middleware/error'
+import { displayProduct } from '../../../utils/productUtil'
 
 connectDB()
 
@@ -29,11 +30,11 @@ export default async (req, res) => {
 
 const getProduct = async (req, res) => {
     try {
-        const { id, count } = req.query;
+        const { id, count, dp } = req.query;
         const product = await Products.findById(id)
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
         if (count) return res.json({ count: product.inStock })
-        res.json({ product })
+        res.json({ product: (dp && dp === '1') ? displayProduct(product) : product })
     } catch (err) { handleServerError('getProduct', err, 500, res) }
 
 }
@@ -41,7 +42,7 @@ const getProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.query
-        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, updateStockAndSold, sold } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, updateStockAndSold, sold, attributesRequired } = req.body
 
         if (updateStockAndSold) {
             await Products.findOneAndUpdate({ _id: id }, { inStock, sold })
@@ -53,7 +54,7 @@ const updateProduct = async (req, res) => {
                 return res.status(400).json({ err: 'Please add all the fields.' })
 
             await Products.findOneAndUpdate({ _id: id }, {
-                title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount
+                title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, attributesRequired
             })
             res.json({ msg: 'Product updated successfully!' })
         }
