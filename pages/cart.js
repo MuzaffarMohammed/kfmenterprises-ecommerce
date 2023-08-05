@@ -10,6 +10,7 @@ import Address from '../components/Cart/Address'
 import { getAddressObj, validateAddress } from '../components/Cart/util'
 import { isAdminRole, isLoading } from '../utils/util'
 import { ERROR_403 } from '../utils/constants'
+import { handleUIError } from '../middleware/error'
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
@@ -18,6 +19,24 @@ const Cart = () => {
   const [callback, setCallback] = useState(false)
   const router = useRouter()
   const isAdmin = auth && auth.user && isAdminRole(auth.user.role)
+
+
+  // useEffect(() => {
+  //   console.log('cart : ', cart);
+
+  //   const getCart = async () => {
+  //     if (cart) {
+  //       const res = await postData('cart?type=GC', cart);
+  //       if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
+  //       else if (res.cart) {
+
+  //       }
+  //     }
+  //   }
+
+  //   getCart();
+  // }, [])
+
 
   useEffect(() => {
     const getTotal = () => {
@@ -55,7 +74,7 @@ const Cart = () => {
   const handlePayment = async (e) => {
     e.preventDefault();
     if (!isLoggedInPopup(auth, dispatch)) return;
-    if(isAdmin) return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403} })
+    if (isAdmin) return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
     var shippingAddress = address;
     if (shippingAddress && shippingAddress.new && shippingAddress.new === '-1') shippingAddress = getAddressObj(document.getElementById('addressForm'));
     const validateAddressMsg = validateAddress(shippingAddress);
@@ -108,7 +127,7 @@ const Cart = () => {
         <table className="table my-3">
           <tbody>
             {
-              cart.map(item => (
+              cart && cart.map(item => (
                 <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} isAdmin={isAdmin} />
               ))
             }
