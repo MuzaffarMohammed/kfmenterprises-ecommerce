@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import { decrease, increase } from '../store/Actions'
 import { getData } from '../utils/fetchData'
+import { calculatePrice } from '../utils/util'
 
 const plusProductCountClick = async (cart, itemId, quantity, dispatch) => {
     const res = await getData(`product/${itemId}?count=true`)
     if (res.error) return;
     if (res.count && quantity < res.count) dispatch(increase(cart, itemId));
 }
+
 
 const CartItem = ({ item, dispatch, cart, isAdmin }) => {
     return (
@@ -22,7 +24,7 @@ const CartItem = ({ item, dispatch, cart, isAdmin }) => {
                         <a className='product-title'>{item.title}</a>
                     </Link>
                 </h5>
-                <p className="item-price">₹{`${item.totalPrice} x ${item.quantity} = ${item.quantity * item.totalPrice}`}</p>
+                <p className="item-price">₹{`${item.totalPrice} x ${item.quantity} = ${calculatePrice(item.quantity, item.totalPrice)}`}</p>
                 {
                     item.inStock > 0
                         ? <p className="mb-1 text-success">In Stock {isAdmin ? ":" + item.inStock : ""}</p>
