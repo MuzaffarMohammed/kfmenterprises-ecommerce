@@ -101,3 +101,8 @@ export const parseNumDecimalType = (val, type) => {
     if (val.indexOf('.') !== -1) return parseFloat(val);
     else return parseInt(val);
 }
+
+export const calculatePrice = (quantity, totalPrice) =>{
+if(!quantity && !totalPrice) return '';
+return Number(quantity * totalPrice).toFixed(2);
+}

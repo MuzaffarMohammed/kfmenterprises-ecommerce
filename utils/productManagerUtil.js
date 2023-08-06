@@ -28,7 +28,6 @@ const updateAttrs = (newAttr, existingAttrs, isDisplayProductChanged) => {
     });
     if (toBeRemoveAttrIndex > -1) existingAttrs.splice(toBeRemoveAttrIndex, 1);
     existingAttrs = removeDisplayProductField(existingAttrs, isDisplayProductChanged);
-    debugger;
     return !newAttr ? existingAttrs : [...existingAttrs, newAttr];// Old Attrs + new Attr
 }
 
