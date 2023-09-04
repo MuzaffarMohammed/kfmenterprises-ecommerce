@@ -41,15 +41,16 @@ const ProductsManager = () => {
     const [onEdit, setOnEdit] = useState(false)
 
     useEffect(() => {
-        debugger;
         if (productId) {
             setOnEdit(true)
             getData(`product/${productId}`).then(res => {
+                if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                 const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
-                res.product.attributes && res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) imgs.push(attr.defaultImg) })
+                let displayImgs = [];
+                res.product.attributes && res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) displayImgs.push(attr.defaultImg) })
                 setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) })
-                setImages(res.product && res.product.images ? res.product.images: []);
+                setImages(displayImgs);
                 console.log('res.product.attributesRequired :',(res.product && res.product.attributesRequired))
                 setAttributesRequired(res.product && res.product.attributesRequired);
             })

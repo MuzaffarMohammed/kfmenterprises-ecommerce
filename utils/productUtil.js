@@ -58,7 +58,7 @@ export const populateProductPrices = (product, sizeObj) => {
 export const updateStockAndSoldFromProd = async (cart, products) => {
     log.info('Inside updateStockAndSoldFromProd...');
     if (isEmpty(products) || isEmpty(cart)) return;
-    let updatedCart = cart;
+    let updatedCart = [];
     cart.forEach(cartItem => {
         let product = products[cartItem._id];
         log.info('cartItem : '+JSON.stringify(cartItem));

@@ -39,7 +39,7 @@ const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPagina
             column.field && row[column.field] ?
                 (
                     <Link href={href} style={{ cursor: 'pointer' }}>
-                        <a>{row[column.field]}</a>
+                        {row[column.field]}
                     </Link>
                 )
                 :

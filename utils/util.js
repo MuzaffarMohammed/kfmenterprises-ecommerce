@@ -67,15 +67,15 @@ export const getAction = (action) => {
     if (isEmpty(action) || !action.type) return '';
     switch (action.type) {
         case ORDER_DETAIL:
-            return `order?id=${action.data && action.data.orderId}`
+            return `/order?id=${action.data && action.data.orderId}`
         default:
             return "";
     }
 }
 
 export const calculateDiscountedPercentage = (actualAmount, totalAmount) => {
-    const discountPercent = ((actualAmount - totalAmount) / actualAmount) * 100;
-    return discountPercent.toFixed(2);
+    const discountPercent = Math.max(0, ((actualAmount - totalAmount) / actualAmount) * 100);
+    return discountPercent.toFixed(1);
 }
 
 export const calcTaxAmount = (actPrice, TAX) => Math.abs(Number(actPrice) * TAX);

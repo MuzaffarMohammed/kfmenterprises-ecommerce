@@ -31,7 +31,7 @@ export default async (req, res) => {
 const getProduct = async (req, res) => {
     try {
         const { id, count, dp } = req.query;
-        const product = await Products.findById(id)
+        const product = await Products.findById({_id: id})
         if (!product) return res.status(400).json({ err: 'This product does not exist.' })
         if (count) return res.json({ count: product.inStock })
         res.json({ product: (dp && dp === '1') ? displayProduct(product) : product })
@@ -67,7 +67,7 @@ const deleteProduct = async (req, res) => {
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
         const { id } = req.query;
         deleteImages(id, req.headers.authorization, res);
-        await Products.findByIdAndDelete(id)
+        await Products.findByIdAndDelete({_id:id})
         res.json({ msg: 'Product deleted successfully.' })
     } catch (err) { handleServerError('deleteProduct', err, 500, res) }
 }
