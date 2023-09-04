@@ -18,12 +18,10 @@ const ProductItem = ({ product, handleCheck, viewOnly }) => {
     const userLink = () => {
         return (
             <>
-                <Link href={`/product/${product._id}`}>
-                    <a className="btn btn-primary"
-                        style={{ marginRight: '5px', fontSize: '12px' }}>
-                        View
-                        {/* <i className="fas fa-search pl-1" aria-hidden="true" ></i> */}
-                    </a>
+                <Link href={`/product/${product._id}`} className="btn btn-primary"
+                    style={{ marginRight: '5px', fontSize: '12px' }}>
+                    View
+                    {/* <i className="fas fa-search pl-1" aria-hidden="true" ></i> */}
                 </Link>
                 <button className="btn btn-success"
                     style={{ marginLeft: '5px', flex: 1, fontSize: '12px' }}
@@ -39,9 +37,8 @@ const ProductItem = ({ product, handleCheck, viewOnly }) => {
     const adminLink = () => {
         return (
             <>
-                <Link href={`/create/${product._id}`}>
-                    <a className="btn btn-primary"
-                        style={{ marginRight: '5px', flex: 1 }}>Edit</a>
+                <Link href={`/create/${product._id}`} className="btn btn-primary"
+                    style={{ marginRight: '5px', flex: 1 }}>Edit
                 </Link>
                 <button className="btn btn-danger"
                     style={{ marginLeft: '5px', flex: 1 }}

@@ -55,7 +55,7 @@ const Cart = () => {
         for (const item of cart) {
           const res = await getData(`product/${item._id}?dp=1`);
           if (!res.err && res.product && res.product.inStock > 0) {
-            newArr.push({...res.product, quantity: item.quantity > res.product.inStock ? res.product.inStock : item.quantity})
+            newArr.push({ ...res.product, quantity: item.quantity > res.product.inStock ? res.product.inStock : item.quantity })
           }
         }
         dispatch({ type: 'ADD_CART', payload: newArr })
@@ -133,10 +133,8 @@ const Cart = () => {
         <Address />
         <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
-        <Link href={auth.user ? '#!' : '/signin'}>
-          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed To Pay</a>
+        <Link href={auth.user ? '#!' : '/signin'} className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed To Pay
         </Link>
-
       </div>
     </div>
   )

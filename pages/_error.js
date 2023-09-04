@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 function Error({ statusCode }) {
   return (
     <div className="centerDiv">
@@ -5,10 +7,8 @@ function Error({ statusCode }) {
         Something's Missing...
       </span></h1>
       <button className='btn btn-primary mt-4' >
-        <Link href="/">
-          <a style={{ color: 'white' }}>
-            Go back home
-          </a>
+        <Link href="/" style={{ color: 'white' }}>
+          Go back home
         </Link>
       </button>
     </div>

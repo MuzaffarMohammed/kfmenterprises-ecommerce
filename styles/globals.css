@@ -71,7 +71,11 @@ nav {
 }
 
 a {
-  color: #17a2b8;
+  color: #000;
+  text-decoration: none;
+}
+a:hover{
+  color: #000;
   text-decoration: none;
 }
 

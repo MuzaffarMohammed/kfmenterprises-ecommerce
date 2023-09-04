@@ -20,8 +20,7 @@ const CartItem = ({ item, dispatch, cart, isAdmin }) => {
             </td>
             <td className="product-row w-50 align-middle" >
                 <h5 className="text-capitalize text-secondary">
-                    <Link href={`/product/${item._id}`}>
-                        <a className='product-title'>{item.title}</a>
+                    <Link href={`/product/${item._id}`} className='product-title'>{item.title}
                     </Link>
                 </h5>
                 <p className="item-price">₹{`${item.totalPrice} x ${item.quantity} = ${calculatePrice(item.quantity, item.totalPrice)}`}</p>

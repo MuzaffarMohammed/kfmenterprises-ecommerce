@@ -7,3 +7,12 @@
 .items-card h5 {
     font-weight: bolder;
 }
+
+.order-item-title{
+    color: #17a2b8;
+    text-decoration: none;
+}
+
+.order-item-title:hover{
+    color: #007bff;
+}

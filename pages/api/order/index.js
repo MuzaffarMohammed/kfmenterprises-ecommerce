@@ -3,6 +3,7 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
+import * as log from "../../../middleware/log"
 import { handleServerError } from '../../../middleware/error'
 import { CONTACT_ADMIN_ERR_MSG, NORMAL, ADMIN_ROLE, USER_ROLE, ORDER_DETAIL } from '../../../utils/constants'
 import { notUserRole, formatDateTime } from '../../../utils/util'
@@ -50,13 +51,13 @@ const getOrders = async (req, res) => {
         }
         res.json({ orders })
     } catch (err) {
-        console.error('Error occurred while getOrders: ' + err);
+        log.error('Error occurred while getOrders: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
 const createOrder = async (req, res) => {
-    console.log('Creating Order ....')
+    log.info('Creating Order ....');
     try {
         const result = await auth(req, res)
         const { address, cart, total } = req.body
@@ -64,7 +65,6 @@ const createOrder = async (req, res) => {
         if (notUserRole(result.role)) return res.status(403).json({ err: ERROR_403 });
 
         const updatedCart = await updateStockAndSold(cart);
-
         const newOrder = await new Orders({ user: result.id, address, cart:updatedCart, total }).save();
 
         res.json({
@@ -73,7 +73,7 @@ const createOrder = async (req, res) => {
         });
 
     } catch (err) {
-        console.error('Error occurred while createOrder: ' + err);
+        log.error('Error occurred while createOrder: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
@@ -125,6 +125,6 @@ const notifyAdminForNewOrder = (orderId, userId) => {
             }
         ).save();
     } catch (err) {
-        console.error('Error occurred while notifyAdminForNewOrder: ' + err);
+        log.error('Error occurred while notifyAdminForNewOrder: ', err);
     }
 }

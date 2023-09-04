@@ -22,7 +22,7 @@ export default function SignInCard({ loadingMsg, delay, executeSignInCallback })
             setIsLoading(auth ? true : false);
             const task = setTimeout(() => {
                 setIsLoading(false);
-                dispatch({ type: 'NOTIFY', payload: { error: PLEASE_LOG_IN} })
+                dispatch({ type: 'NOTIFY', payload: { error: PLEASE_LOG_IN } })
             }, 2000);
             return () => {
                 clearTimeout(task);
@@ -93,10 +93,10 @@ export default function SignInCard({ loadingMsg, delay, executeSignInCallback })
                         <small id="userNameHelp" className="form-text text-muted pt-1">Note: We'll never share your credentials with anyone else.</small>
 
                         <p className="my-2">
-                            You don't have an account? <Link href="/register"><a style={{ color: '#2196f3' }}>Create Your Account</a></Link>
+                            You don't have an account? <Link href="/register" style={{ color: '#2196f3' }}>Create Your Account</Link>
                         </p>
                         <p className="my-2">
-                            <Link href="/forgotPassword"><a style={{ color: '#2196f3' }}>Forgot Password?</a></Link>
+                            <Link href="/forgotPassword" style={{ color: '#2196f3' }}>Forgot Password? </Link>
                         </p>
                     </form>
                 </div>
