@@ -171,7 +171,7 @@ const Payment = (props) => {
                     </select>
                 </div> : ""}
             <div className="row mt-2 justify-content-between">
-                <label>Delivery Chargers</label>
+                <label>Delivery Charges</label>
                 <span style={{ color: 'green' }}>Free </span>
             </div>
             <div className="row mt-1 justify-content-between">
