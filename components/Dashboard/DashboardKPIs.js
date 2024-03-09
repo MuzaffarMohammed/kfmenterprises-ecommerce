@@ -45,7 +45,7 @@ const DashboardKPIs = ({ kpiData, auth, dispatch }) => {
     const handleOnClickCard = (kpiName) => {
         switch (kpiName) {
             case TOTAL_PRODUCTS:
-                router.push('/products');
+                router.push('/productList');
                 break;
             case TOTAL_ORDERS:
                 router.push('/orders');

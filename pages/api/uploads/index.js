@@ -1,4 +1,4 @@
-import nextConnect from 'next-connect';
+import {createRouter} from 'next-connect';
 import auth from '../../../middleware/auth';
 import { cloud_uploads } from './cloudinary';
 import { upload } from "./multer";
@@ -7,15 +7,17 @@ import { upload } from "./multer";
     DELETE    - Unprotected
 */
 
-const apiRoute = nextConnect({
-  onError(error, req, res) {
-    console.error('Error occurred while image upload: ' + error);
-    res.status(501).json({ error: `Image upload Error: ${error}` });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
-  },
-});
+const apiRoute = createRouter();
+
+// const apiRoute = nextConnect({
+//   onError(error, req, res) {
+//     console.error('Error occurred while image upload: ' + error);
+//     res.status(501).json({ error: `Image upload Error: ${error}` });
+//   },
+//   onNoMatch(req, res) {
+//     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
+//   },
+// });
 
 apiRoute.use(upload.array('file'), async (req, res) => {
   switch (req.method) {
@@ -30,10 +32,12 @@ const uploadImage = async (req, res) => {
   try {
     const files = req.files;
     var urls = [];
-    const uploader = async (path) => await cloud_uploads(path, req.query.to);
+    const uploader = async (imageFile) => await cloud_uploads(imageFile, req.query.to);
     for (const file of files) {
-      const { path } = file;
-      const newPath = await uploader(path)
+      console.log('Uploading image : ', file.originalname);
+      const b64 = Buffer.from(file.buffer).toString("base64");
+      let dataURI = "data:" + file.mimetype + ";base64," + b64;
+      const newPath = await uploader(dataURI);
       urls.push({ url: newPath })
     }
     res.status(200).json({
@@ -56,4 +60,4 @@ export const config = {
   },
 };
 
-export default apiRoute;
+export default apiRoute.handler();
