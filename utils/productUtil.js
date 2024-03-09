@@ -6,13 +6,13 @@ import * as log from "../middleware/log"
 
 export const displayProduct = product => {
     let disProduct = { _id: product._id, checked: product.checked }
-    if (!isEmpty(product.attributes)) {
+    if (product.attributesRequired) {
         product.attributes.find(attr => {
             disProduct = { ...disProduct, public_id: attr.defaultImg.public_id, url: attr.defaultImg.url, title: attr.title }
             let displayProductFound = false;
             attr.sizes && attr.sizes.forEach(size => {
                 if (size.isDisplay) {
-                    log.info('Display product for attr type: '+attr.title);
+                    //log.info('Display product for attr type: '+attr.title);
                     disProduct = populateProductPrices(disProduct, size);
                     displayProductFound = true;
                     return true;//  breaking Loop
@@ -31,7 +31,7 @@ export const displayProduct = product => {
             url: product.images ? product.images[0].url : '/public/assets/images/product/no_product_img.png',
             title: product.title,
         }
-        log.info('Display product non attr type: '+disProduct.title);
+        //log.info('Display product non attr type: '+disProduct.title);
         disProduct = populateProductPrices(disProduct, { totalPrice: product.totalPrice, mrpPrice: product.mrpPrice, inStock: product.inStock });
     }
     return disProduct;

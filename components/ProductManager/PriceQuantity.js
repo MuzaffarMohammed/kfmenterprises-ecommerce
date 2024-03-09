@@ -7,6 +7,8 @@ const PriceQuantiity = (props) => {
                     placeholder="Price" className={'d-block w-100 product-attributes-input'}
                     onChange={props.handleChangeInput}
                     maxLength='5'
+                    min="0"
+                    step="0.01"
                 />
             </div>
             <div className="col-3 col-lg-2 pl-1">
@@ -15,6 +17,8 @@ const PriceQuantiity = (props) => {
                     placeholder="Price" className={'d-block w-100 product-attributes-input'}
                     onChange={props.handleChangeInput}
                     maxLength='5'
+                    min="0"
+                    step="0.01"
                 />
             </div>
             <div className="col-3 col-lg-2 pl-1">
@@ -23,6 +27,7 @@ const PriceQuantiity = (props) => {
                     placeholder="Tax" className={'d-block w-100 product-attributes-input'}
                     disabled
                     onChange={props.handleChangeInput}
+                    min="0"
                 />
             </div>
             <div className="col-3 col-lg-2 pl-1">
@@ -31,6 +36,7 @@ const PriceQuantiity = (props) => {
                     placeholder="Total Price" className={'d-block w-100 product-attributes-input'}
                     onChange={props.handleChangeInput}
                     disabled
+                    min="0"
                 />
             </div>
             <div className="col-3 col-lg-2 pl-1">
@@ -39,6 +45,7 @@ const PriceQuantiity = (props) => {
                     placeholder="inStock" className={'d-block w-100 product-attributes-input'}
                     onChange={props.handleChangeInput}
                     maxLength='5'
+                    min="0"
                 />
             </div>
         </div>

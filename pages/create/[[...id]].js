@@ -42,16 +42,20 @@ const ProductsManager = () => {
 
     useEffect(() => {
         if (productId) {
-            setOnEdit(true)
+            setOnEdit(true);
             getData(`product/${productId}`).then(res => {
                 if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
                 const calcTax = calcTaxAmount(res.product.price, TAX);
                 setCategories(res.product.categories);
                 let displayImgs = [];
-                res.product.attributes && res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) displayImgs.push(attr.defaultImg) })
-                setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) })
+                if(res.product.attributesRequired){ 
+                    res.product.attributes.forEach(attr => { if (attr.defaultImg && attr.defaultImg.url && attr.defaultImg.public_id) displayImgs.push(attr.defaultImg)});
+                }else{
+                    res.product.images.forEach(img =>{if(img.public_id) displayImgs.push(img)});
+                }
+                setProduct({ ...res.product, tax: calcTax, totalPrice: calcTotalPrice(res.product.price, calcTax) });
                 setImages(displayImgs);
-                console.log('res.product.attributesRequired :',(res.product && res.product.attributesRequired))
+                //console.log('res.product.attributesRequired :',(res.product && res.product.attributesRequired))
                 setAttributesRequired(res.product && res.product.attributesRequired);
             })
         } else {
@@ -103,7 +107,7 @@ const ProductsManager = () => {
 
     const handleAttributesRequired = e =>{
        //e.preventDefault();
-        console.log('e.checked : ',e.target.checked);
+        //console.log('e.checked : ',e.target.checked);
         setAttributesRequired(e.target.checked);
     }
 
@@ -128,7 +132,7 @@ const ProductsManager = () => {
         else res = await postData('product?type=CP', data, auth.token);
         if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
         else if (res.msg) {
-            console.log('res.productId : ', res.productId)
+            //console.log('res.productId : ', res.productId)
             dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
             if (res.productId) router.push('/create/' + res.productId);
         }

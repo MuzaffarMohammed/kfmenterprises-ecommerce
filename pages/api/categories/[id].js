@@ -30,7 +30,7 @@ const updateCategory = async (req, res) => {
 
         const newCategory = await Categories.findOneAndUpdate({ _id: id }, { name })
         res.json({
-            msg: "Success! Update a new category",
+            msg: "Category updated successfully.",
             category: {
                 ...newCategory._doc,
                 name
@@ -52,12 +52,12 @@ const deleteCategory = async (req, res) => {
 
         const products = await Products.findOne({ categories: id })
         if (products) return res.status(400).json({
-            err: "Please delete all products with a relationship"
+            err: "Products exist within this category. Please remove all products before deleting this category."
         })
 
         await Categories.findByIdAndDelete(id)
 
-        res.json({ msg: "Success! Deleted a category" })
+        res.json({ msg: "Category deleted successfully." })
     } catch (err) {
         console.error('Error occurred while deleteCategory: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
