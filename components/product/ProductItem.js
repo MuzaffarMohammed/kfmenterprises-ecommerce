@@ -4,7 +4,7 @@ import { DataContext } from '../../store/GlobalState'
 import { addToCart } from '../../store/Actions'
 import { ProductPrice } from './ProductPrice'
 
-const ProductItem = ({ product, handleCheck }) => {
+const ProductItem = ({ product, handleCheck, viewOnly }) => {
     const { state, dispatch } = useContext(DataContext)
     const { cart, auth } = state
     const isAdmin = auth && auth.user && auth.user.role === 'admin'
@@ -18,12 +18,10 @@ const ProductItem = ({ product, handleCheck }) => {
     const userLink = () => {
         return (
             <>
-                <Link href={`/product/${product._id}`}>
-                    <a className="btn btn-primary"
-                        style={{ marginRight: '5px', fontSize: '12px' }}>
-                        View
-                        {/* <i className="fas fa-search pl-1" aria-hidden="true" ></i> */}
-                    </a>
+                <Link href={`/product/${product._id}`} className="btn btn-primary"
+                    style={{ marginRight: '5px', fontSize: '12px' }}>
+                    View
+                    {/* <i className="fas fa-search pl-1" aria-hidden="true" ></i> */}
                 </Link>
                 <button className="btn btn-success"
                     style={{ marginLeft: '5px', flex: 1, fontSize: '12px' }}
@@ -39,9 +37,8 @@ const ProductItem = ({ product, handleCheck }) => {
     const adminLink = () => {
         return (
             <>
-                <Link href={`/create/${product._id}`}>
-                    <a className="btn btn-primary"
-                        style={{ marginRight: '5px', flex: 1 }}>Edit</a>
+                <Link href={`/create/${product._id}`} className="btn btn-primary"
+                    style={{ marginRight: '5px', flex: 1 }}>Edit
                 </Link>
                 <button className="btn btn-danger"
                     style={{ marginLeft: '5px', flex: 1 }}
@@ -64,14 +61,14 @@ const ProductItem = ({ product, handleCheck }) => {
     return (
         <div className="card">
             {
-                auth.user && auth.user.role === 'admin' &&
+                (auth.user && auth.user.role === 'admin' && !viewOnly) &&
                 <input type="checkbox" checked={product.checked}
                     className="position-absolute"
                     style={{ height: '20px', width: '20px' }}
                     onChange={() => handleCheck(product._id)} />
             }
             <Link href={`/product/${product._id}`}>
-                <img className="card-img-top" src={product.images[0].url} alt={product.title} />
+                <img className="card-img-top" src={product.url} alt={product.title} />
             </Link>
             <div className="card-body">
                 <ProductPrice product={product} isAdmin={isAdmin} />

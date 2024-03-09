@@ -10,6 +10,7 @@ import Address from '../components/Cart/Address'
 import { getAddressObj, validateAddress } from '../components/Cart/util'
 import { isAdminRole, isLoading } from '../utils/util'
 import { ERROR_403 } from '../utils/constants'
+import { handleUIError } from '../middleware/error'
 
 const Cart = () => {
   const { state, dispatch } = useContext(DataContext)
@@ -19,31 +20,42 @@ const Cart = () => {
   const router = useRouter()
   const isAdmin = auth && auth.user && isAdminRole(auth.user.role)
 
+
+  // useEffect(() => {
+  //   console.log('cart : ', cart);
+
+  //   const getCart = async () => {
+  //     if (cart) {
+  //       const res = await postData('cart?type=GC', cart);
+  //       if (res.code) return handleUIError(res.err, res.code, undefined, dispatch);
+  //       else if (res.cart) {
+
+  //       }
+  //     }
+  //   }
+
+  //   getCart();
+  // }, [])
+
+
   useEffect(() => {
     const getTotal = () => {
       const res = cart.reduce((prev, item) => {
         return prev + (item.totalPrice * item.quantity)
       }, 0)
-      setTotal(res)
+      setTotal(Number(res).toFixed(2))
     }
     getTotal()
   }, [cart])
 
   useEffect(() => {
-    const cartLocal = JSON.parse(localStorage.getItem('__next__cart01'))
-    if (cartLocal && cartLocal.length > 0) {
+    if (cart && cart.length > 0) {
       let newArr = []
       const updateCart = async () => {
-        for (const item of cartLocal) {
-          const res = await getData(`product/${item._id}`)
-          if (!res.err) {
-            const { _id, title, images, totalPrice, inStock, sold } = res.product
-            if (inStock > 0) {
-              newArr.push({
-                _id, title, images, totalPrice, inStock, sold,
-                quantity: item.quantity > inStock ? inStock : item.quantity
-              })
-            }
+        for (const item of cart) {
+          const res = await getData(`product/${item._id}?dp=1`);
+          if (!res.err && res.product && res.product.inStock > 0) {
+            newArr.push({ ...res.product, quantity: item.quantity > res.product.inStock ? res.product.inStock : item.quantity })
           }
         }
         dispatch({ type: 'ADD_CART', payload: newArr })
@@ -55,7 +67,7 @@ const Cart = () => {
   const handlePayment = async (e) => {
     e.preventDefault();
     if (!isLoggedInPopup(auth, dispatch)) return;
-    if(isAdmin) return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403} })
+    if (isAdmin) return dispatch({ type: 'NOTIFY', payload: { error: ERROR_403 } })
     var shippingAddress = address;
     if (shippingAddress && shippingAddress.new && shippingAddress.new === '-1') shippingAddress = getAddressObj(document.getElementById('addressForm'));
     const validateAddressMsg = validateAddress(shippingAddress);
@@ -64,8 +76,8 @@ const Cart = () => {
     let newCart = [];
     let nonAvailProducts = [];
     for (const item of cart) {
-      const res = await getData(`product/${item._id}`)
-      if (res.product.inStock - item.quantity >= 0) newCart.push(item);
+      const res = await getData(`product/${item._id}?count=true`)
+      if (res.count && (res.count - item.quantity >= 0)) newCart.push(item);
       else nonAvailProducts.push(item.title);
     }
 
@@ -103,12 +115,12 @@ const Cart = () => {
       <Head>
         <title>KFM Cart - Cart Page</title>
       </Head>
-      <h2 className="container text-uppercase mt-3" >My Cart</h2>
+      <h5 className="text-uppercase mt-3" >My Cart</h5>
       <div className="col-md-6 text-secondary table-responsive my-3 colHeight">
         <table className="table my-3">
           <tbody>
             {
-              cart.map(item => (
+              cart && cart.map(item => (
                 <CartItem key={item._id} item={item} dispatch={dispatch} cart={cart} isAdmin={isAdmin} />
               ))
             }
@@ -121,10 +133,8 @@ const Cart = () => {
         <Address />
         <h5 style={{ color: 'black' }}>Total: <span>₹{total}</span></h5>
 
-        <Link href={auth.user ? '#!' : '/signin'}>
-          <a className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed To Pay</a>
+        <Link href={auth.user ? '#!' : '/signin'} className="btn btn-primary my-2 cartPayBtn" onClick={handlePayment}>Proceed To Pay
         </Link>
-
       </div>
     </div>
   )

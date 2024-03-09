@@ -26,7 +26,7 @@ export default function Dashboard() {
     if (!isAdmin) return null;
     return (
         <>
-            <h2 className="container text-uppercase mt-3" >Dashboard</h2>
+            <h5 className="text-uppercase ml-3 mt-3" >Dashboard</h5>
             <DashboardKPIs kpiData={kpiData} auth={auth} dispatch={dispatch} />
         </>
     );

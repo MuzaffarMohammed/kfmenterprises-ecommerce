@@ -3,9 +3,11 @@ import Orders from '../../../models/orderModel'
 import Products from '../../../models/productModel'
 import Notifications from '../../../models/notificationsModel'
 import auth from '../../../middleware/auth'
+import * as log from "../../../middleware/log"
 import { handleServerError } from '../../../middleware/error'
 import { CONTACT_ADMIN_ERR_MSG, NORMAL, ADMIN_ROLE, USER_ROLE, ORDER_DETAIL } from '../../../utils/constants'
 import { notUserRole, formatDateTime } from '../../../utils/util'
+import { updateStockAndSoldFromProd } from '../../../utils/productUtil'
 
 connectDB()
 
@@ -49,22 +51,21 @@ const getOrders = async (req, res) => {
         }
         res.json({ orders })
     } catch (err) {
-        console.error('Error occurred while getOrders: ' + err);
+        log.error('Error occurred while getOrders: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
 const createOrder = async (req, res) => {
-    console.log('Creating Order ....')
+    log.info('Creating Order ....');
     try {
         const result = await auth(req, res)
         const { address, cart, total } = req.body
 
         if (notUserRole(result.role)) return res.status(403).json({ err: ERROR_403 });
 
-        for (let i = 0; i < cart.length; i++) { await sold(cart, i) }
-
-        const newOrder = await new Orders({ user: result.id, address, cart, total }).save();
+        const updatedCart = await updateStockAndSold(cart);
+        const newOrder = await new Orders({ user: result.id, address, cart:updatedCart, total }).save();
 
         res.json({
             msg: 'Order created.',
@@ -72,20 +73,24 @@ const createOrder = async (req, res) => {
         });
 
     } catch (err) {
-        console.error('Error occurred while createOrder: ' + err);
+        log.error('Error occurred while createOrder: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
 
-const sold = async (cart, index) => {
+const updateStockAndSold = async (cart, res) => {
+    let prodIds = [];
+    let prodsObj = {};
+    let updatedCart = cart;
+   try{
+    cart.forEach(cartItem => prodIds.push(cartItem._id));
 
-    let oldCartItem = cart[index];
-    const updatedStock = oldCartItem.inStock - oldCartItem.quantity;
-    const updatedSold = oldCartItem.quantity + oldCartItem.sold;
-    oldCartItem.inStock = updatedStock;
-    oldCartItem.sold = updatedSold;
-    cart[index] = oldCartItem;
-    await Products.findOneAndUpdate({ _id: oldCartItem._id }, { inStock: updatedStock, sold: updatedSold })
+    const products = await Products.find({ _id: { $in: prodIds }});
+    if (!products) throw 'No products found!';
+    products.forEach((prod) => prodsObj[prod._id.toString()] = prod);
+    updatedCart = await updateStockAndSoldFromProd(cart, prodsObj, res);
+   } catch (err) { handleServerError('updateStockAndSold', err, 500, res) }
+   return updatedCart;
 }
 
 const updateOrderPlaced = async (req, res) => {
@@ -120,6 +125,6 @@ const notifyAdminForNewOrder = (orderId, userId) => {
             }
         ).save();
     } catch (err) {
-        console.error('Error occurred while notifyAdminForNewOrder: ' + err);
+        log.error('Error occurred while notifyAdminForNewOrder: ', err);
     }
 }

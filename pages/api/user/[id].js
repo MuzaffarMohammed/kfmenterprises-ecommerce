@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB'
 import Users from '../../../models/userModel'
 import auth from '../../../middleware/auth'
+import * as log from "../../../middleware/log"
 import { ADDRESS_GET, CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 
 connectDB()
@@ -42,7 +43,7 @@ const getUserData = async (req, res) => {
             }
         }
     } catch (err) {
-        console.error('Error occurred while getUserData: ' + err);
+        log.error('Error occurred while getUserData: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
@@ -60,7 +61,7 @@ const updateRole = async (req, res) => {
         res.json({ msg: 'Update Success!' })
 
     } catch (err) {
-        console.error('Error occurred while updateRole: ' + err);
+        log.error('Error occurred while updateRole: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }
@@ -77,7 +78,7 @@ const deleteUser = async (req, res) => {
         res.json({ msg: 'Deleted Success!' })
 
     } catch (err) {
-        console.error('Error occurred while deleteUser: ' + err);
+        log.error('Error occurred while deleteUser: ', err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
     }
 }

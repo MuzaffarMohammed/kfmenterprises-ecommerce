@@ -1,5 +1,5 @@
 import connectDB from '../../../utils/connectDB'
-import Categories from '../../../models/categoriesModel'
+import Categories from '../../../models/categoryModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
 

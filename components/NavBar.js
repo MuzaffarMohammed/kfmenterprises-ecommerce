@@ -31,19 +31,14 @@ function NavBar() {
     const adminRouter = () => {
         return (
             <>
-                <Link href="/users">
-                    <a className="dropdown-item">Users</a>
+                <Link href="/users" className="dropdown-item">Users
                 </Link>
-                <Link href="/products">
-                    <a className="dropdown-item">Products
-                    </a>
+                <Link href="/productList" className="dropdown-item">
+                    Product List
                 </Link>
-                <Link href="/create">
-                    <a className="dropdown-item">Add Product
-                    </a>
+                <Link href="/create" className="dropdown-item">Add Product
                 </Link>
-                <Link href="/categories">
-                    <a className="dropdown-item">Categories</a>
+                <Link href="/categories" className="dropdown-item">Categories
                 </Link>
             </>
         )
@@ -58,17 +53,14 @@ function NavBar() {
                 </a>
 
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <Link href="/profile">
-                        <a className="dropdown-item">Profile</a>
+                    <Link href="/profile" className="dropdown-item">Profile
                     </Link>
                     {
                         auth.user.role === 'admin' && adminRouter()
                     }
-                    <Link href="/orders">
-                        <a className="dropdown-item">Orders</a>
+                    <Link href="/orders" className="dropdown-item">Orders
                     </Link>
-                    <Link href="/notifications">
-                        <a className="dropdown-item">Notifications</a>
+                    <Link href="/notifications" className="dropdown-item">Notifications
                     </Link>
                     <div className="dropdown-divider"></div>
                     <button className="dropdown-item" onClick={handleLogout}>Logout</button>
@@ -109,37 +101,31 @@ function NavBar() {
 
                 <ul className="navbar-nav p-1">
                     <li className="nav-item" >
-                        <Link href="/">
-                            <a className={"nav-link" + isActive('/')}>
-                                <i className="fas fa-home" aria-hidden="true" ></i> Home
-                            </a>
+                        <Link href="/" className={"nav-link" + isActive('/')}>
+                            <i className="fas fa-home" aria-hidden="true" ></i> Home
                         </Link>
                     </li>
                     {isAdmin &&
                         <li className="nav-item" >
-                            <Link href="/dashboard">
-                                <a className={"nav-link" + isActive('/dashboard')}>
-                                    <i className="fas fa-th" aria-hidden="true" ></i> Dashboard
-                                </a>
+                            <Link href="/dashboard" className={"nav-link" + isActive('/dashboard')}>
+                                <i className="fas fa-th" aria-hidden="true" ></i> Dashboard
                             </Link>
                         </li>
                     }
                     <li className="nav-item" style={{ display: `${isAdmin ? 'none' : 'block'}` }}>
-                        <Link href="/cart">
-                            <a className={"nav-link" + isActive('/cart')}>
-                                <i className="fas fa-shopping-cart" aria-hidden="true" >
-                                    {cart && cart.length > 0 ?
-                                        <>
-                                            <span className="count-badge count-badge-cart">
-                                                {cart.length}
-                                            </span>
-                                            <span className="navbar-menu-text" style={{ paddingLeft: cart.length > 9 ? '25px' : '20px' }}>Cart</span>
-                                        </>
-                                        :
-                                        <span className="navbar-menu-text">Cart</span>
-                                    }
-                                </i>
-                            </a>
+                        <Link href="/cart" className={"nav-link" + isActive('/cart')}>
+                            <i className="fas fa-shopping-cart" aria-hidden="true" >
+                                {cart && cart.length > 0 ?
+                                    <>
+                                        <span className="count-badge count-badge-cart">
+                                            {cart.length}
+                                        </span>
+                                        <span className="navbar-menu-text" style={{ paddingLeft: cart.length > 9 ? '25px' : '20px' }}>Cart</span>
+                                    </>
+                                    :
+                                    <span className="navbar-menu-text">Cart</span>
+                                }
+                            </i>
                         </Link>
                     </li>
                     <li className="nav-item" >
@@ -148,10 +134,8 @@ function NavBar() {
                     {
                         isEmpty(auth)
                             ? <li className="nav-item">
-                                <Link href="/signin">
-                                    <a className={"nav-link" + isActive('/signin')}>
-                                        <i className="fas fa-user" aria-hidden="true"></i> Sign in
-                                    </a>
+                                <Link href="/signin" className={"nav-link" + isActive('/signin')}>
+                                    <i className="fas fa-user" aria-hidden="true"></i> Sign in
                                 </Link>
                             </li>
                             : loggedRouter()

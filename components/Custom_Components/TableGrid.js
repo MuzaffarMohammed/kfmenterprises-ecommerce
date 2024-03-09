@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPaginate, pageChange }) => {
 
     const [currentPage, setCurrentPage] = useState(1)
-    const pageLimit = 10
+    const pageLimit = 15
     const [paginatedRows, setPaginatedRows] = useState(rows)
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPagina
             column.field && row[column.field] ?
                 (
                     <Link href={href} style={{ cursor: 'pointer' }}>
-                        <a>{row[column.field]}</a>
+                        {row[column.field]}
                     </Link>
                 )
                 :
@@ -64,6 +64,8 @@ const TableGrid = ({ columns, rows, totalCount, isOrderPage, isAdmin, isDbPagina
                 return orderStatusFormatter(row, isAdmin);
             case "orderDeliveryStatus":
                 return orderDeliveryStatusFormatter(row);
+            case "object":
+                return row[column.format.field] && row[column.format.field][column.field]
             default:
                 return row;
         }

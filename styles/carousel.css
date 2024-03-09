@@ -8,15 +8,15 @@
 }
 
 .gradient01 {
-  background: linear-gradient(to right, #00264d, #66b3ff);
+  background: linear-gradient(to bottom, rgb(0 27 55) 10%, rgb(58 106 153) 65%, rgba(255,255,255,1) 100%);
 }
 
 .gradient02 {
-  background: linear-gradient(to right, #ff0000, #ff9999);
+  background: linear-gradient(to bottom, rgb(255, 0, 0) 10%, rgb(255, 153, 153) 65%, rgba(255,255,255,1) 100%);
 }
 
 .gradient03 {
-  background: linear-gradient(to right, #663300, #ffb366);
+  background: linear-gradient(to bottom, rgb(102, 51, 0)10%, rgb(255, 179, 102) 65%, rgba(255,255,255,1) 100%);
 }
 
 .carousel-content {
@@ -47,7 +47,7 @@
 
 @media (max-width: 767px) {
   .carousel-item {
-    height: 50vh;
+    height: 42vh;
   }
   .carousel-item .carouselImg {
     padding-top: 0px;

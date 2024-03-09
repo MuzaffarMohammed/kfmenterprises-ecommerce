@@ -33,7 +33,6 @@ export const cloud_delete = (publicIds) => {
             cloudinary.v2.uploader.destroy(public_id, async (error, response) => {
                 if (error) throw error;
                 if (response) {
-                    console.log('Image deleted : ', response.result);
                     return response.result;
                 }
             });

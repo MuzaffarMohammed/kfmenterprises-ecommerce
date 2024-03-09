@@ -76,7 +76,7 @@ const Payment = (props) => {
             paySignature: res.razorpay_signature
         }
         postData('order/payment/verify', data, props.auth.token).then(res => {
-            console.log("Res : ", res);
+            //console.log("Res : ", res);
             if (res && res.verified) {
                 placeOrderAndNotifyUser(order, res.method);
             } else {
@@ -107,7 +107,7 @@ const Payment = (props) => {
 
     const notifyUserAndAdminAboutOrder = (order) => {
         if (props.auth && props.auth.user && props.auth.user.email) {
-            console.log('order : ', order)
+            //console.log('order : ', order)
             const userData = {
                 userName: props.auth.user.name,
                 email: props.auth.user.email,
@@ -171,7 +171,7 @@ const Payment = (props) => {
                     </select>
                 </div> : ""}
             <div className="row mt-2 justify-content-between">
-                <label>Delivery Chargers</label>
+                <label>Delivery Charges</label>
                 <span style={{ color: 'green' }}>Free </span>
             </div>
             <div className="row mt-1 justify-content-between">

@@ -89,13 +89,21 @@
     box-shadow: 5px 1px 10px 1px rgb(197 197 197);
 }
 
+.product-search{
+    width: 90%;
+}
+
 @media (max-width: 767px) {
     .productsCarousel .card-img-top {
-        height: 77px;
+        height: 100px;
     }
     .productsCarousel .card {
-        height: 79px;
-        width: 85%;
+        height: 100px;
+        width: 100%;
+    }
+
+    .product-search{
+        width: 90%;
     }
 }
 

@@ -1,20 +1,20 @@
-h2{
+h2 {
     text-align: center;
 }
 
- .prdcaroImg{
+.prdcaroImg {
     /* height: 250px;
     width:400px; */
     border: 2px solid black;
     display: block;
-    margin : auto;
+    margin: auto;
 }
 
-.slick-arrow{
+.slick-arrow {
     color: #000 !important;
 }
 
-.slick-prev{
+.slick-prev {
     z-index: 100;
     left: -50px !important;
 }
@@ -23,25 +23,32 @@ h2{
     font-size: 40px !important;
 }
 
-.slick-next{
+.slick-next {
     z-index: 100;
-    right:-50px !important;
+    right: -50px !important;
+}
+
+.bestSellCaroIndicators {
+    background-color: white;
 }
 
 .bestSellCaroIndicators:hover .slick-prev {
     z-index: 100;
     left: 20px !important;
     transition: 0.5s;
-  }
+}
 
-  .bestSellCaroIndicators:hover .slick-next {
+.bestSellCaroIndicators:hover .slick-next {
     z-index: 100;
-    right:35px !important;
+    right: 35px !important;
     transition: 0.5s;
-  }
+}
 
+.slick-dots{
+background-color: white;
+}
 @media (max-width: 767px) {
     .slick-prev:before, .slick-next:before {
         font-size: 20px !important;
     }
-  }
+}

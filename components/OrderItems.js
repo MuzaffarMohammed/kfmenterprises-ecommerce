@@ -7,14 +7,13 @@ const OrderItems = (props) => {
                 <h6>Items</h6>
             </div>
             {
-                props.order.cart.map(item => (
+                props.order.cart.map((item,i) => (
                     <div className="row border-bottom mx-0 pt-4 pb-1 justify-content-between
-                                        align-items-center orderInfoFontSize" key={item._id}>
-                        <img src={item.images[0].url}
+                                        align-items-center orderInfoFontSize" key={item._id+i}>
+                        <img src={item.url}
                             style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
                         <div className="flex-fill font-weight-normal px-3 m-0">
-                            <Link href={`/product/${item._id}`}>
-                                <a style={{ wordWrap: 'break-word' }}>{item.title}</a>
+                            <Link href={`/product/${item._id}`} className='order-item-title' style={{ wordWrap: 'break-word' }}>{item.title}
                             </Link>
                             <div className="flex-fill m-0">
                                 <label>

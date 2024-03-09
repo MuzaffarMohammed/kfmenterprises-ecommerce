@@ -1,67 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import filterSearch from '../utils/filterSearch'
-import { getData } from '../utils/fetchData'
-import { useRouter } from 'next/router'
+import React from 'react'
 
-const Filter = ({ state }) => {
-    const [search, setSearch] = useState('')
-    const [sort, setSort] = useState('')
-    const [category, setCategory] = useState('')
-
-    const { categories } = state
-
-    const router = useRouter()
-
-
-    const handleCategory = (e) => {
-        setCategory(e.target.value)
-        filterSearch({ router, category: e.target.value }, '/', false);
-    }
-
-    const handleSort = (e) => {
-        setSort(e.target.value)
-        filterSearch({ router, sort: e.target.value }, '/', false)
-    }
-
-    useEffect(() => {
-        filterSearch({ router, search: search ? search.toLowerCase() : 'all' }, '/', false)
-    }, [search])
+const Filter = ({ isAdmin, categories, selectedCategory, searchText, selectedSort, handleCategory, handleSearch, handleSort }) => {
+    const ALL = 'all';
 
     return (
-        <div className="input-group">
-            <div className="input-group-prepend col-md-2 px-2 mt-2">
-                <select className="custom-select text-capitalize"
-                    value={category} onChange={handleCategory}>
-
-                    <option value="all">All</option>
-
-                    {
-                        categories.map(item => (
-                            <option key={item._id} value={item._id}>{item.name}</option>
-                        ))
-                    }
-                </select>
+        <div className="row justify-content-sm-center">
+            <div className="row align-items-center col-md-5">
+                <div className='mr-2'>
+                    <i className="fas fa-search" aria-hidden="true" />
+                </div>
+                <form className="product-search" autoComplete="off" >
+                    <input type="text" className="form-control" list="title_product" placeholder="Search your item here..."
+                        value={searchText.toLowerCase()}
+                        onChange={(e) => { handleSearch(e.target.value) }}
+                        maxLength='25' />
+                </form>
             </div>
-
-            <form autoComplete="off" className="mt-2 col-md-8 px-2">
-                <input type="text" className="form-control" list="title_product" placeholder="Search"
-                    value={search.toLowerCase()} onChange={e => setSearch(e.target.value)} maxLength='25' />
-            </form>
-
-            <div className="input-group-prepend col-md-2 px-2 mt-2">
-                <select className="custom-select text-capitalize"
-                    value={sort} onChange={handleSort}>
-
-                    <option value="-createdAt">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="-sold">Best sales</option>
-                    <option value="-totalPrice">Price: High-Low</option>
-                    <option value="totalPrice">Price: Low-High</option>
-
-                </select>
+            <div className="row pt-1 pt-md-0 align-items-center">
+                <div className='row align-items-center'>
+                    <div className='pr-2'>
+                        <i className="fas fa-filter" aria-hidden="true" />
+                    </div>
+                    <div>
+                        <select name="Filter" className="custom-select" value={selectedCategory} onChange={(e) => {
+                            handleCategory(e.target.value);
+                        }}>
+                            {isAdmin && <option value={ALL}> All</option>}
+                            {
+                                categories.map(item => (
+                                    <option key={item._id} value={item._id}>{item.name}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div className='row pt-1 pt-md-0 align-items-center'>
+                    <div className='pl-2 pr-2'>
+                        <i className="fas fa-sort-amount-up-alt" aria-hidden="true" />
+                    </div>
+                    <div>
+                        <select name="Sort" className="custom-select" value={selectedSort} onChange={(e) => { handleSort(e.target.value) }}>
+                            <option value="-createdAt">Newest Arrivals</option>
+                            <option value="-sold">Best sales</option>
+                            <option value="-totalPrice">Price: High-Low</option>
+                            <option value="totalPrice">Price: Low-High</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-
-
         </div>
     )
 }

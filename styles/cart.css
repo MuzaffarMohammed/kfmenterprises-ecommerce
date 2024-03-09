@@ -25,6 +25,15 @@
     min-width: 200px;
 }
 
+.product-title {
+    color: #17a2b8;
+    text-decoration: none;
+}
+
+.product-title:hover{
+    color: #007bff;
+}
+
 .product-quantity {
     min-width: 150px;
     padding-right: 0px !important;
@@ -73,6 +82,8 @@
     }
     .product-title {
         font-size: 16px;
+        color: #17a2b8;
+        text-decoration: none;
     }
     .product-img {
         width: 100px;

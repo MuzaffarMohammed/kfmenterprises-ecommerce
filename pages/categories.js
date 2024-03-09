@@ -24,7 +24,7 @@ const Categories = () => {
         if (id) {
             res = await putData(`categories/${id}`, { name }, auth.token)
             if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-            dispatch(updateItem(categories, id, res.category, 'ADD_CATEGORIES'))
+            dispatch(updateItem(categories, id, res.categories, 'ADD_CATEGORIES'))
 
         } else {
             res = await postData('categories', { name }, auth.token)
@@ -42,11 +42,11 @@ const Categories = () => {
     }
 
     return (
-        <div className="container-fluid mx-auto my-3">
+        <div className="container mx-auto my-3">
             <Head>
                 <title>KFM Cart - Categories</title>
             </Head>
-
+            <h5 className="text-uppercase">Categories</h5>
             <div className="input-group mb-3">
                 <input type="text" className="form-control"
                     placeholder="Add a new category" value={name}

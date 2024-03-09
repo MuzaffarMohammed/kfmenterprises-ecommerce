@@ -1,7 +1,9 @@
 import connectDB from '../../../utils/connectDB'
+import Categories from '../../../models/categoryModel'
 import Products from '../../../models/productModel'
 import auth from '../../../middleware/auth'
 import { CONTACT_ADMIN_ERR_MSG, ERROR_403 } from '../../../utils/constants'
+import { displayProducts } from '../../../utils/productUtil'
 
 connectDB()
 
@@ -18,7 +20,9 @@ export default async (req, res) => {
             } else await getProducts(req, res)
             break;
         case "POST":
-            await createProduct(req, res)
+            if (req.query.type === 'CP') {
+                await createProduct(req, res)
+            }
             break;
     }
 }
@@ -34,57 +38,20 @@ const getAllProductsCount = async (req, res) => {
     }
 }
 
-class APIfeatures {
-    constructor(query, queryString) {
-        this.query = query;
-        this.queryString = queryString;
-    }
-    filtering() {
-        const queryObj = { ...this.queryString }
-
-        const excludeFields = ['page', 'sort', 'limit']
-        excludeFields.forEach(el => delete (queryObj[el]))
-
-        if (queryObj.category !== 'all')
-            this.query.find({ category: queryObj.category })
-        if (queryObj.title !== 'all')
-            this.query.find({ title: { $regex: queryObj.title } })
-
-        this.query.find()
-        return this;
-    }
-
-    sorting() {
-        if (this.queryString.sort) {
-            const sortBy = this.queryString.sort.split(',').join('')
-            this.query = this.query.sort(sortBy)
-        } else {
-            this.query = this.query.sort('-createdAt')
-        }
-
-        return this;
-    }
-
-    paginating() {
-        const page = this.queryString.page * 1 || 1
-        const limit = this.queryString.limit * 1 || 6
-        const skip = (page - 1) * limit;
-        this.query = this.query.skip(skip).limit(limit)
-        return this;
-    }
-}
 
 const getProducts = async (req, res) => {
     try {
-        const features = new APIfeatures(Products.find(), req.query)
-            .filtering().sorting().paginating()
+        const { category, page, limit, sort, title } = req.query;
 
-        const products = await features.query
-
+        let params = {}
+        if (category && category !== 'all') params = { ...params, categories: category }
+        if (title && title !== 'all') params = { ...params, title: { $regex: title } }
+        const products = await Products.find(params).populate({ path: "categories", select: "name _id", model: Categories })
+            .sort(sort ? sort : '-createdAt').skip((page ? (page - 1) : 0) * limit).limit(limit);
         res.json({
             status: 'success',
-            result: products.length,
-            products
+            count: products.length,
+            products: displayProducts(products)
         })
     } catch (err) {
         console.error('Error occurred while getProducts: ' + err);
@@ -97,21 +64,19 @@ const createProduct = async (req, res) => {
         const result = await auth(req, res)
         if (result.role !== 'admin') return res.status(401).json({ err: ERROR_403 })
 
-        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, number, discount } = req.body
+        const { title, mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, attributesRequired } = req.body
 
-        if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || category === 'all' || images.length === 0)
+        if (!title || !mrpPrice || !price || !inStock || !description || !tax || !totalPrice || !content || categories === 'all' || images.length === 0)
             return res.status(400).json({ err: 'Please add all the fields.' })
 
         const product = await Products.findOne({ title: title.toLowerCase() });
         if (product) return res.status(400).json({ err: 'Product Name already exist, please choose different name.' })
 
         const newProduct = new Products({
-            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, category, images, number, discount
+            title: title.toLowerCase(), mrpPrice, price, tax, totalPrice, inStock, description, content, categories, images, discount, attributesRequired
         })
-        await newProduct.save()
-
-        res.json({ msg: 'New product added successfully.' })
-
+        const productCreated = await newProduct.save()
+        res.json({ msg: 'New product added successfully.', productId: productCreated._id })
     } catch (err) {
         console.error('Error occurred while createProduct: ' + err);
         return res.status(500).json({ err: CONTACT_ADMIN_ERR_MSG })
