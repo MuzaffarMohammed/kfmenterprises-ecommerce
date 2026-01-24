@@ -9,7 +9,7 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^6.0.0",
     "bootstrap": "*",
     "c3": "^0.7.20",
     "cloudinary": "^2.0.3",
